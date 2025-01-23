@@ -13,3 +13,5 @@ library(devtools)
 library(poolSeq) #for CMH test
 library(tidyr)
 library(stringr)
+#install.packages("tidyverse")
+library(tidyverse)
