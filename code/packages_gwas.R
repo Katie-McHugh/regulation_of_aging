@@ -15,3 +15,20 @@ library(tidyr)
 library(stringr)
 #install.packages("tidyverse")
 library(tidyverse)
+
+### install packages and load library for analysis of TWAS data
+
+install.packages("BiocManager")
+BiocManager::install("DESeq2")
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("sva")
+library(DESeq2)
+library(grid)
+library(ggplot2)
+library(pheatmap)
+library(sva)
+library(tibble)
+library(dplyr)
+library(tidyr)
