@@ -10,6 +10,7 @@ sig_genes_adj <- res_adj[which(res_adj$padj <= 0.05), ] #27 genes
 sig_genes_permissive_adj <- res_adj[which(res_adj$padj <= 0.1), ] #60 genes #includes RFA3 and FIT2...
 nrow(sig_genes_permissive_adj)
 
+############################## skip ahead to line 49 #######################
 ann<-read.table("data/annotated_snps.txt", header = TRUE)
 roman_to_chr <- c(
   "I" = "chr1", "II" = "chr2", "III" = "chr3", "IV" = "chr4", "V" = "chr5",
@@ -22,7 +23,7 @@ ann <- ann %>%
   mutate(CHROM = roman_to_chr[CHROM])
 
 ann<-as.data.frame(ann)
-View(an)
+
 ann_all <- ann %>%
   mutate(Annotations_List = strsplit(as.character(ann), ",")) %>%  # Split the annotations by comma
   unnest(Annotations_List)  # Expand the list into multiple rows
@@ -45,10 +46,14 @@ gene_key<-unique(gene_key)
 ## save key to temp folder
 write.table(gene_key, file="temp/key_geneIDtoName.txt")
 
-### Create list of significant genes
+##########################################################################
+## just read in table instead of generating it
+
+gene_key<- read.table("temp/key_geneIDtoName.txt")
+View(gene_key)
+
 
 sig_genes_adj_1<-merge(sig_genes_adj, gene_key, by.x="X", by.y="Gene_ID", all.x=TRUE)
-View(sig_genes_adj_1)
 sig_genes_adj_1$Gene_Name[sig_genes_adj_1$X == "YLR050C"] <- "EMA19" ## Name recognized in SGD
 
 sig_genes_permissive_adj_1<-merge(sig_genes_permissive_adj, gene_key, by.x="X", by.y="Gene_ID", all.x=TRUE)

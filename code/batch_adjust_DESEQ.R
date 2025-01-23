@@ -30,6 +30,7 @@ levels(colData2$condition) #
 colData2$condition <- relevel(colData2$condition, ref = "young") # we want to treat the young as the reference and discuss changes in old
 dds_adj<-DESeqDataSetFromMatrix(countData= adj_counts, colData=colData2, design= ~subject + condition)
 
+
 #remove genes that have low mapping (>=5), >=13 makes sure that genes that have near 0 expression in only one treatment aren't excluded, since these are genes of interest
 keep<- rowSums(counts(dds_adj) >=5)>=13 #and then number of samples that have >=13 #go check the manual 
 dds_adj<- dds_adj[keep,]
@@ -38,14 +39,17 @@ nrow(dds_adj) #filtering removed about 1000 genes #5620 genes left
 
 ### Run DESeq analysis
 dds_adj<-DESeq(dds_adj) 
-any(is.na(dds_adj)) # check for NAs, there are none so we can skip the next line
-#res_adj<-results(dds_adj, cooksCutoff = FALSE) #save results table #prevents cooks cuttoff from assigning NA values (can also test independentFiltering to false if still having issues).
-res_df<-as.data.frame(res_adj) 
-View(res_df)
 
+### need to normalize after DESEQ for visualization (not analysis)
+normalized_counts_adj <- counts(dds_adj, normalized = TRUE) # Get normalized counts
+
+any(is.na(dds_adj)) # check for NAs, there are none so we can skip the next line
+res_adj<-results(dds_adj, cooksCutoff = FALSE) #save results table #prevents cooks cuttoff from assigning NA values (can also test independentFiltering to false if still having issues).
+dds_adj1<-as.data.frame(res_adj)
 ### mean basemean of p-values below 0.05
 # Filter for rows with p-value > 0.05
-filtered_res <- res_df[res_df$padj < 0.05, ]
+filtered_res <- dds_adj1[dds_adj1$padj < 0.05, ]
+View(filtered_res)
 
 # Calculate the mean of the baseMean values
 mean_baseMean <- mean(filtered_res$baseMean, na.rm = TRUE)
@@ -53,16 +57,18 @@ mean_baseMean <- mean(filtered_res$baseMean, na.rm = TRUE)
 # Print the result
 mean_baseMean
 
-head(results(dds_adj, tidy=TRUE)) #cleaner results table
-summary(res_adj) #summary table
-res_adj <- res_adj[order(res_adj$padj),] #sort by p-value
+head(results(dds_adj1, tidy=TRUE)) #cleaner results table
+summary(dds_adj1) #summary table
+dds_adj1 <- dds_adj1[order(dds_adj1$padj),] #sort by p-value
 
 #reorder
-resOrdered_adj <- res_adj[order(res_adj$pvalue),]
+resOrdered_adj <- dds_adj1[order(dds_adj1$pvalue),]
 head(resOrdered_adj)
 
 write.csv(as.data.frame(resOrdered_adj), 
           file="temp/rnaseq_results_batch_adjusted.csv") ### this contains 
 ## results from the dds object
+
+write.csv(normalized_counts_adj, file="temp/normalized_counts_deseq.csv")
 
 ### additional options for plotting and visualization in Analysis_eNotebook_Part2_DGE.rmd file
