@@ -2,13 +2,14 @@
 
 ### Load normalized counts for visualization
 norm_dds<-read.csv("temp/normalized_counts_deseq.csv")
-View)
 
 ### Load list of genes for headmap
 selected_genes_adj<-read.csv("temp/RNA_genes_p<0.1.csv", row.names= "X")
+View(selected_genes_adj)
 
 ### load in design file
-colData<-read.table("data/design.txt", header=TRUE)
+colData<-read.table("data/design.txt", header=TRUE, row.names = "sample")
+
 
 ### Load in gene key
 key<-read.table("temp/key_geneIDtoName.txt")
@@ -23,26 +24,25 @@ age_colors<- c( "old" = "black", "young"= "grey")
 age_cols<-list(condition = age_colors)
 
 ### Convert gene ID to gene name, and make that the row name
-View(norm_sigs2)
 norm_sigs2<-merge(norm_sigs, key, by="Gene_ID", all.x = TRUE)
 View(norm_sigs2)
+
+norm_sigs2$Gene_Name[norm_sigs2$Gene_ID == "YLR050C"] <- "EMA19" ## Name recognized in SGD
+norm_sigs2$Gene_Name[norm_sigs2$Gene_ID == "YCR015C"] <- "CTO1" ## Name recognized in SGD
+
 rownames(norm_sigs2) <- norm_sigs2$Gene_Name
 
 # Remove the non-numeric columns
 norm_sigs2$Gene_ID <- NULL
 norm_sigs2$Gene_Name <- NULL
-
-# Set up annotations for heat map
-annotation_col <- data.frame(condition = colData$condition, pair=colData$subject)
-rownames(annotation_col) <- rownames(colData) 
-head(annotation_col) #match replicate label to age
-
-# scale and convery to matrix
+View(norm_sigs2)
+# scale and convert to matrix
 norm_adj<-t(scale(t(norm_sigs2))) #scale so each feature has the same mean/variance for visualization purposes in the heatmap (prevents features with higher overall expression from washing out signals of lower expression features)
 norm_adj<-as.data.frame(norm_adj)
 norm_adj<-unique(norm_adj)
 norm_adj_mat<-as.matrix(norm_adj)
 mode(norm_adj_mat) <- "numeric"
+View(norm_adj_mat)
 
 ## Colors to distinguish between replicate pairs
 subject_colors <- c(
@@ -52,13 +52,17 @@ subject_colors <- c(
   "pair10" = "#66C2A5", "pair11" = "#FC8D62", "pair12" = "#8DA0CB"
 )
 
+# Set up annotations for heat map
+annotation_col <- data.frame(condition = colData$condition, pair=colData$subject)
+rownames(annotation_col) <- rownames(colData) 
+head(annotation_col) #match replicate label to age
+
 ### LOG FOLD CHANGE ANNOTATION
 selected_genes_adj$logBM<-log10(selected_genes_adj$baseMean)
-View(selected_genes_adj)
 logfc_info<-unique(selected_genes_adj[,c("log2FoldChange", "logBM", "padj", "Gene_ID", "Gene_Name")])
 rownames(logfc_info) <- logfc_info$Gene_Name
-
 View(logfc_info)
+
 # Create a color palette for the LFC values
 lfc_colors <- colorRampPalette(c("purple", "white", "darkgreen"))(100)
 bM_colors<- colorRampPalette(c("white", "black"))(100)
@@ -68,9 +72,12 @@ annotation_row <- data.frame(
   LFC = logfc_info$log2FoldChange, 
   LBM = logfc_info$logBM
 )
+
+
 # extract just the logFC info
 rownames(annotation_row) <- logfc_info$Gene_Name # Ensure row names match the heatmap data
 View(annotation_row)
+View(annotation_col)
 
 # Define color scale for LFC values
 annotation_colors <- list(
@@ -80,9 +87,12 @@ annotation_colors <- list(
   LBM = bM_colors
 )
 
-View(norm_adj_mat)
+### check that everything looks right
 all(rownames(annotation_row) == rownames(norm_adj_mat))  # Check if row names match
 all(rownames(annotation_col) == colnames(norm_adj_mat))
+
+
+
 ### p < 0.1
 pdf("temp_figs/heatmap_DESEQadj_p<0.1.pdf", width = 8, height = 12)
 
@@ -102,3 +112,4 @@ pheatmap(
 
 dev.off()
 
+## gene names don't match
