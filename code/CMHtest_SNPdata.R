@@ -103,4 +103,5 @@ MB=Gaxis/1e6  ## MB stands for megabases, we are dividing by 1 million to put th
 snps4$MB=MB ## now we have a vector in our SNP table that we can use as a x-axis variable for plotting
 
 # Save the file to the new directory
-write.csv(snps4, file = "temp/WG_CMHtest_results.csv", row.names = FALSE)
+write.csv(snps3, file = "temp/WG_CMHtest_results.csv", row.names = FALSE)
+write.csv(snps4, file = "temp/WG_CMHtest_results_nuclear.csv", row.names = FALSE)

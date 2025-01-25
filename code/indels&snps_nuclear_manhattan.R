@@ -4,11 +4,9 @@
 
 ## load in snp and indel data
 
-indels3<-read.csv("temp/indels_CMHtest_results.csv")
-indels4=subset(indels3,CHROM!="chrmito")
+indels4<-read.csv("temp/indels_CMHtest_results_nuclear.csv")
 
-snps3<-read.csv("temp/WG_CMHtest_results.csv")
-snps4=subset(snps3,CHROM!="chrmito")
+snps4<-read.csv("temp/WG_CMHtest_results_nuclear.csv")
 
 x1<-indels4$MB
 y1<-indels4$logp

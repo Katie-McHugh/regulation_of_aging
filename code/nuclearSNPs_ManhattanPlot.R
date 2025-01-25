@@ -1,7 +1,7 @@
 ### Manhattan plot of SNP data from CMH test - Nuclear DNA
 
 ## Load data
-snps4<-read.csv("temp/WG_CMHtest_results.csv")
+snps4<-read.csv("temp/WG_CMHtest_results_nuclear.csv")
 
 # Open the PDF device with the specified file path
 pdf(file = "temp_figs/nuclearSNPs_ManhattanPlot.pdf", height = 10, width = 18)

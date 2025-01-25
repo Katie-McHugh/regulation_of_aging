@@ -101,5 +101,6 @@ for (k in 1:length(chrs)){
 MB=Gaxis/1e6  ## MB stands for megabases, we are dividing by 1 million to put things on a megabase scale
 indels4$MB=MB ## now we have a vector in our SNP table that we can use as a x-axis variable for plotting
 
-write.csv(indels4, file = "temp/indels_CMHtest_results.csv", row.names = FALSE)
+write.csv(indels3, file = "temp/indels_CMHtest_results.csv", row.names = FALSE)
+write.csv(indels4, file = "temp/indels_CMHtest_results_nuclear.csv", row.names = FALSE)
 
