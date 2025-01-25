@@ -69,3 +69,21 @@ View(sigs_05_common)
 
 write.csv(sigs_05_both, file="temp/shared_genes_FIRSTann.csv")
 write.csv(sigs_05_common, file="temp/shared_genes_ALLann.csv")
+
+## Now look at variant identities
+gene_annotation_table <- sigs_05_common %>%
+  group_by(Gene_Name) %>%
+  summarize(Annotations = paste(sort(unique(Annotation)), collapse = ", ")) %>%
+  ungroup()
+
+# Create a new table that counts how many genes have each combination of annotations
+gene_annotation_count <- sigs_05_common %>%
+  group_by(Gene_Name, Annotation) %>%
+  summarize(Annotation_Count = n()) %>%
+  ungroup()
+
+gene_annotation_count_FIRST <- sigs_05_both %>%
+  group_by(Gene_Name, Annotation) %>%
+  summarize(Annotation_Count = n()) %>%
+  ungroup()
+
