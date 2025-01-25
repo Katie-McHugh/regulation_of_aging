@@ -29,6 +29,16 @@ nrow(genic_sigs_f) #463 genic annotations # very similar
 #which ones differ? 
 genic_diffs <- anti_join(genic_sigs_sep, genic_sigs_f, by = c("CHROM", "POS", "Annotation", "Gene_Name"))
 nrow(genic_diffs) # this is the right number of rows
-View(genic_diffs) ## these all seem legit, so keep the longer list
+View(genic_diffs)
 
-write.csv(genic_sigs_sep, file="temp/genic_sigs.csv")
+#################### NOTES ON DIFFERENCES IN GENE LISTS ################
+
+# Genic variants is pretty much always the first annotation
+## the ten missing genes are cases when there are TWO genic annotations for a 
+## single gene
+
+### Most likely, the first annotation is the more useful one, so keep that list
+
+########################################################################
+
+write.csv(genic_sigs_f, file="temp/genic_sigs.csv")
