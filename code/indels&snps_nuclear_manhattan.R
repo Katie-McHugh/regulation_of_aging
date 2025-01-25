@@ -14,13 +14,12 @@ x1<-indels4$MB
 y1<-indels4$logp
 x2 <- snps4$MB
 y2 <- snps4$logp
-View(snps4)
 
 top <- 30
 bottom <- 0
 
 # Open the PDF device with the specified file path
-pdf(file = "indels&SNPs_nuclear_manhattan.pdf", height = 5, width = 10)
+pdf(file = "temp_figs/indels&SNPs_nuclear_manhattan.pdf", height = 5, width = 10)
 
 par(mar = c(4, 5, 3, 3) + 0.3)
 
