@@ -72,8 +72,35 @@ pval<-cmh.test(A3, a3, A4, a4, log="FALSE")
 snps3$logp<-logp
 snps3$pval<-pval
 
-# Specify the file path in the new directory
-file_path2 <- file.path("temp/WG_CMHtest_results.csv")
+
+#### Prepare Genome Scale
+snps4<-subset(snps3, CHROM!="chrmito")
+## GW plotting code (old school plot, can be converted to ggplot.  This corresponds to the nuclear genome scale for the R64 genome release)
+Gaxis <- numeric(length=0)
+chrs<-c('chr1','chr2','chr3','chr4','chr5','chr6','chr7','chr8','chr9','chr10','chr11','chr12','chr13','chr14','chr15','chr16')
+for (k in 1:length(chrs)){
+  data.samp<-subset(snps4,CHROM==chrs[k])
+  if (chrs[k]=='chr1'){Gaxis.samp<-data.samp$POS}
+  if (chrs[k]=='chr2'){Gaxis.samp<-data.samp$POS+230218}
+  if (chrs[k]=='chr3'){Gaxis.samp<-data.samp$POS+230218+813184}
+  if (chrs[k]=='chr4'){Gaxis.samp<-data.samp$POS+230218+813184+316620}
+  if (chrs[k]=='chr5'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933}
+  if (chrs[k]=='chr6'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874}
+  if (chrs[k]=='chr7'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161}
+  if (chrs[k]=='chr8'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940}
+  if (chrs[k]=='chr9'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940+562643}
+  if (chrs[k]=='chr10'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940+562643+439888}
+  if (chrs[k]=='chr11'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940+562643+439888+745751}
+  if (chrs[k]=='chr12'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940+562643+439888+745751+666816} 
+  if (chrs[k]=='chr13'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940+562643+439888+745751+666816+1078177}
+  if (chrs[k]=='chr14'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940+562643+439888+745751+666816+1078177+924431}
+  if (chrs[k]=='chr15'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940+562643+439888+745751+666816+1078177+924431+784333}
+  if (chrs[k]=='chr16'){Gaxis.samp<-data.samp$POS+230218+813184+316620+1531933+576874+270161+1090940+562643+439888+745751+666816+1078177+924431+784333+1091291}
+  Gaxis<-c(Gaxis,Gaxis.samp) 
+}
+
+MB=Gaxis/1e6  ## MB stands for megabases, we are dividing by 1 million to put things on a megabase scale
+snps4$MB=MB ## now we have a vector in our SNP table that we can use as a x-axis variable for plotting
 
 # Save the file to the new directory
-write.csv(snps3, file = file_path2, row.names = FALSE)
+write.csv(snps4, file = "temp/WG_CMHtest_results.csv", row.names = FALSE)
