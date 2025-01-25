@@ -68,4 +68,4 @@ sigs_05_common<-sigs_05_sep[sigs_05_sep$Gene_Name %in% common_items2,]
 View(sigs_05_common)
 
 write.csv(sigs_05_both, file="temp/shared_genes_FIRSTann.csv")
-write.csv(sigs_05_all, file="temp/shared_genes_ALLann.csv")
+write.csv(sigs_05_common, file="temp/shared_genes_ALLann.csv")
