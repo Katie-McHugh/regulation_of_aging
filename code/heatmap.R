@@ -10,6 +10,9 @@ View(selected_genes_adj)
 ### load in design file
 colData<-read.table("data/design.txt", header=TRUE, row.names = "sample")
 
+# change "old" to "aged"
+colData <- colData %>%
+  mutate(across(where(is.character), ~ gsub("old", "aged", .)))
 
 ### Load in gene key
 key<-read.table("temp/key_geneIDtoName.txt")
@@ -20,13 +23,19 @@ colnames(sel)[colnames(sel) == "selected_genes_adj$Gene_ID"] <- "Gene_ID"
 norm_sigs<-merge(sel, norm_dds, by.x="Gene_ID", by.y="X", all.x=TRUE)
 
 # Set key for old vs young replicates
-age_colors<- c( "old" = "black", "young"= "grey")
+age_colors<- c( "aged" = "black", "young"= "grey")
 age_cols<-list(condition = age_colors)
 
+View(norm_sigs)
+View(key)
+
 ### Convert gene ID to gene name, and make that the row name
-norm_sigs2<-merge(norm_sigs, key, by="Gene_ID", all.x = TRUE)
+norm_sigs2<-merge(norm_sigs, key, by=c("Gene_ID"), all.x = TRUE)
 View(norm_sigs2)
 
+
+
+## rename using SGD
 norm_sigs2$Gene_Name[norm_sigs2$Gene_ID == "YLR050C"] <- "EMA19" ## Name recognized in SGD
 norm_sigs2$Gene_Name[norm_sigs2$Gene_ID == "YCR015C"] <- "CTO1" ## Name recognized in SGD
 
@@ -35,6 +44,7 @@ rownames(norm_sigs2) <- norm_sigs2$Gene_Name
 # Remove the non-numeric columns
 norm_sigs2$Gene_ID <- NULL
 norm_sigs2$Gene_Name <- NULL
+
 View(norm_sigs2)
 # scale and convert to matrix
 norm_adj<-t(scale(t(norm_sigs2))) #scale so each feature has the same mean/variance for visualization purposes in the heatmap (prevents features with higher overall expression from washing out signals of lower expression features)
@@ -91,6 +101,7 @@ annotation_colors <- list(
 all(rownames(annotation_row) == rownames(norm_adj_mat))  # Check if row names match
 all(rownames(annotation_col) == colnames(norm_adj_mat))
 
+View(logfc_info)
 
 
 ### p < 0.1
@@ -112,4 +123,3 @@ pheatmap(
 
 dev.off()
 
-## gene names don't match
