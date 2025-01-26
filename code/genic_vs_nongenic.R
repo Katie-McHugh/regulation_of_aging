@@ -25,11 +25,15 @@ View(genic_sigs_sep)
 genic_sigs_f<- sigs_05_f[!sigs_05_f$Annotation %in% cat_remove,]
 nrow(genic_sigs_f) #463 genic annotations # very similar
 # most genic annotations are the first annotation, unsurprisingly
-
+View(genic_sigs_f)
 #which ones differ? 
 genic_diffs <- anti_join(genic_sigs_sep, genic_sigs_f, by = c("CHROM", "POS", "Annotation", "Gene_Name"))
 nrow(genic_diffs) # this is the right number of rows
 View(genic_diffs)
+
+genic_list<-unique(genic_sigs_f$Gene_Name)
+length(genic_list)
+print(genic_list)
 
 #################### NOTES ON DIFFERENCES IN GENE LISTS ################
 
