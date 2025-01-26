@@ -5,7 +5,6 @@ norm_dds<-read.csv("temp/normalized_counts_deseq.csv")
 
 ### Load list of genes for headmap
 selected_genes_adj<-read.csv("temp/RNA_genes_p<0.1.csv", row.names= "X")
-View(selected_genes_adj)
 
 ### load in design file
 colData<-read.table("data/design.txt", header=TRUE, row.names = "sample")
@@ -22,18 +21,13 @@ sel<-as.data.frame(selected_genes_adj$Gene_ID)
 colnames(sel)[colnames(sel) == "selected_genes_adj$Gene_ID"] <- "Gene_ID"
 norm_sigs<-merge(sel, norm_dds, by.x="Gene_ID", by.y="X", all.x=TRUE)
 
+
 # Set key for old vs young replicates
 age_colors<- c( "aged" = "black", "young"= "grey")
 age_cols<-list(condition = age_colors)
 
-View(norm_sigs)
-View(key)
-
 ### Convert gene ID to gene name, and make that the row name
-norm_sigs2<-merge(norm_sigs, key, by=c("Gene_ID"), all.x = TRUE)
-View(norm_sigs2)
-
-
+norm_sigs2<-merge(norm_sigs, key, by="Gene_ID", all.x = TRUE)
 
 ## rename using SGD
 norm_sigs2$Gene_Name[norm_sigs2$Gene_ID == "YLR050C"] <- "EMA19" ## Name recognized in SGD
@@ -45,7 +39,6 @@ rownames(norm_sigs2) <- norm_sigs2$Gene_Name
 norm_sigs2$Gene_ID <- NULL
 norm_sigs2$Gene_Name <- NULL
 
-View(norm_sigs2)
 # scale and convert to matrix
 norm_adj<-t(scale(t(norm_sigs2))) #scale so each feature has the same mean/variance for visualization purposes in the heatmap (prevents features with higher overall expression from washing out signals of lower expression features)
 norm_adj<-as.data.frame(norm_adj)
@@ -63,6 +56,7 @@ subject_colors <- c(
 )
 
 # Set up annotations for heat map
+View(colData)
 annotation_col <- data.frame(condition = colData$condition, pair=colData$subject)
 rownames(annotation_col) <- rownames(colData) 
 head(annotation_col) #match replicate label to age
@@ -71,7 +65,6 @@ head(annotation_col) #match replicate label to age
 selected_genes_adj$logBM<-log10(selected_genes_adj$baseMean)
 logfc_info<-unique(selected_genes_adj[,c("log2FoldChange", "logBM", "padj", "Gene_ID", "Gene_Name")])
 rownames(logfc_info) <- logfc_info$Gene_Name
-View(logfc_info)
 
 # Create a color palette for the LFC values
 lfc_colors <- colorRampPalette(c("purple", "white", "darkgreen"))(100)
@@ -83,11 +76,11 @@ annotation_row <- data.frame(
   LBM = logfc_info$logBM
 )
 
-
 # extract just the logFC info
 rownames(annotation_row) <- logfc_info$Gene_Name # Ensure row names match the heatmap data
-View(annotation_row)
-View(annotation_col)
+
+head(annotation_row)
+head(annotation_col)
 
 # Define color scale for LFC values
 annotation_colors <- list(
@@ -101,10 +94,8 @@ annotation_colors <- list(
 all(rownames(annotation_row) == rownames(norm_adj_mat))  # Check if row names match
 all(rownames(annotation_col) == colnames(norm_adj_mat))
 
-View(logfc_info)
-
-
 ### p < 0.1
+
 pdf("temp_figs/heatmap_DESEQadj_p<0.1.pdf", width = 8, height = 12)
 
 pheatmap(
@@ -122,4 +113,3 @@ pheatmap(
   cellheight = 12)
 
 dev.off()
-
