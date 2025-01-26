@@ -32,3 +32,10 @@ library(sva)
 library(tibble)
 library(dplyr)
 library(tidyr)
+
+
+######### Packages for pt 3
+
+library(viridis)
+library(stringr)
+library(ggrepel)
