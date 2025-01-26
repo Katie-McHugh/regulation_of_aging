@@ -1,0 +1,44 @@
+Annotation,Data_first,Ref_first,Data_all,Ref_all
+conservative_inframe_deletion,0.12516,0.10129,0.01815,0.01679
+conservative_inframe_insertion,0.62578,0.14277,0.09074,0.02365
+disruptive_inframe_deletion,2.00250,0.29132,0.29038,0.04756
+disruptive_inframe_insertion,1.37672,0.23248,0.19964,0.04353
+downstream_gene_variant,3.00375,0.70130,40.34483,41.78741
+frameshift_variant,2.50313,1.09873,0.36298,0.16755
+frameshift_variant&start_lost,0.12516,0.02219,0.01815,0.00322
+frameshift_variant&stop_lost&splice_region_variant,0.12516,0.01351,0.01815,0.00188
+missense_variant,19.39925,18.85111,2.94011,2.67631
+start_lost,0.12516,0.03762,0.01815,0.00524
+stop_gained,0.12516,0.16013,0.01815,0.02284
+synonymous_variant,31.41427,35.30893,4.60980,5.03472
+upstream_gene_variant,39.04881,42.77722,44.86388,43.77365
+bidirectional_gene_fusion,    NA,0.00193,    NA,0.00027
+frameshift_variant&splice_donor_variant&splice_region_variant&intron_variant,    NA,0.00193,    NA,0.00027
+frameshift_variant&splice_region_variant,    NA,0.00193,    NA,0.00027
+frameshift_variant&stop_gained,    NA,0.04244,    NA,0.00685
+frameshift_variant&stop_lost,    NA,0.00482,    NA,0.00067
+initiator_codon_variant,    NA,0.00193,    NA,0.00027
+missense_variant&splice_region_variant,    NA,0.00193,    NA,0.00067
+splice_acceptor_variant&intron_variant,    NA,0.00193,    NA,0.00027
+splice_donor_variant&intron_variant,    NA,0.00482,    NA,0.00094
+splice_region_variant&intron_variant,    NA,0.02026,    NA,0.00363
+splice_region_variant&non_coding_transcript_exon_variant,    NA,0.00386,    NA,0.00054
+splice_region_variant&stop_retained_variant,    NA,0.06077,    NA,0.00887
+splice_region_variant&synonymous_variant,    NA,0.00482,    NA,0.00067
+start_lost&conservative_inframe_deletion,    NA,0.00096,    NA,0.00013
+start_lost&conservative_inframe_insertion,    NA,0.00096,    NA,0.00013
+start_lost&disruptive_inframe_deletion,    NA,0.00096,    NA,0.00013
+stop_gained&conservative_inframe_insertion,    NA,0.00482,    NA,0.00121
+stop_gained&disruptive_inframe_deletion,    NA,0.00193,    NA,0.00027
+stop_gained&disruptive_inframe_insertion,    NA,0.00482,    NA,0.00121
+stop_lost,    NA,0.04341,    NA,0.00618
+stop_lost&conservative_inframe_deletion,    NA,0.00096,    NA,0.00013
+stop_lost&conservative_inframe_deletion&splice_region_variant,    NA,0.00096,    NA,0.00013
+stop_lost&disruptive_inframe_deletion,    NA,0.00193,    NA,0.00027
+stop_lost&disruptive_inframe_deletion&splice_region_variant,    NA,0.00096,    NA,0.00013
+stop_lost&splice_region_variant,    NA,0.02894,    NA,0.00417
+stop_retained_variant,    NA,0.01640,    NA,0.00228
+intergenic_region,    NA,    NA,6.02541,6.08165
+intron_variant,    NA,    NA,0.16334,0.20006
+non_coding_transcript_exon_variant,    NA,    NA,0.01815,0.07323
+intragenic_variant,    NA,    NA,    NA,0.00013
