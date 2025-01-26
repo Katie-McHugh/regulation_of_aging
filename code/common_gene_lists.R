@@ -49,5 +49,39 @@ writeLines(gene_list_first_ann, "temp/FIRSTannotation_list.txt")
 
 ######
 
+## gene list without mitochondria
+
+dna<-subset(sigs_05_f, CHROM!="chrmito")
+dna_list<-unique(dna$Gene_Name)
+View(as.data.frame(dna_list))
+rna<-unique(rna_list$Gene_Name)
+combined<-unique(c(dna_list, rna))
+View(combined)
+
+## go doesn't like these gene names, wants the SGID instead
+lookup_table <- data.frame(
+  Gene_Name = c("KIN3", "KIN4", "RDS1", "BUL1", "NSP1", "TFS1", "TIP1", "TIP20", "HAP2", "IKI1"),
+  SGDID = c("S000000071", "S000005759", "S000000703", "S000004888", 
+            "S000003577", "S000004168", "S000000271", "S000003113", 
+            "S000003206", "S000001230")
+)
+
+if (!requireNamespace("dplyr", quietly = TRUE)) {
+  install.packages("dplyr")
+}
+library(dplyr)
+
+# Convert combined list to a data frame
+combined_df <- data.frame(Gene_Name = combined)
+
+# Perform a left join with the lookup table
+result <- combined_df %>%
+  left_join(lookup_table, by = "Gene_Name") %>%
+  mutate(Final_Name = ifelse(is.na(SGDID), Gene_Name, SGDID)) %>%
+  select(Final_Name) %>%
+  pull()
+
+writeLines(result, "temp/GO_combined_no_mt.txt")
+
 
 
