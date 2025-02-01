@@ -21,9 +21,43 @@ cat_remove<- c("intron_variant", "intergenic_region", "upstream_gene_variant", "
 genic_sigs_sep<- sigs_05_sep[!sigs_05_sep$Annotation %in% cat_remove,]
 nrow(genic_sigs_sep) #473 genic annotations
 View(genic_sigs_sep)
+
+intergenic_sigs_f<- sigs_05_f[sigs_05_f$Annotation %in% cat_remove,]
+nrow(intergenic_sigs_f) #336 intergenic annotations
+View(intergenic_sigs_f)
+View(genic_sigs_sep)
+
+intergenic_sigs_sep<- sigs_05_sep[sigs_05_sep$Annotation %in% cat_remove,]
+View(intergenic_sigs_sep) #336 intergenic annotations
+
+### what are the intergenic variants? 
+
+intergenic_annotations <- intergenic_sigs_f %>%
+  group_by(Annotation) %>%
+  summarize(Annotation_Count = n()) %>%
+  ungroup() %>%
+  mutate(Total_Annotations = sum(Annotation_Count)) %>%
+  mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
+  ungroup()
+
+intergenic_annotations_type <- intergenic_sigs_sep %>%
+  group_by(Transcript_BioType) %>%
+  summarize(Type_Count = n()) %>%
+  ungroup() %>%
+  mutate(Total_Annotations = sum(Type_Count)) %>%
+  mutate(Percentage = (Type_Count / Total_Annotations) * 100) %>%
+  ungroup()
+View(intergenic_annotations_type)
+
+transcript_biotype<-unique(intergenic_sigs_sep$Transcript_BioType)
+print(transcript_biotype)
+feature_type<-unique(intergenic_sigs_sep$Feature_Type)
+print(feature_type)
+
 # what about in the first annotation? 
 genic_sigs_f<- sigs_05_f[!sigs_05_f$Annotation %in% cat_remove,]
 nrow(genic_sigs_f) #463 genic annotations # very similar
+
 # most genic annotations are the first annotation, unsurprisingly
 View(genic_sigs_f)
 #which ones differ? 
@@ -34,6 +68,8 @@ View(genic_diffs)
 genic_list<-unique(genic_sigs_f$Gene_Name)
 length(genic_list)
 print(genic_list)
+writeLines(genic_list, "temp/genic_GO_list.txt")
+
 
 #################### NOTES ON DIFFERENCES IN GENE LISTS ################
 
@@ -46,3 +82,15 @@ print(genic_list)
 ########################################################################
 
 write.csv(genic_sigs_f, file="temp/genic_sigs.csv")
+
+########################################################################
+
+## Create a combined GO-list for genic SNPs and RNA-seq genes
+
+rna<-read.table("temp/DGEgene_list.txt")
+dna<-as.vector(genic_list)
+rna<-as.vector(rna)
+combined<-c(dna, rna)
+combined<-as.character(combined)
+writeLines(combined, "temp/genic_combined_GO_list.txt")
+
