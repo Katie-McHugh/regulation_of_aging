@@ -4,7 +4,7 @@
 snps4<-read.csv("temp/WG_CMHtest_results_nuclear.csv")
 
 # Open the PDF device with the specified file path
-pdf(file = "temp_figs/nuclearSNPs_ManhattanPlot.pdf", height = 10, width = 18)
+pdf(file = "temp_figs/nuclearSNPs_ManhattanPlot_short.pdf", height = 5, width = 18)
 
 x=snps4$MB
 y=snps4$logp
