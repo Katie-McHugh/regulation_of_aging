@@ -1,27 +1,37 @@
-### Comparing annotations for sig genes vs genome
+### Comparing annotations for significant genes vs the whole genome
+### SNPs only
 
-#### load in data
+######################load in data############################################
 
+### significant data
 sigs_05_f<-read.csv("temp/sig_FIRSTannotation.csv")
+sigs_05_f<-subset(sigs_05_f, TYPE=="SNP")
 sigs_05_sep<-read.csv("temp/sig_ALLannotations.csv")
-ann_i<-read.table("data/annotated_indels.txt", header=TRUE)
+sigs_05_sep<-subset(sigs_05_sep, TYPE=="SNP")
+### whole genome annotations
+###ann_i<-read.table("data/annotated_indels.txt", header=TRUE)
 ann_s<-read.table("data/annotated_snps.txt", header=TRUE)
 
-#####
+#############################################################################
 
+### Create tables to visualize the data
+
+### first annotation in SNPeff for given variant, sorted by annotation type
 gene_annotation_table_first<- sigs_05_f %>%
   group_by(Gene_Name) %>%
   summarize(Annotations = paste(sort(unique(Annotation)), collapse = ", ")) %>%
   ungroup()
 
-# Create a new table that counts how many genes have each combination of annotations
+
+### Create a new table that counts how many genes have each combination of annotations
 gene_annotation_count_first <- sigs_05_f %>%
   group_by(Annotation) %>%
   summarize(Annotation_Count = n()) %>%
   ungroup()
 
-### percentages
+View(gene_annotation_count_first)
 
+### Convert counts to percentages
 gene_annotation_first_percent <- sigs_05_f %>%
   group_by(Annotation) %>%
   summarize(Annotation_Count = n()) %>%
@@ -30,9 +40,9 @@ gene_annotation_first_percent <- sigs_05_f %>%
   mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
   ungroup()
 
-View(gene_annotation_first_percent)
-print(gene_annotation_first_percent)
-### Looking at all annotations 
+
+### Looking at all annotations from significant data 
+### _sep = separated out each variants annotations into unique rows
 
 gene_annotation_count_all <- sigs_05_sep %>%
   group_by(Annotation) %>%
@@ -48,9 +58,19 @@ gene_annotation_all_percent <- sigs_05_sep %>%
   mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
   ungroup()
 
-### Compare to SNPeff as a whole? 
 
-ann<-rbind(ann_s, ann_i)
+###############################################################################
+### Now look at SNPeffs whole-genome annotations
+##############################################################################
+
+################ edit this to look at SNPs and indels ########################
+
+### Just look at SNPs - can change to be both
+##ann<-rbind(ann_s, ann_i)
+ann<-ann_s
+
+#############################################################################
+
 
 #### Step 1: Extract the first annotation by splitting at the first comma
 ann_f <- ann %>%
@@ -65,13 +85,14 @@ ann_f2<-ann_f[,-c(13:60)]
 ann_f3<-ann_f[c("CHROM", "POS", "TYPE", "Gene_ID", "Gene_Name", "Annotation","Annotation_Impact","Feature_Type", "Transcript_BioType", "EVENTLENGTH", "ANN")]
 
 
+### first annotation for every annotated variant in the genome
 gene_annotation_count_first_genome <- ann_f3 %>%
   group_by(Annotation) %>%
   summarize(Annotation_Count = n()) %>%
   ungroup()
 
-
-genome_annotation_percent_first <- ann_f3 %>%
+### same but convert to percentages instead of counts
+ref_first_ann <- ann_f3 %>%
   group_by(Annotation) %>%
   summarize(Annotation_Count = n()) %>%
   ungroup() %>%
@@ -97,14 +118,15 @@ ann_sep <- ann_all %>%
 
 ann_sep<-ann_sep[c("CHROM", "POS", "TYPE", "Gene_ID", "Gene_Name", "Annotation","Annotation_Impact","Feature_Type", "Transcript_BioType", "EVENTLENGTH", "ANN")]
 
+
+### all annotations for all annotated variants
 gene_annotation_all_genome <- ann_sep %>%
   group_by(Annotation) %>%
   summarize(Annotation_Count = n()) %>%
   ungroup()
 
-
 ##Look at percentages
-genome_annotation_percent_all <- ann_sep %>%
+ref_percent_all <- ann_sep %>%
   group_by(Annotation) %>%
   summarize(Annotation_Count = n()) %>%
   ungroup() %>%
@@ -112,22 +134,22 @@ genome_annotation_percent_all <- ann_sep %>%
   mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
   ungroup()
 
-# Select only Annotation and Percentage columns, rename the Percentage column for each table
+# Select only Annotation and Percentage columns, rename the Percentage column 
+#to clarify which is which
 gene_annotation_first_percent<-as.data.frame(gene_annotation_first_percent)
-View(gene_annotation_first_percent)
 colnames(gene_annotation_first_percent)
-class(genome_annotation_percent_first)
+class(ref_first_ann)
 
 table_1 <- gene_annotation_first_percent[c("Annotation", "Percentage")]
 colnames(table_1)[colnames(table_1) == "Percentage"] <- "Data_first"
 
-table_2 <- genome_annotation_percent_first[c("Annotation", "Percentage")]
+table_2 <- ref_first_ann[c("Annotation", "Percentage")]
 colnames(table_2)[colnames(table_2) == "Percentage"] <- "Ref_first"
 
 table_3 <- gene_annotation_all_percent[c("Annotation", "Percentage")]
 colnames(table_3)[colnames(table_3) == "Percentage"] <- "Data_all"
 
-table_4 <- genome_annotation_percent_all[c("Annotation", "Percentage")]
+table_4 <- ref_percent_all[c("Annotation", "Percentage")]
 colnames(table_4)[colnames(table_4) == "Percentage"] <- "Ref_all"
 
 
@@ -144,6 +166,8 @@ combined_table <- combined_table %>%
 combined_table <- combined_table %>%
   mutate(across(where(is.numeric), ~ formatC(., format = "f", digits = 5)))
 
+View(combined_table)
+
 write.csv(combined_table, file = "temp/annotation_comparisons.csv", row.names = FALSE, quote=FALSE) 
 
 
@@ -158,8 +182,20 @@ gene_annotation_count <- sigs_05_f %>%
   summarize(Annotation_Count = n()) %>%
   ungroup()
 
-file_path4 <- file.path(new_dir, )
 write.csv(gene_annotation_count, file = "temp/significant_annotations_count.csv", row.names = FALSE, quote=FALSE) 
+
+### also make one just with SNP data
+View(sigs_05_f)
+sigs_05_f_snps<-subset(sigs_05_f, TYPE=="SNP")
+
+gene_annotation_count_snps <- sigs_05_f_snps %>%
+  group_by(Annotation) %>%
+  summarize(Annotation_Count = n()) %>%
+  ungroup()
+View(gene_annotation_count_snps)
+
+write.csv(gene_annotation_count, file = "temp/significant_annotations_count.csv", row.names = FALSE, quote=FALSE) 
+write.csv(gene_annotation_count_snps, file = "temp/significant_annotations_count_snps_only.csv", row.names = FALSE, quote=FALSE) 
 
 # Convert Data_first to numeric and replace "NA" strings with actual NA
 combined_table <- combined_table %>%
@@ -191,8 +227,6 @@ combined_table2 <- combined_table2 %>%
   ) %>%
   arrange(factor(Annotation, levels = c(setdiff(unique(Annotation), "Other"), "Other")))
 
-
-# View the modified table
-View(combined_table2) 
+View(combined_table2)
 
 write.csv(combined_table2, file = "temp/Percent_annotations_comparison.csv", row.names = FALSE, quote=FALSE) 

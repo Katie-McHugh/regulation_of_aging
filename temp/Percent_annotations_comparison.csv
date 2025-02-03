@@ -1,0 +1,8 @@
+Annotation,Data_first,Ref_first,Data_all,Ref_all
+downstream_gene_variant,3.43797,0.603,40.77178,41.81619
+missense_variant,23.16891,20.92597,3.57222,3.03627
+start_lost,0.14948,0.04185,0.02205,0.00597
+stop_gained,0.14948,0.17811,0.02205,0.02571
+synonymous_variant,37.51868,39.26717,5.60088,5.72314
+upstream_gene_variant,35.57549,38.77682,44.14553,43.64096
+Other,0,0.20709,5.86549,5.75177
