@@ -29,7 +29,10 @@ gene_annotation_count_first <- sigs_05_f %>%
   summarize(Annotation_Count = n()) %>%
   ungroup()
 
-View(gene_annotation_count_first)
+###########################################
+# use gene_annotation_count_first for stats
+############################################
+
 
 ### Convert counts to percentages
 gene_annotation_first_percent <- sigs_05_f %>%
@@ -99,6 +102,14 @@ ref_first_ann <- ann_f3 %>%
   mutate(Total_Annotations = sum(Annotation_Count)) %>%
   mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
   ungroup()
+
+write.csv(ref_first_ann, "ref_annotations_count.csv")
+
+View(ref_first_ann)
+
+###########################################
+# use ref_first_ann for stats
+############################################
 
 
 ### this looks at ALL annotations, not just the first annotation
