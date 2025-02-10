@@ -1,8 +1,8 @@
 ########## Annotations pie chart ####################################
 
 ### load in data
-dataset1<-read.csv("temp/SNPs_annotation_counts_pie.csv")
-dataset2<-read.csv("temp/SNPs_ref_annotation_counts_pie.csv")
+dataset1<-read.csv("temp/comparisons/SNPs_annotation_counts_pie.csv")
+dataset2<-read.csv("temp/comparisons/SNPs_ref_annotation_counts_pie.csv")
 
 ###
 

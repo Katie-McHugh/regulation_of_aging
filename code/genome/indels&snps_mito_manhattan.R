@@ -1,10 +1,10 @@
 ### Overlaid SNPs and indels mitochondria
 
 ## load in data
-indels3<-read.csv("temp/indels_CMHtest_results.csv")
+indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
 indels_m=subset(indels3,CHROM=="chrmito")
 
-snps3<-read.csv("temp/WG_CMHtest_results.csv")
+snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
 snps_m=subset(snps3,CHROM=="chrmito")
 
 # Open the PDF device with the specified file path

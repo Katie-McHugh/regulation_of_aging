@@ -2,10 +2,10 @@
 
 ### how does the data differ using the separate vs combined thresholds?
 
-snps3<-read.csv("temp/WG_CMHtest_results.csv")
-indels3<-read.csv("temp/indels_CMHtest_results.csv")
-ann_snps<-read.table("data/annotated_snps.txt", header=TRUE)
-ann_indels<-read.table("data/annotated_indels.txt", header= TRUE)
+snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
+indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
+ann_snps<-read.table("data/genome/annotated_snps.txt", header=TRUE)
+ann_indels<-read.table("data/genome/annotated_indels.txt", header= TRUE)
 
 ### REFORMAT annotations
 ## reformat ann to match working format
@@ -45,8 +45,10 @@ combinedthresh_indels$Type <- "Indel"
 combined_sigs<-rbind(combinedthresh_snps, combinedthresh_indels)
 nrow(combined_sigs) #801 combined SNPs/indels #includes mito
 
+View(combined_sigs)
+
 # Save the file to the new directory
-write.csv(combined_sigs, file = "temp/sigs_SNPs&indels_padj<0.05.csv", row.names = FALSE)
+write.csv(combined_sigs, file = "temp/genome/sigs_SNPs&indels_padj<0.05.csv", row.names = FALSE)
 
 nrow(combined_sigs) ## 801 #sig list p<0.05 #no annotations #but need to merge annotation files with indels vs snps separately bc in different files
 ann_snps<-merge(ann_snps, combinedthresh_snps, by=c("CHROM", "POS", "REF", "ALT"))
@@ -60,9 +62,9 @@ View(missing_rows) # both in chr 3 #ARS 319 #Highly-active subtelomeric autonomo
 
 View(combined_ann_sigs)
 combined_ann_sigs2<-combined_ann_sigs[, -c(5:8, 13:61)]
-ann_sigs_all<-combined_ann_sigs2[,c(1:8)]
+View(combined_ann_sigs2)
+ann_sigs_all<-combined_ann_sigs2[,c(1:8, 56:63)]
 
-file_path17b <- file.path(new_dir, )
 # Save the file to the new directory
 write.csv(ann_sigs_all, file = "temp_tables/supp_table_complete_sig_list_p<0.05.csv", row.names = FALSE)
 

@@ -21,7 +21,7 @@ age<-c(rep(1, 12), rep(2, 12)) # indicate whether the replicate is "old" (1) or 
 # Run ComBat_seq
 adj_counts <- ComBat_seq(CountData, batch=batch, group=age) #ignore the covariates...package is not super clear on what they are used for, and we don't want to include pair in both ComBat-seq and the DEseq model
 
-write.table(adj_counts, file="temp/gcm_combatseq.txt")
+write.table(adj_counts, file="temp/transcriptome/gcm_combatseq.txt")
 
 ### Create DESEQ object
 colData2<-as.data.frame(colData)
@@ -66,9 +66,9 @@ resOrdered_adj <- dds_adj1[order(dds_adj1$pvalue),]
 head(resOrdered_adj)
 
 write.csv(as.data.frame(resOrdered_adj), 
-          file="temp/rnaseq_results_batch_adjusted.csv") ### this contains 
+          file="temp/transcriptome/rnaseq_results_batch_adjusted.csv") ### this contains 
 ## results from the dds object
 
-write.csv(normalized_counts_adj, file="temp/normalized_counts_deseq.csv")
+write.csv(normalized_counts_adj, file="temp/transcriptome/normalized_counts_deseq.csv")
 
 ### additional options for plotting and visualization in Analysis_eNotebook_Part2_DGE.rmd file

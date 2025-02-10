@@ -1,7 +1,7 @@
 ### Use DESeq object to find DEGs
 
 ### Load results object
-res_adj<-read.csv("temp/rnaseq_results_batch_adjusted.csv", header=TRUE)
+res_adj<-read.csv("temp/transcriptome/rnaseq_results_batch_adjusted.csv", header=TRUE)
 
 # find genes below p<0.05
 sig_genes_adj <- res_adj[which(res_adj$padj <= 0.05), ] #27 genes 
@@ -44,12 +44,12 @@ gene_key<-ann_sep[,5:6]
 gene_key<-unique(gene_key)
 
 ## save key to temp folder
-write.table(gene_key, file="temp/key_geneIDtoName.txt")
+write.table(gene_key, file="temp/transcriptome/key_geneIDtoName.txt")
 
 ##########################################################################
 ## just read in table instead of generating it
 
-gene_key<- read.table("temp/key_geneIDtoName.txt")
+gene_key<- read.table("temp/transcriptome/key_geneIDtoName.txt")
 View(gene_key)
 
 
@@ -65,10 +65,10 @@ sig_genes_permissive_adj_1$Gene_Name[sig_genes_permissive_adj_1$X == "YCR015C"] 
 colnames(sig_genes_permissive_adj_1)[colnames(sig_genes_permissive_adj_1) == "X"] <- "Gene_ID"
 colnames(sig_genes_adj_1)[colnames(sig_genes_adj_1) == "X"] <- "Gene_ID"
 
-write.csv(sig_genes_adj_1, file="temp/RNA_genes_p<0.05.csv") 
-write.csv(sig_genes_permissive_adj_1, file="temp/RNA_genes_p<0.1.csv") 
+write.csv(sig_genes_adj_1, file="temp/transcriptome/RNA_genes_p<0.05.csv") 
+write.csv(sig_genes_permissive_adj_1, file="temp/transcriptome/RNA_genes_p<0.1.csv") 
 
 gene_names_p05<-unique(sig_genes_adj_1$Gene_Name)
 gene_names_p10<-unique(sig_genes_permissive_adj_1$Gene_Name)
 
-writeLines(gene_names_p10, "temp/DGEgene_list.txt")
+writeLines(gene_names_p10, "temp/transcriptome/DGEgene_list.txt")

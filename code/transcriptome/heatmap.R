@@ -1,10 +1,11 @@
 ### Generating DGE Heatmap
 
 ### Load normalized counts for visualization
-norm_dds<-read.csv("temp/normalized_counts_deseq.csv")
+norm_dds<-read.csv("temp/transcriptome/normalized_counts_deseq.csv")
 
 ### Load list of genes for headmap
-selected_genes_adj<-read.csv("temp/RNA_genes_p<0.1.csv", row.names= "X")
+selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
+selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.05.csv", row.names= "X")
 
 ### load in design file
 colData<-read.table("data/design.txt", header=TRUE, row.names = "sample")
@@ -14,7 +15,7 @@ colData <- colData %>%
   mutate(across(where(is.character), ~ gsub("old", "aged", .)))
 
 ### Load in gene key
-key<-read.table("temp/key_geneIDtoName.txt")
+key<-read.table("temp/transcriptome/key_geneIDtoName.txt")
 
 ### subset norm_dds to significant genes
 sel<-as.data.frame(selected_genes_adj$Gene_ID)
@@ -96,7 +97,8 @@ all(rownames(annotation_col) == colnames(norm_adj_mat))
 
 ### p < 0.1
 
-pdf("temp_figs/heatmap_DESEQadj_p<0.1.pdf", width = 8, height = 12)
+#pdf("temp_figs/heatmap_DESEQadj_p<0.1.pdf", width = 8, height = 12)
+jpeg("temp_figs/heatmap_DESEQadj_p<0.05.jpeg", width = 12, height = 18, units = "in", res = 300, quality = 85)
 
 pheatmap(
   norm_adj_mat, # Scale the data by rows (genes)

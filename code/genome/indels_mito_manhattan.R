@@ -1,6 +1,6 @@
 ### Manhattan mitochondrial indels
 
-indels3<-read.csv("temp/indels_CMHtest_results.csv")
+indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
 indels_m<-subset(indels3, CHROM=="chrmito")
 View(indels_m)
 

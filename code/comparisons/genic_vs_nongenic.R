@@ -1,8 +1,8 @@
 ### Genic vs non-genic regions
 
 ### load in data
-sigs_05_sep<-read.csv("temp/sig_ALLannotations.csv")
-sigs_05_f<-read.csv( "temp/sig_FIRSTannotation.csv")
+sigs_05_sep<-read.csv("temp/comparisons/sig_ALLannotations.csv")
+sigs_05_f<-read.csv( "temp/comparisons/sig_FIRSTannotation.csv")
 
 #### What are the possible annotation categories? 
 ann_cat<-unique(sigs_05_sep$Annotation)
@@ -68,7 +68,7 @@ View(genic_diffs)
 genic_list<-unique(genic_sigs_f$Gene_Name)
 length(genic_list)
 print(genic_list)
-writeLines(genic_list, "temp/genic_GO_list.txt")
+writeLines(genic_list, "temp/comparisons/genic_GO_list.txt")
 
 
 #################### NOTES ON DIFFERENCES IN GENE LISTS ################
@@ -81,16 +81,16 @@ writeLines(genic_list, "temp/genic_GO_list.txt")
 
 ########################################################################
 
-write.csv(genic_sigs_f, file="temp/genic_sigs.csv")
+write.csv(genic_sigs_f, file="temp/comparisons/genic_sigs.csv")
 
 ########################################################################
 
 ## Create a combined GO-list for genic SNPs and RNA-seq genes
 
-rna<-read.table("temp/DGEgene_list.txt")
+rna<-read.table("temp/transcriptome/DGEgene_list.txt")
 dna<-as.vector(genic_list)
 rna<-as.vector(rna)
 combined<-c(dna, rna)
 combined<-as.character(combined)
-writeLines(combined, "temp/genic_combined_GO_list.txt")
+writeLines(combined, "temp/comparisons/genic_combined_GO_list.txt")
 

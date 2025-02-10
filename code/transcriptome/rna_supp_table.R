@@ -1,6 +1,6 @@
 ### Supplementary Table RNA-- add distance to closest UGVs
 
-sigs_05_f<-read.csv("temp/shared_genes_FIRSTann.csv")
+sigs_05_f<-read.csv("temp/comparisons/shared_genes_FIRSTann.csv")
 rna_list<-read.csv("data/rnaseq_results_batch_sigs0.1_edited.csv") 
 ## will eventually need to re-generate this file, but for efficiency I just took it from the previous run
 
@@ -67,7 +67,7 @@ result <- find_sigs(sigs_05_f, rna_list)
 print(result)
 View(result)
 
-write.csv(as.data.frame(result), file = "temp/closest_variants_to_DGEs.csv", row.names = FALSE, quote=FALSE) 
+write.csv(as.data.frame(result), file = "temp_tables/closest_variants_to_DGEs.csv", row.names = FALSE, quote=FALSE) 
 
 
 ### slightly different version of table that separates it out
@@ -137,7 +137,7 @@ resultb <- find_sigs(sigs_05_f, rna_list)
 
 View(resultb)
 
-write.csv(as.data.frame(resultb), file = "temp/closest_variants_to_DGEs_v2.csv", row.names = FALSE, quote=FALSE) 
+write.csv(as.data.frame(resultb), file = "temp_tables/closest_variants_to_DGEs_v2.csv", row.names = FALSE, quote=FALSE) 
 
 View(sigs_05_f)
 
@@ -218,4 +218,4 @@ find_sigs <- function(data, range_table) {
 resultc <- find_sigs(sigs_05_f, rna_list)
 
 # View the result
-write.csv(as.data.frame(resultc), file = "temp/closest_variants_to_DGEs_v3.csv", row.names = FALSE, quote=FALSE) 
+write.csv(as.data.frame(resultc), file = "temp_tables/closest_variants_to_DGEs_v3.csv", row.names = FALSE, quote=FALSE) 
