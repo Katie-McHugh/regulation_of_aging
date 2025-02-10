@@ -3,10 +3,12 @@
 ### !!! need to have MB scale for read-in data
 
 ## load in snp and indel data
-
+indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
 indels4<-read.csv("temp/genome/indels_CMHtest_results_nuclear.csv")
-
+snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
 snps4<-read.csv("temp/genome/WG_CMHtest_results_nuclear.csv")
+
+View(snps4)
 
 x1<-indels4$MB
 y1<-indels4$logp
@@ -17,7 +19,7 @@ top <- 30
 bottom <- 0
 
 # Open the PDF device with the specified file path
-pdf(file = "temp_figs/indels&SNPs_nuclear_manhattan.pdf", height = 5, width = 10)
+pdf(file = "figures/indels&SNPs_nuclear_manhattan.pdf", height = 5, width = 10)
 
 par(mar = c(4, 5, 3, 3) + 0.3)
 
@@ -70,10 +72,9 @@ legend("topright",
 axis(2,cex.axis=1.5,las=2)
 box()    # Add box around the plot
 
+### draw in significance threshold
 threshold_b_combined=0.05/(nrow(indels3)+nrow(snps3)) # this is a combined significance threshold
 thresh_b_combined_log=-log10(threshold_b_combined)
 abline(h = thresh_b_combined_log, col = "red", lwd = 4) #visually this is essentially the same as the SNP threshold
-abline(h = thresh_log, col = "green", lwd = 4) # just SNPs to calc threshold
-abline(h = thresh_b_indels_log, col = "blue", lwd = 4) # just indels to calc threshold
 
 dev.off()
