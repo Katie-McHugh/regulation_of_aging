@@ -2,13 +2,13 @@
 
 ## load in datasets
 
-sigs_05_sep<-read.csv("temp/sig_ALLannotations.csv")
-sigs_05_f<- read.csv("temp/sig_FIRSTannotation.csv")
+sigs_05_sep<-read.csv("temp/comparisons/sig_ALLannotations.csv")
+sigs_05_f<- read.csv("temp/comparisons/sig_FIRSTannotation.csv")
 
 # load in gene lists (genic vs non-genic script)
-gene_list_all_ann<- read.table("temp/ALLannotations_list.txt", header=FALSE)
-gene_list_first_ann<- read.table("temp/FIRSTannotation_list.txt", header=FALSE)
-rna_list<-read.table("temp/DGEgene_list.txt", header= FALSE)
+gene_list_all_ann<- read.table("temp/comparisons/ALLannotations_list.txt", header=FALSE)
+gene_list_first_ann<- read.table("temp/comparisons/FIRSTannotation_list.txt", header=FALSE)
+rna_list<-read.table("temp/transcriptome/DGEgene_list.txt", header= FALSE)
 colnames(rna_list)[1]<-"Gene_Name"
 View(gene_list_first_ann)
 
@@ -32,8 +32,8 @@ View(sigs_05_both)
 sigs_05_common<-sigs_05_sep[sigs_05_sep$Gene_Name %in% common_items2,]
 View(sigs_05_common)
 
-write.csv(sigs_05_both, file="temp/shared_genes_FIRSTann.csv")
-write.csv(sigs_05_common, file="temp/shared_genes_ALLann.csv")
+write.csv(sigs_05_both, file="temp/comparisons/shared_genes_FIRSTann.csv")
+write.csv(sigs_05_common, file="temp/comparisons/shared_genes_ALLann.csv")
 
 ## Now look at variant identities
 gene_annotation_table <- sigs_05_common %>%

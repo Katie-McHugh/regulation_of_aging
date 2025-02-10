@@ -2,7 +2,7 @@
 # to the respository. It was run and saved, this was the code used.
 
 # load filtered data from Analysis_eNotebook.Rmd file
-snps3=read.csv("temp/GWAS_SNPS_cov20_maf5.csv", header=TRUE)
+snps3=read.csv("temp/genome/GWAS_SNPS_cov20_maf5.csv", header=TRUE)
 
 ## haplotype estimator
 founders=read.table("data/founder_states.txt",header=T)
@@ -14,7 +14,7 @@ index=c(1,2,5:9)
 freq3 <- cbind(merge[index],freq2)  
 
 ## this is the table we will use to run the haplotype estimator.  You could save this for the future so that you don't have to read it back in - but I wanted to make clear notes about how I generated this table (as we may want to tweak it in the future)
-write.table(freq3,file="temp/GWAS_snps_with_founders.txt",quote=FALSE)
+write.table(freq3,file="temp/genome/GWAS_snps_with_founders.txt",quote=FALSE)
 
 
 #######     HAPLOTYPE ESTIMATOR   #####################################################################################################

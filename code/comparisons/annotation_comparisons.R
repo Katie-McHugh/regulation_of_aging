@@ -4,9 +4,9 @@
 ######################load in data############################################
 
 ### significant data
-sigs_05_f<-read.csv("temp/sig_FIRSTannotation.csv")
+sigs_05_f<-read.csv("temp/comparisons/sig_FIRSTannotation.csv")
 sigs_05_f<-subset(sigs_05_f, TYPE=="SNP")
-sigs_05_sep<-read.csv("temp/sig_ALLannotations.csv")
+sigs_05_sep<-read.csv("temp/comparisons/sig_ALLannotations.csv")
 sigs_05_sep<-subset(sigs_05_sep, TYPE=="SNP")
 ### whole genome annotations
 ###ann_i<-read.table("data/annotated_indels.txt", header=TRUE)
@@ -179,7 +179,7 @@ combined_table <- combined_table %>%
 
 View(combined_table)
 
-write.csv(combined_table, file = "temp/annotation_comparisons.csv", row.names = FALSE, quote=FALSE) 
+write.csv(combined_table, file = "temp/comparisons/annotation_comparisons.csv", row.names = FALSE, quote=FALSE) 
 
 
 ### table with just SNPs? 
@@ -193,7 +193,7 @@ gene_annotation_count <- sigs_05_f %>%
   summarize(Annotation_Count = n()) %>%
   ungroup()
 
-write.csv(gene_annotation_count, file = "temp/significant_annotations_count.csv", row.names = FALSE, quote=FALSE) 
+write.csv(gene_annotation_count, file = "temp/comparisons/significant_annotations_count.csv", row.names = FALSE, quote=FALSE) 
 
 ### also make one just with SNP data
 View(sigs_05_f)
@@ -205,8 +205,8 @@ gene_annotation_count_snps <- sigs_05_f_snps %>%
   ungroup()
 View(gene_annotation_count_snps)
 
-write.csv(gene_annotation_count, file = "temp/significant_annotations_count.csv", row.names = FALSE, quote=FALSE) 
-write.csv(gene_annotation_count_snps, file = "temp/significant_annotations_count_snps_only.csv", row.names = FALSE, quote=FALSE) 
+write.csv(gene_annotation_count, file = "temp/comparisons/significant_annotations_count.csv", row.names = FALSE, quote=FALSE) 
+write.csv(gene_annotation_count_snps, file = "temp/comparisons/significant_annotations_count_snps_only.csv", row.names = FALSE, quote=FALSE) 
 
 # Convert Data_first to numeric and replace "NA" strings with actual NA
 combined_table <- combined_table %>%
@@ -240,4 +240,4 @@ combined_table2 <- combined_table2 %>%
 
 View(combined_table2)
 
-write.csv(combined_table2, file = "temp/Percent_annotations_comparison.csv", row.names = FALSE, quote=FALSE) 
+write.csv(combined_table2, file = "temp/comparisons/Percent_annotations_comparison.csv", row.names = FALSE, quote=FALSE) 

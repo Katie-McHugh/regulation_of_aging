@@ -4,9 +4,9 @@
 
 ## load in snp and indel data
 
-indels4<-read.csv("temp/indels_CMHtest_results_nuclear.csv")
+indels4<-read.csv("temp/genome/indels_CMHtest_results_nuclear.csv")
 
-snps4<-read.csv("temp/WG_CMHtest_results_nuclear.csv")
+snps4<-read.csv("temp/genome/WG_CMHtest_results_nuclear.csv")
 
 x1<-indels4$MB
 y1<-indels4$logp

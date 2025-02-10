@@ -1,6 +1,6 @@
 ### Manhattan plot for mitochondrial SNPs
 
-snps3<-read.csv("temp/WG_CMHtest_results.csv")
+snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
 snps_m<-subset(snps3, CHROM=="chrmito")
 x2=snps_m$POS/1000
 y2=snps_m$logp

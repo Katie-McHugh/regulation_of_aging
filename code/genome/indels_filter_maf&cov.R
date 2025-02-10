@@ -34,5 +34,5 @@ avg_cov_all_indels<-mean(indels3a$avg_cov)
 print(avg_cov_all_indels) ### average coverage across all indels and replicates
 
 # Save the file to the new directory
-write.csv(indels3, file = "temp/indels_cov20_maf05.csv", row.names = FALSE)
+write.csv(indels3, file = "temp/genome/indels_cov20_maf05.csv", row.names = FALSE)
 

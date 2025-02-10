@@ -4,8 +4,8 @@
 ### Load in annotations for MY data
 #gene_annotation_count<-read.csv("temp/significant_annotations_count.csv") 
 # includes indels
-sigs<-read.csv("temp/significant_annotations_count.csv")
-ref<-read.csv("ref_annotations_count.csv")
+sigs<-read.csv("temp/comparisons/significant_annotations_count.csv")
+ref<-read.csv("temp/comparisons/ref_annotations_count.csv")
 ### Load in annotations for whole genome
 
 
@@ -42,9 +42,9 @@ sigs<- sigs %>%
 ### Small count values, so use Fisher's Exact Test ### too large, use simulated Fisher's exact test
 
 dataset1<-sigs
-write.csv(sigs, file= "temp/SNPs_annotation_counts_pie.csv")
+write.csv(sigs, file= "temp/comparisons/SNPs_annotation_counts_pie.csv")
 dataset2<-ref
-write.csv(ref, file= "temp/SNPs_ref_annotation_counts_pie.csv")
+write.csv(ref, file= "temp/comparisons/SNPs_ref_annotation_counts_pie.csv")
 
 View(sigs)
 # Create a contingency table

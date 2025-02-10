@@ -4,10 +4,10 @@
 ## Haplotypes were estimated using code in "Haplotype_estimation_eNotebook_version" script.  Make sure to update this script (and re-read in the data below) if any changes are made to the filtering parameters.
 
 ### Haplotypes estimated 10/2/24 using file GWAS_SNPS_cov20_maf5.csv created above
-founderA1=read.table ("temp/founderA1_10kb_cov20_maf5.txt", header=TRUE) 
-founderA2=read.table ("temp/founderA2_10kb_cov20_maf5.txt", header=TRUE)
-founderB3=read.table ("temp/founderB3_10kb_cov20_maf5.txt", header=TRUE)
-founderB4=read.table ("temp/founderB4_10kb_cov20_maf5.txt", header=TRUE)
+founderA1=read.table ("temp/genome/founderA1_10kb_cov20_maf5.txt", header=TRUE) 
+founderA2=read.table ("temp/genome/founderA2_10kb_cov20_maf5.txt", header=TRUE)
+founderB3=read.table ("temp/genome/founderB3_10kb_cov20_maf5.txt", header=TRUE)
+founderB4=read.table ("temp/genome/founderB4_10kb_cov20_maf5.txt", header=TRUE)
 
 ## Find the differences in haplotype frequencies between paired young and old replicates
 for (i in 1:12) {

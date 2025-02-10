@@ -1,6 +1,6 @@
 ### Manhattan plot for nuclear indels
 
-indels4<-read.csv("temp/indels_CMHtest_results_nuclear.csv")
+indels4<-read.csv("temp/genome/indels_CMHtest_results_nuclear.csv")
 
 ### Manhattan plot for nuclear indels
 x2=indels4$MB
