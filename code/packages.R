@@ -1,4 +1,8 @@
+######### Packages needed for aging project ###############
+
+#--------------------------------------------------------------
 ## Install packages and load library for analysis of GWAS data
+#---------------------------------------------------------------
 
 #install.packages("data.table")    # Ensures version >= 1.9.4
 #install.packages("foreach")       # Ensures version >= 1.4.2
@@ -16,7 +20,9 @@ library(stringr)
 #install.packages("tidyverse")
 library(tidyverse)
 
+#-----------------------------------------------------------------
 ### install packages and load library for analysis of TWAS data
+#-----------------------------------------------------------------
 
 install.packages("BiocManager")
 BiocManager::install("DESeq2")
@@ -33,8 +39,9 @@ library(tibble)
 library(dplyr)
 library(tidyr)
 
-
+#-----------------------------------------------------------------
 ######### Packages for pt 3
+#-----------------------------------------------------------------
 
 library(viridis)
 library(stringr)
