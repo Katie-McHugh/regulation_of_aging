@@ -1,0 +1,20 @@
+Terms from the process ontology with p-value <= 0.1.
+
+Of your input list, 191 gene name identifiers are known or unknown but not ambiguous. Identifiers unknown to the annotation provider are still included in the statistics. The total number of genes used to calculate the background distribution of GO terms is 7166. Displaying 2 terms out of a total of 611 found.
+
+-- 1 of 611--
+GOID	GO:0071554
+TERM	cell wall organization or biogenesis
+P-VALUE	6.0761988031245e-05
+CORRECTED P-VALUE	0.0371255746870907
+NUM_ANNOTATIONS	15 (of 175)
+ANNOTATED_GENES	FLC1, YPS6, ACT1, PMI40, CCW12, TIR1, CWP1, RPI1, SIM1, RIM101, YBR067C, MTL1, MKK1, HKR1, CRH1
+
+-- 2 of 611--
+GOID	GO:0071852
+TERM	fungal-type cell wall organization or biogenesis
+P-VALUE	8.6010996870222e-05
+CORRECTED P-VALUE	0.0525527190877056
+NUM_ANNOTATIONS	14 (of 160)
+ANNOTATED_GENES	HKR1, CRH1, MKK1, YBR067C, MTL1, RIM101, SIM1, CWP1, RPI1, TIR1, CCW12, ACT1, FLC1, YPS6
+
