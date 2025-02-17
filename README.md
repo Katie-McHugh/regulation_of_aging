@@ -10,6 +10,7 @@ xxx
 ### Repository content: 
 
 #### [Data Folder](/data): 
+
 1) filtered_snps.txt contains the "raw" SNP table that was generated using the Burke Lab pipeline
 2) filtered_indels.txt contains the "raw" indel table that was generated using the Burke Lab pipeline
 3) annotated_snps.txt contains the SNPeff annotations for the generated SNP table
