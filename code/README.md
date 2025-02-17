@@ -1,22 +1,19 @@
-## README
+# README for Code Folder
 
-########################################################################
+## Notes on code folder contents: 
 
-### Notes on code folder contents: 
-
-## Intro files: 
+### Intro files: 
 
 1) README (this file)
 2) packages.R contains all the libraries and packages needed to run scripts in this folder (including the following sub-folders)
 
-## Sub-folders: 
+### Sub-folders: 
 
-1) genome folder contains all scripts needed for genome-wide analysis
-2) transcriptome folder contains all scripts needed for transcriptome analysis
-3) comparisons folder contains scripts for regulatory analysis and other combined analyses
+1) [genome](/code/genome) contains all scripts needed for genome-wide analysis
+2) [transcriptome](/code/transcriptome) folder contains all scripts needed for transcriptome analysis
+3) [comparisons](/comparisons) folder contains scripts for regulatory analysis and other combined analyses
 
-#
-"genome" folder: 
+#### [genome](/code/genome) folder: 
 
 1) SNPs_filter_maf&cov.R contains the script used to filter the preliminary SNP table for minor allele frequencies and coverage. 
 2) indels_filter_maf&cov.R contains the script used to filter the preliminary indel table for minor allele frequencies and coverage.
@@ -31,8 +28,7 @@
 11) haplotype_differences.R is the script used to calculate the difference in haplotype frequencies across the genome to use for plotting
 12) supp_table_sig_variant_list.R is the script used to create the supplementary table of all significant variants from teh genome data
 
-#
-"transcriptome" folder
+#### [transcriptome](/code/transcriptome) folder:
 
 1) batch_adjust_DESEQ.R is the script that takes the gene count matrix generated in the description below and performs a batch correction based on the sorting date, performs some additional filtering to remove genes with low mapping, and creates a DESEQ object for later analysis
 2) DGE_gene_lists.R is the script used to create the significant gene lists for GO-term analysis, and to be used to compare against the genome data
@@ -40,16 +36,13 @@
 4) rna_supp_table.R is the script used to create the supplementary data of significant transcripts and their distances from implicated genome variants
 5) README.md file that contains notes on data filtering/cleaning prior to analysis
 
-#
-"comparisons" folder: 
+#### [comparisons](/comparisons) folder: 
 1) 00_common_gene_lists.R - this script should be run before running any other scripts in this folder. It takes the significant gene lists from the genomic data and extracts the appropriate annotations for use in later analysis.
 2) dna_rna_gene_comparison.R uses files generated from 00_common_gene_lists.R to find genes that are implicated in both genomic and transcriptomic analyses
 3) genic_vs_nongenic.R uses files generated from 00_common_gene_lists.R to compare which variants are found within coding vs non-coding regions, and to create a combined list of genic significant variants for genomic and transcriptomic GO-analysis.
 4) annotation_comparisons.R uses files generated from 00_common_gene_lists.R to compare the frequency of annotation categories observed in our significant genomic data to the entire annotated genome.
 5) annotations_pie_chart.R uses files generated from annotation_comparisons.R to generate a pie chart that visualized the annotations (Figure)
 6) FishersTest_annotations.R performs a statistical test on the annotation proportions from annotation_comparisons.R
-
-
 
 
 ... to be continued...
