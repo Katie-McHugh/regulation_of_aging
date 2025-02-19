@@ -5,7 +5,7 @@ norm_dds<-read.csv("temp/transcriptome/normalized_counts_deseq.csv")
 
 ### Load list of genes for headmap
 selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
-selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.05.csv", row.names= "X")
+selected_genes_adj2<-read.csv("temp/transcriptome/RNA_genes_p<0.05.csv", row.names= "X")
 
 ### load in design file
 colData<-read.table("data/design.txt", header=TRUE, row.names = "sample")
@@ -69,12 +69,12 @@ rownames(logfc_info) <- logfc_info$Gene_Name
 
 # Create a color palette for the LFC values
 lfc_colors <- colorRampPalette(c("purple", "white", "darkgreen"))(100)
-bM_colors<- colorRampPalette(c("white", "black"))(100)
+# bM_colors<- colorRampPalette(c("white", "black"))(100)
 
 # Create a data frame for annotation, including LFC and BM
 annotation_row <- data.frame(
-  LFC = logfc_info$log2FoldChange, 
-  LBM = logfc_info$logBM
+  LFC = logfc_info$log2FoldChange 
+  #, LBM = logfc_info$logBM
 )
 
 # extract just the logFC info
@@ -87,8 +87,8 @@ head(annotation_col)
 annotation_colors <- list(
   condition = age_colors,
   pair= subject_colors,
-  LFC = lfc_colors,  # Use your color palette for LFC
-  LBM = bM_colors
+  LFC = lfc_colors#,  # Use your color palette for LFC
+  # LBM = bM_colors
 )
 
 ### check that everything looks right
@@ -98,7 +98,7 @@ all(rownames(annotation_col) == colnames(norm_adj_mat))
 ### p < 0.1
 
 #pdf("temp_figs/heatmap_DESEQadj_p<0.1.pdf", width = 8, height = 12)
-jpeg("temp_figs/heatmap_DESEQadj_p<0.05.jpeg", width = 12, height = 18, units = "in", res = 300, quality = 85)
+jpeg("figures/heatmap_DESEQadj_p<0.01.jpeg", width = 12, height = 18, units = "in", res = 300, quality = 85)
 
 pheatmap(
   norm_adj_mat, # Scale the data by rows (genes)
