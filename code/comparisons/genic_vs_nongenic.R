@@ -1,9 +1,11 @@
 ### Genic vs non-genic regions
+#------------------------------------------------------------------------------
 
 ### load in data
 sigs_05_sep<-read.csv("temp/comparisons/sig_ALLannotations.csv")
 sigs_05_f<-read.csv( "temp/comparisons/sig_FIRSTannotation.csv")
 
+#------------------------------------------------------------------------------
 #### What are the possible annotation categories? 
 ann_cat<-unique(sigs_05_sep$Annotation)
 print(ann_cat) #16 total categories...
@@ -16,8 +18,10 @@ print(ann_cat) #16 total categories...
 ## Non-genic: "intron_variant", "intergenic_region", "upstream_gene_variant",
 ## "downstream_gene_variant", "non_coding_transcript_exon_variant" 
 
+#------------------------------------------------------------------------------
 ## remove any non-genic variants
-cat_remove<- c("intron_variant", "intergenic_region", "upstream_gene_variant", "downstream_gene_variant", "non_coding_transcript_exon_variant")
+cat_remove<- c("intron_variant", "intergenic_region", "upstream_gene_variant", 
+               "downstream_gene_variant", "non_coding_transcript_exon_variant")
 genic_sigs_sep<- sigs_05_sep[!sigs_05_sep$Annotation %in% cat_remove,]
 nrow(genic_sigs_sep) #473 genic annotations
 View(genic_sigs_sep)
@@ -30,6 +34,7 @@ View(genic_sigs_sep)
 intergenic_sigs_sep<- sigs_05_sep[sigs_05_sep$Annotation %in% cat_remove,]
 View(intergenic_sigs_sep) #336 intergenic annotations
 
+#------------------------------------------------------------------------------
 ### what are the intergenic variants? 
 
 intergenic_annotations <- intergenic_sigs_f %>%
@@ -61,7 +66,8 @@ nrow(genic_sigs_f) #463 genic annotations # very similar
 # most genic annotations are the first annotation, unsurprisingly
 View(genic_sigs_f)
 #which ones differ? 
-genic_diffs <- anti_join(genic_sigs_sep, genic_sigs_f, by = c("CHROM", "POS", "Annotation", "Gene_Name"))
+genic_diffs <- anti_join(genic_sigs_sep, genic_sigs_f, 
+                         by = c("CHROM", "POS", "Annotation", "Gene_Name"))
 nrow(genic_diffs) # this is the right number of rows
 View(genic_diffs)
 
@@ -79,11 +85,11 @@ writeLines(genic_list, "temp/comparisons/genic_GO_list.txt")
 
 ### Most likely, the first annotation is the more useful one, so keep that list
 
-########################################################################
+#------------------------------------------------------------------------------
 
 write.csv(genic_sigs_f, file="temp/comparisons/genic_sigs.csv")
 
-########################################################################
+#------------------------------------------------------------------------------
 
 ## Create a combined GO-list for genic SNPs and RNA-seq genes
 

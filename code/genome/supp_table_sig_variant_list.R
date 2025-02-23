@@ -1,11 +1,15 @@
 ### Create Supplementary Table
 
-### how does the data differ using the separate vs combined thresholds?
-
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+## read in data
 snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
 indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
 ann_snps<-read.table("data/genome/annotated_snps.txt", header=TRUE)
 ann_indels<-read.table("data/genome/annotated_indels.txt", header= TRUE)
+
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 
 ### REFORMAT annotations
 ## reformat ann to match working format
@@ -22,17 +26,30 @@ ann_snps <- ann_snps %>%
 ann_indels <- ann_indels %>%
   mutate(CHROM = roman_to_chr[CHROM])
 
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+
 ### Find the Combined threshold - use bonferroni correction for all data a=0.05
-threshold_b_combined=0.05/(nrow(indels3)+nrow(snps3)) # this is a combined significance threshold
+
+# this is a combined significance threshold
+threshold_b_combined=0.05/(nrow(indels3)+nrow(snps3)) 
 thresh_b_combined_log=-log10(threshold_b_combined)
 
 ### Applying combined threshold
-combinedthresh_snps <- snps3[snps3$logp > thresh_b_combined_log, ] ## all snps above BF correction for combined SNPs/indels
-combinedthresh_indels <- indels3[indels3$logp > thresh_b_combined_log, ] ## all indels above BF correction for combined SNPs/indels
 
+## all snps above BF correction for combined SNPs/indels
+combinedthresh_snps <- snps3[snps3$logp > thresh_b_combined_log, ] 
 
-SNP_NUC<-subset(combinedthresh_snps, CHROM!="chrmito") # nuclear SNPs
+## all indels above BF correction for combined SNPs/indels
+combinedthresh_indels <- indels3[indels3$logp > thresh_b_combined_log, ] 
+
+#------------------------------------------------------------------------------
+
+# nuclear SNPs
+SNP_NUC<-subset(combinedthresh_snps, CHROM!="chrmito") 
 nrow(SNP_NUC) #624 nuclear SNPs
+
+## nuclear indels
 indel_nuc<-subset(combinedthresh_indels, CHROM!="chrmito")
 nrow(indel_nuc) #104 nuclear indels
 
@@ -45,10 +62,13 @@ combinedthresh_indels$Type <- "Indel"
 combined_sigs<-rbind(combinedthresh_snps, combinedthresh_indels)
 nrow(combined_sigs) #801 combined SNPs/indels #includes mito
 
-View(combined_sigs)
+#------------------------------------------------------------------------------
 
 # Save the file to the new directory
 write.csv(combined_sigs, file = "temp/genome/sigs_SNPs&indels_padj<0.05.csv", row.names = FALSE)
+
+#------------------------------------------------------------------------------
+
 
 nrow(combined_sigs) ## 801 #sig list p<0.05 #no annotations #but need to merge annotation files with indels vs snps separately bc in different files
 ann_snps<-merge(ann_snps, combinedthresh_snps, by=c("CHROM", "POS", "REF", "ALT"))

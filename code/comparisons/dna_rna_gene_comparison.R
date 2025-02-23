@@ -1,5 +1,8 @@
 ### Analysis of implicated genomic annotations
 
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+
 ## load in datasets
 
 sigs_05_sep<-read.csv("temp/comparisons/sig_ALLannotations.csv")
@@ -10,7 +13,8 @@ gene_list_all_ann<- read.table("temp/comparisons/ALLannotations_list.txt", heade
 gene_list_first_ann<- read.table("temp/comparisons/FIRSTannotation_list.txt", header=FALSE)
 rna_list<-read.table("temp/transcriptome/DGEgene_list.txt", header= FALSE)
 colnames(rna_list)[1]<-"Gene_Name"
-View(gene_list_first_ann)
+
+#------------------------------------------------------------------------------
 
 ### Look at overlap between DNA and RNA lists
 
@@ -19,7 +23,8 @@ print(common_items) ### WSC4, RFA3
 
 #### Restrictive list for RNA, ALL annotations for DNA
 common_items2 <-intersect(rna_list$Gene_Name, gene_list_all_ann$V1)
-print(common_items2) #"YDR543C" "EKI1"    "YNR066C" "WSC4"    "FIT2"    "RFA3"    "DNM1"    "YJL218W"
+print(common_items2) 
+#"YDR543C" "EKI1"    "YNR066C" "WSC4"    "FIT2"    "RFA3"    "DNM1"    "YJL218W"
 ### EKI1, DNM1 are downstream gene variants
 
 ### View common items
@@ -32,8 +37,14 @@ View(sigs_05_both)
 sigs_05_common<-sigs_05_sep[sigs_05_sep$Gene_Name %in% common_items2,]
 View(sigs_05_common)
 
+#------------------------------------------------------------------------------
+ 
+## Write files showing annotations for shared genes
+
 write.csv(sigs_05_both, file="temp/comparisons/shared_genes_FIRSTann.csv")
 write.csv(sigs_05_common, file="temp/comparisons/shared_genes_ALLann.csv")
+
+#------------------------------------------------------------------------------
 
 ## Now look at variant identities
 gene_annotation_table <- sigs_05_common %>%
