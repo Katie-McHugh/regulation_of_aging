@@ -5,8 +5,8 @@
 ## read in data
 snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
 indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
-ann_snps<-read.table("data/genome/annotated_snps.txt", header=TRUE)
-ann_indels<-read.table("data/genome/annotated_indels.txt", header= TRUE)
+ann_snps<-read.table("data/raw/annotated_snps.txt", header=TRUE)
+ann_indels<-read.table("data/raw/annotated_indels.txt", header= TRUE)
 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
