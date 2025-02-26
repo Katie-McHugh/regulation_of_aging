@@ -1,9 +1,13 @@
 ### Supplementary Table RNA-- add distance to closest UGVs
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
+#Load in data
 sigs_05_f<-read.csv("temp/comparisons/shared_genes_FIRSTann.csv")
 rna_list<-read.csv("data/rnaseq_results_batch_sigs0.1_edited.csv") 
 ## will eventually need to re-generate this file, but for efficiency I just took it from the previous run
 
+#-------------------------------------------------------------------------------
 # Function to search for the closest significant gene variants
 
 find_it <- function(data, chrom_value, lowerPOS, upperPOS) {
@@ -59,7 +63,7 @@ find_sigs <- function(data, range_table) {
   return(range_table)
 }
 
-
+#-------------------------------------------------------------------------------
 # Run the function
 result <- find_sigs(sigs_05_f, rna_list)
 
@@ -67,8 +71,10 @@ result <- find_sigs(sigs_05_f, rna_list)
 print(result)
 View(result)
 
+#-------------------------------------------------------------------------------
+# write data
 write.csv(as.data.frame(result), file = "temp_tables/closest_variants_to_DGEs.csv", row.names = FALSE, quote=FALSE) 
-
+#-------------------------------------------------------------------------------
 
 ### slightly different version of table that separates it out
 
@@ -141,6 +147,7 @@ write.csv(as.data.frame(resultb), file = "temp_tables/closest_variants_to_DGEs_v
 
 View(sigs_05_f)
 
+#-------------------------------------------------------------------------------
 ### Now collect the p-values associated with each of the positions identified in the previous function
 
 find_it <- function(data, chrom_value, lowerPOS, upperPOS) {
@@ -217,5 +224,6 @@ find_sigs <- function(data, range_table) {
 # Run the function
 resultc <- find_sigs(sigs_05_f, rna_list)
 
-# View the result
+#-------------------------------------------------------------------------------
+# print the result
 write.csv(as.data.frame(resultc), file = "temp_tables/closest_variants_to_DGEs_v3.csv", row.names = FALSE, quote=FALSE) 

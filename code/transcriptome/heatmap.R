@@ -1,4 +1,6 @@
 ### Generating DGE Heatmap
+#-------------------------------------------------------------------------------
+## Load and Organize data
 
 ### Load normalized counts for visualization
 norm_dds<-read.csv("temp/transcriptome/normalized_counts_deseq.csv")
@@ -22,7 +24,6 @@ sel<-as.data.frame(selected_genes_adj$Gene_ID)
 colnames(sel)[colnames(sel) == "selected_genes_adj$Gene_ID"] <- "Gene_ID"
 norm_sigs<-merge(sel, norm_dds, by.x="Gene_ID", by.y="X", all.x=TRUE)
 
-
 # Set key for old vs young replicates
 age_colors<- c( "aged" = "black", "young"= "grey")
 age_cols<-list(condition = age_colors)
@@ -41,7 +42,10 @@ norm_sigs2$Gene_ID <- NULL
 norm_sigs2$Gene_Name <- NULL
 
 # scale and convert to matrix
-norm_adj<-t(scale(t(norm_sigs2))) #scale so each feature has the same mean/variance for visualization purposes in the heatmap (prevents features with higher overall expression from washing out signals of lower expression features)
+norm_adj<-t(scale(t(norm_sigs2))) 
+#scale so each feature has the same mean/variance for visualization purposes 
+# in the heatmap (prevents features with higher overall expression from washing 
+# out signals of lower expression features)
 norm_adj<-as.data.frame(norm_adj)
 norm_adj<-unique(norm_adj)
 norm_adj_mat<-as.matrix(norm_adj)
@@ -95,6 +99,8 @@ annotation_colors <- list(
 all(rownames(annotation_row) == rownames(norm_adj_mat))  # Check if row names match
 all(rownames(annotation_col) == colnames(norm_adj_mat))
 
+#-------------------------------------------------------------------------------
+## Plot heatmap
 ### p < 0.1
 
 #pdf("temp_figs/heatmap_DESEQadj_p<0.1.pdf", width = 8, height = 12)

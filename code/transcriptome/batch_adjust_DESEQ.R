@@ -1,9 +1,10 @@
 ### Correct for batch effect and create DESEQ object
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 ### correct for batch effect from 2 different sorting groups
-
 ## convert back to dataframe after batch correction to level data correctly
-
+#-------------------------------------------------------------------------------
 #Read in Gene Count Matrix, subset
 counts <- read.table("data/gene_count_matrix.txt", header = TRUE, row.names = 1, sep = "\t")
 CountData<-counts[,-(1:5)]
@@ -13,15 +14,20 @@ CountData<-as.matrix(CountData) ## this is important--combat seq doesn't like da
 colData <- read.table("data/design.txt", header = TRUE, sep = "\t", row.names = 1)
 colData<-as.matrix(colData)
 
+#-------------------------------------------------------------------------------
 # batch information
 batch <- c(rep(1, 6), rep(2, 6), rep(1, 6), rep(2, 6)) #Organize data into batch 1 (pairs 1-6, sorted on Day 1) and batch 2 (pairs 7-12, sorted on Day 2)
 age<-c(rep(1, 12), rep(2, 12)) # indicate whether the replicate is "old" (1) or "young" (2)
 #pair<-rep(1:12, 2) #indicate the paired nature of the old and young replicates # don't include this in CombatSeq
+#-------------------------------------------------------------------------------
 
 # Run ComBat_seq
 adj_counts <- ComBat_seq(CountData, batch=batch, group=age) #ignore the covariates...package is not super clear on what they are used for, and we don't want to include pair in both ComBat-seq and the DEseq model
 
+#-------------------------------------------------------------------------------
+#write
 write.table(adj_counts, file="temp/transcriptome/gcm_combatseq.txt")
+#-------------------------------------------------------------------------------
 
 ### Create DESEQ object
 colData2<-as.data.frame(colData)
@@ -65,10 +71,11 @@ dds_adj1 <- dds_adj1[order(dds_adj1$padj),] #sort by p-value
 resOrdered_adj <- dds_adj1[order(dds_adj1$pvalue),]
 head(resOrdered_adj)
 
+#-------------------------------------------------------------------------------
+# write data
 write.csv(as.data.frame(resOrdered_adj), 
           file="temp/transcriptome/rnaseq_results_batch_adjusted.csv") ### this contains 
 ## results from the dds object
-
 write.csv(normalized_counts_adj, file="temp/transcriptome/normalized_counts_deseq.csv")
 
 ### additional options for plotting and visualization in Analysis_eNotebook_Part2_DGE.rmd file

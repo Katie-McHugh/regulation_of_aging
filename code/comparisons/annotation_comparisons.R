@@ -1,7 +1,8 @@
 ### Comparing annotations for significant genes vs the whole genome
 ### SNPs only
 
-######################load in data############################################
+#-------------------------------------------------------------------------------
+## Load in data
 
 ### significant data
 sigs_05_f<-read.csv("temp/comparisons/sig_FIRSTannotation.csv")
@@ -12,8 +13,7 @@ sigs_05_sep<-subset(sigs_05_sep, TYPE=="SNP")
 ###ann_i<-read.table("data/annotated_indels.txt", header=TRUE)
 ann_s<-read.table("data/annotated_snps.txt", header=TRUE)
 
-#############################################################################
-
+#-------------------------------------------------------------------------------
 ### Create tables to visualize the data
 
 ### first annotation in SNPeff for given variant, sorted by annotation type
@@ -71,9 +71,6 @@ gene_annotation_all_percent <- sigs_05_sep %>%
 ### Just look at SNPs - can change to be both
 ##ann<-rbind(ann_s, ann_i)
 ann<-ann_s
-
-#############################################################################
-
 
 #### Step 1: Extract the first annotation by splitting at the first comma
 ann_f <- ann %>%
