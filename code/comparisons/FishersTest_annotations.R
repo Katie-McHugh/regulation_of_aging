@@ -1,26 +1,30 @@
+### Fisher's Test for Annotations
+#------------------------------------------------------------------------------
 
-################################Load in Data####################################
+### Load in annotations for MY data # SNPS ONLY (no indels)
 
-### Load in annotations for MY data
-#gene_annotation_count<-read.csv("temp/significant_annotations_count.csv") 
-# includes indels
+## table of annotation types for significant SNPs
 sigs<-read.csv("temp/comparisons/significant_annotations_count.csv")
+
+## table of annotation types for all annotated SNPs in SNPeff
 ref<-read.csv("temp/comparisons/ref_annotations_count.csv")
-### Load in annotations for whole genome
+View(ref)
 
+#------------------------------------------------------------------------------
+### Reorganize datasets
 
-##### Chi-square test/ Fisher's exact test
-
-###### Find annotations that are present in both datasets #################
+###### Find annotations that are present in both datasets
 common_annotations <- intersect(sigs$Annotation, ref$Annotation)
 print(common_annotations)
-class(common_annotations)
-test_annotations<-c("downstream_gene_variant", "missense_variant", "synonymous_variant", "upstream_gene_variant")
-
 
 #### Replace annotations not in common with "Other" in WG annotations
+test_annotations<-c("downstream_gene_variant", "missense_variant", 
+                    "synonymous_variant", "upstream_gene_variant", 
+                    "start_lost", "stop_gained")
+
 ref$Annotation <- ifelse(ref$Annotation %in% test_annotations, ref$Annotation, "Other")
 sigs$Annotation <- ifelse(sigs$Annotation %in% test_annotations, sigs$Annotation, "Other")
+
 
 #### reconsolidate data frame
 ref<- ref %>%
@@ -35,9 +39,8 @@ sigs<- sigs %>%
 
 
 ### Add "other" column to sig data # only if it doesn't already exist
-#sigs <- sigs %>%
- # add_row(Annotation = "Other", Annotation_Count = 0)
-
+sigs <- sigs %>%
+ add_row(Annotation = "Other", Annotation_Count = 0)
 
 ### Small count values, so use Fisher's Exact Test ### too large, use simulated Fisher's exact test
 
@@ -46,18 +49,29 @@ write.csv(sigs, file= "temp/comparisons/SNPs_annotation_counts_pie.csv")
 dataset2<-ref
 write.csv(ref, file= "temp/comparisons/SNPs_ref_annotation_counts_pie.csv")
 
-View(sigs)
-# Create a contingency table
-contingency_table <- matrix(c(
-  dataset1$Annotation_Count,
-  dataset2$Annotation_Count
-), nrow = 2, byrow = TRUE)
-View(contingency_table)
 
-# Assign row and column names for clarity
-rownames(contingency_table) <- c("Data", "Genome")
-colnames(contingency_table) <- dataset1$Annotation
+#------------------------------------------------------------------------------
+## Create a contingency table
+
+# Create named vectors where names are the annotation categories
+sig_data <- setNames(dataset1$Annotation_Count, dataset1$Annotation)
+ref_data <- setNames(dataset2$Annotation_Count, dataset2$Annotation)
+
+# Get all unique categories from both datasets
+all_categories <- union(names(sig_data), names(ref_data))
+
+# Ensure both tables contain all categories (fill missing ones with 0)
+sig_data <- sig_data[all_categories]
+ref_data <- ref_data[all_categories]
+
+# Construct the contingency table with matching row names
+contingency_table <- rbind(sig_data, ref_data)
+
+# View the result
 View(contingency_table)
+#------------------------------------------------------------------------------
+
+### Perform tests
 
 fisher_result <- fisher.test(contingency_table, simulate.p.value = TRUE)
 print(fisher_result)
@@ -68,80 +82,61 @@ print(chisq_result)
 
 chisq.test(contingency_table, simulate.p.value = TRUE, B = 10000)
 # View results
-print(fisher_result)
+
+#------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
+
+## What if smallest counts are grouped
+ref2<-ref
+sigs2<-sigs
+
+#### Replace annotations not in common with "Other" in WG annotations
+test_annotations2<-c("downstream_gene_variant", "missense_variant", 
+                    "synonymous_variant", "upstream_gene_variant")
+
+ref2$Annotation <- ifelse(ref2$Annotation %in% test_annotations, ref2$Annotation, "Other")
+sigs2$Annotation <- ifelse(sigs2$Annotation %in% test_annotations, sigs2$Annotation, "Other")
 
 
-
-
-### Look at specific annotations
-
-categories_of_interest <- c("upstream_gene_variant", "missense_variant", "nonsynonymous_variant")
-
-# Subset the datasets
-subset_dataset1 <- dataset1[dataset1$Annotation %in% categories_of_interest, ]
-subset_dataset2 <- dataset2[dataset2$Annotation %in% categories_of_interest, ]
-
-# Create a contingency table
-contingency_table <- matrix(c(
-  subset_dataset1$Annotation_Count,
-  subset_dataset2$Annotation_Count
-), nrow = 2, byrow = TRUE)
-
-# Assign row and column names for clarity
-rownames(contingency_table) <- c("Dataset1", "Dataset2")
-colnames(contingency_table) <- subset_dataset1$Annotation # doesn't work if other value is 0
-
-# counts of 1 or fewer grouped
-combined_data <- gene_annotation_count_first %>%
-  mutate(Combined_Annotations = ifelse(Annotation_Count < 2, Annotation, NA)) %>%
-  mutate(Annotation = ifelse(Annotation_Count < 2, "Other", Annotation)) %>%
-  group_by(Annotation) %>%
-  summarise(
-    Annotation_Count = sum(Annotation_Count)
-  )
-
-common_annotations <- intersect(combined_data$Annotation, gene_annotation_count_first_genome1$Annotation)
-print(common_annotations)
-
-combined_genome<-gene_annotation_count_first_genome1
-
-# Step 2: Replace annotations not in common with "Other"
-combined_genome$Annotation <- ifelse(combined_genome$Annotation %in% common_annotations, combined_genome$Annotation, "Other")
-
-combined_genome <- combined_genome %>%
+#### reconsolidate data frame
+ref2<- ref2 %>%
   group_by(Annotation) %>%
   summarise(Annotation_Count = sum(Annotation_Count)) %>%
   ungroup()  # Removes grouping after summarizing
-View(combined_genome)
+
+sigs2<- sigs2 %>%
+  group_by(Annotation) %>%
+  summarise(Annotation_Count = sum(Annotation_Count)) %>%
+  ungroup()  # Removes grouping after summarizing
 
 
-### Combined small counts, so now I can use chi-square
+### Add "other" column to sig data # only if it doesn't already exist
+# sigs2 <- sigs2 %>%
+#   add_row(Annotation = "Other", Annotation_Count = 0)
 
-dataset1<-combined_data
-dataset2<-combined_genome
+# Create named vectors where names are the annotation categories
+sig_data2 <- setNames(dataset1$Annotation_Count, dataset1$Annotation)
+ref_data2 <- setNames(dataset2$Annotation_Count, dataset2$Annotation)
 
-# Create a contingency table
-contingency_table <- matrix(c(
-  dataset1$Annotation_Count,
-  dataset2$Annotation_Count
-), nrow = 2, byrow = TRUE)
+# Ensure both tables contain all categories (fill missing ones with 0)
+sig_data2 <- sig_data2[test_annotations2]
+ref_data2 <- ref_data2[test_annotations2]
 
-# Assign row and column names for clarity
-rownames(contingency_table) <- c("Data", "Genome")
-colnames(contingency_table) <- dataset1$Annotation
-View(contingency_table)
+# Get all unique categories from both datasets
+all_categories2 <- union(names(sig_data2), names(ref_data2))
 
-chisq_result <- chisq.test(contingency_table)
-print(chisq_result) # does come out as significant
+# Construct the contingency table with matching row names
+contingency_table2 <- rbind(sig_data2, ref_data2)
 
-# Perform Fisher's Exact Test or Chi-square Test
-set.seed(123)
-fisher_result <- fisher.test(contingency_table, simulate.p.value = TRUE, B = 1e6)
+# View the result
+View(contingency_table2)
 
-print(contingency_table)
-# View results
-print(fisher_result) # not working
+fisher_result2 <- fisher.test(contingency_table2, simulate.p.value = TRUE)
+print(fisher_result2)
+##p <<0.01
+## doesn't really change anything
 
-print(gene_annotation_count_first)
-### It is statistically significant, but this seems to be driven more by the categories we aren't as interested in...
+fisher.test(contingency_table2, workspace = 2e8)  # Increase workspace size
+fisher.test(contingency_table, workspace = 2e8)  # Increase workspace size
+## any way I look at it, p-value is small...
 
