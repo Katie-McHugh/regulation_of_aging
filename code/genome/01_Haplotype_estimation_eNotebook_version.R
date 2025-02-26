@@ -5,7 +5,7 @@
 snps3=read.csv("data/clean/GWAS_SNPS_cov20_maf05.csv", header=TRUE)
 
 ## haplotype estimator
-founders=read.table("data/founder_states.txt",header=T)
+founders=read.table("data/raw/founder_states.txt",header=T)
 merge=merge(founders,snps3) #will use current filtering parameters
 
 freq <- apply(merge[,10:62],1,function(x) (x[seq(1,48,2)]/(x[seq(2,49,2)]))) 
