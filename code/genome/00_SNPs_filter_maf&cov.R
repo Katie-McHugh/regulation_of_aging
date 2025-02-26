@@ -1,7 +1,7 @@
 ### Filter and organize SNP table
 
 ### Load in SNP table from data folder
-snps <- read.table("data/filtered_snps.txt", header = TRUE)
+snps <- read.table("data/raw/filtered_snps.txt", header = TRUE)
 
 snps$Nmiss=NULL
 
@@ -38,10 +38,7 @@ print(avg_cov_all) ### average coverage across all SNPs and replicates
 ## imposing this filter has the added benefit of getting rid of any non-polymorphic sites (these would be ones with a "maf" of zero or 1).  So it is more efficient than the previous version.
 
 
-### Save filtered data to temp folder
-
-# Specify the file path in the new directory
-file_path1 <- file.path("temp/genome/GWAS_SNPS_cov20_maf5.csv")
+### Save filtered data to clean data folder
 
 # Save the file to the new directory
-write.csv(snps3, file = file_path1, row.names = FALSE)
+write.csv(snps3, file = "data/clean/GWAS_SNPS_cov20_maf05.csv", row.names = FALSE)
