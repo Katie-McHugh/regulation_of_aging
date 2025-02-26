@@ -2,7 +2,7 @@
 # to the respository. It was run and saved, this was the code used.
 
 # load filtered data from Analysis_eNotebook.Rmd file
-snps3=read.csv("temp/genome/GWAS_SNPS_cov20_maf5.csv", header=TRUE)
+snps3=read.csv("data/clean/GWAS_SNPS_cov20_maf05.csv", header=TRUE)
 
 ## haplotype estimator
 founders=read.table("data/founder_states.txt",header=T)
