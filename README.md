@@ -23,6 +23,8 @@ This folder contains three subdirectories: [raw](/data/raw) , [clean](/data/clea
 
 ##### [Clean](/data/clean)
 1) rnaseq_results_batch_sigs01_edited.csv
+2) GWAS_SNPS_cov20_maf05.csv contains the SNP table after filtering for a coverage of 20 and a minor allele frequency of 0.05
+3) indels_cov20_maf05.csv contains the indel table after filtering for a coverage of 20 and a minor allele frequency of 0.05
 
 ##### [Design Files](/data/design_files)
 1) design.txt contains replicate identifying information for the transcriptomic analysis
@@ -42,8 +44,11 @@ More information on the code within each folder is contained within the [code fo
 
 #### [Figures Folder](/figures)
 
+**need to clean up**
+
 This folder contains figures used in the manuscript. These include: 
 1) _Figure 1_: A manhattan plot of the nuclear genome showing differences in SNPs and indels between young and aged replicates
+3) _Figure2
 
 #### [Tables Folder](/tables)
 
@@ -52,7 +57,11 @@ This folder contains tables used in the manuscript. These include:
 
 #### [Results Folder](/results)
 
-This folder contains a subfolder [GO_analyses](/results/GO_analyses) that contains the output from the gene ontology analyses.
+This folder contains a subdirectory [GO_analyses](/results/GO_analyses) that contains multiple other subdirectories with the output from each gene ontology analyses.
+
+##### GO_analyses
+
+###### Genic - 
 1) GO_genic_component.txt contains the results for a GO-term analysis conducted on the significant SNPs that were located within genic regions in our GWAS analysis, looking at component with an FDR correction and 0.1 cutoff
 2) GO_genic_process.txt contains the results for a GO-term analysis conducted on the significant SNPs that were located within genic regions in our GWAS analysis, looking at process with an FDR correction and 0.1 cutoff
 
