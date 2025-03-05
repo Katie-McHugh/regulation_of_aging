@@ -56,8 +56,7 @@ barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotatio
     panel.grid.minor = element_blank(), 
     axis.text.x = element_text(
       size = 12,  # Increase font size
-      angle = 30,  # Rotate the labels to avoid overlap
-      hjust = 1,  # Adjust horizontal justification
+      angle = 0,  # Rotate the labels to avoid overlap  # Adjust horizontal justification
       vjust = 1  # Adjust vertical justification
     ),  # Increase font size of x-axis tick labels
     axis.text.y = element_text(size = 14),  # Increase font size of y-axis tick labels
@@ -75,3 +74,4 @@ plot(barplot)
 
 # Save the plot using ggsave
 ggsave(filename = "figures/Figure4_annotations_barplot.pdf", plot = barplot , width = 6, height = 8)
+ggsave(filename = "figures/Figure4_annotations_barplot.jpeg", plot = barplot , width = 6, height = 8)
