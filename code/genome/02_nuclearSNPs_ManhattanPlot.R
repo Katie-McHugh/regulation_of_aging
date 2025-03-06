@@ -4,8 +4,6 @@
 ## Load data
 snps4<-read.csv("temp/genome/WG_CMHtest_results_nuclear.csv")
 
-
-
 #-------------------------------------------------------------------------------
  # add FWER and FDR corrected pvalues to snps4
 
@@ -67,10 +65,10 @@ mtext("C14",line = .5,side=1, at =9.635, cex=1.5)
 mtext("C16",line = .5,side=1, at =11.595, cex=1.5)
 
 ### Bonferroni multiple testing correction (alpha=0.05)
-thresh<-(0.05/nrow(snps3))
-thresh_log=-log10(thresh)
-thresh_log
-abline(h = thresh_log, col = "red", lwd = 4) # alpha <0.05 #very similar to 0.05 threshold 
+bthresh<-(0.05/nrow(snps4))
+bthresh_log=-log10(bthresh)
+bthresh_log
+abline(h = bthresh_log, col = "red", lwd = 4) # alpha <0.05 #very similar to 0.05 threshold 
 
 dev.off()
 
@@ -203,6 +201,33 @@ dev.off()
 
 View(snps4)
 
-## instead, correct data, not threshold
+#-------------------------------------------------------------------------------
+## Subset significant data
 
-p.adjust (P_values, method="fdr")
+## using FDR correction on p-values
+sig_snps<-subset(snps4, logFWER > thresh_log)
+
+View(snps4)
+## using FDR correction on threshold
+sig_snps1<-subset(snps4, logp > bthresh_log)
+
+nrow(sig_snps1)
+nrow(sig_snps)
+
+
+### find any differences between two methods: 
+
+library(dplyr)
+
+diff_1 <- anti_join(sig_snps1, sig_snps)
+diff_2 <- anti_join(sig_snps, sig_snps1)
+
+# Rows in df1 but not in df2
+print(diff_1)
+
+# Rows in df2 but not in df1
+print(diff_2)
+
+all_differences <- bind_rows(diff_1, diff_2)
+print(all_differences) # two data frames are identical #yay!
+
