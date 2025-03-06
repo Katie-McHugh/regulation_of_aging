@@ -1,21 +1,31 @@
-### Load and filter indel data
 
+################################################################################
+# Load and filter indel data
+################################################################################
+
+## SNPeff annotation file
 ann_indels<-read.delim("data/raw/annotated_indels.txt", head=TRUE)
+
+## indel table
 indels<-read.delim("data/raw/filtered_indels.txt", head=TRUE)
 
+#------------------------------------------------------------------------------
 
-indels$Nmiss=NULL
+## remove Nmiss column 
+indels$Nmiss=NULL                                 ## already filtered, all= 0  
 
-## Use the same filtering parameters as the SNP data
-#summarize the average coverage we achieved across all the samples (so, every other column starting column 6)
-coverage=seq(6,52,2) 
-summary(indels[,coverage])
+## Use same filters as SNP data
 
-## calculate the min and max coverage per site and add it as a column
-indels$mincov=apply(indels[,coverage],1,min)
-indels$maxcov=apply(indels[,coverage],1,max)
-indels2=subset(indels,mincov>20 & maxcov<1000)  
-nrow(indels2)
+coverage=seq(6,52,2)                              ## every other col, start at 6
+summary(indels[,coverage])                        ## summarize coverage
+
+
+indels$mincov=apply(indels[,coverage],1,min)      ## add min cov col
+indels$maxcov=apply(indels[,coverage],1,max)      ## add max cov col
+indels2=subset(indels,mincov>20 & maxcov<1000)    ## filter for cov
+nrow(indels2) 
+
+#------------------------------------------------------------------------------
 
 #now we can filter for minor allele frequency (we talked about this verbally but didn't do it yet)
 mac=seq(5,51,2)
@@ -32,6 +42,8 @@ indels3a<-as.data.frame(indels3a)
 summary(indels3a$avg_cov)  
 avg_cov_all_indels<-mean(indels3a$avg_cov)
 print(avg_cov_all_indels) ### average coverage across all indels and replicates
+
+#------------------------------------------------------------------------------
 
 # Save the file to the new directory
 write.csv(indels3, file = "data/clean/indels_cov20_maf05.csv", row.names = FALSE)
