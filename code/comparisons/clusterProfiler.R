@@ -1,5 +1,5 @@
 ###########################################################################
-## GO-analysis using clusterProfiler ##
+## GO-analysis Visualization ##
 ###########################################################################
 
 #------------------------------------------------------------------------------
@@ -162,17 +162,88 @@ go_c<-read.table("results/GO_analyses/Genic/GO_genic_component.txt",
 go_p <- read.table("results/GO_analyses/Genic/GO_genic_process.txt", 
                 header = TRUE, sep = "\t", quote = "")
 
+go_both_p<-read.table("results/GO_analyses/Genic/GO_combined_process.txt", 
+                 header=TRUE, sep = "\t", quote = "")
+
+go_both_f <- read.table("results/GO_analyses/Genic/GO_function_combined.txt", 
+                   header = TRUE, sep = "\t", quote = "")
+go_both_c<- read.table("results/GO_analyses/Genic/genic_combined_component_GO.txt", 
+                      header = TRUE, sep = "\t", quote = "")
+
+## add column identifiers to combine lists
+go_c$gene_list<-"DNA"
+go_p$gene_list<-"DNA"
+go_c$ann<-"component"
+go_p$ann<-"process"
+go_both_p$gene_list<-"both"
+go_both_f$gene_list<-"both"
+go_both_c$gene_list<-"both"
+go_both_p$ann<-"process"
+go_both_f$ann<-"function"
+go_both_c$ann<-"component"
+
+
+
+
+go_dna <- bind_rows(go_c, go_p, go_both_p, go_both_c, go_both_f)
+View(go_dna)
+
 #------------------------------------------------------------------------------
-# Rename columns to match clusterProfiler
+# Create GO-plots
 #------------------------------------------------------------------------------
-temp_plot<-ggplot(go_c, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+
+DNA_c_plot<-ggplot(go_c, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
   geom_point() +
   scale_color_gradient(low = "blue", high = "red") +
-  labs(x = "GO Terms", y = "P-value", title = "GO Term Enrichment") +
+  labs(x = "GO Terms", y = "P-value", title = "GO_dna_component") +
   theme_minimal() +
   coord_flip() + # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-plot(temp_plot)
+DNA_p_plot<-ggplot(go_p, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+  geom_point() +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(x = "GO Terms", y = "P-value", title = "GO DNA process") +
+  theme_minimal() +
+  coord_flip() + # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot(DNA_p_plot)
+plot(DNA_c_plot)
+
+## combined plot
+
+# Create the plot
+c_plot<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
+                          size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+  geom_point(alpha = 0.5) +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(x = "GO Terms", y = "Corrected P-value", 
+       title = "GO Term Enrichment for Gene List 1 (Component & Function)") +
+  theme_minimal() +
+  coord_flip() +  # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~ ann, scales = "free_y")  # Separate Component vs Function
+
+plot(c_plot)
+
+## same plot, different colors
+
+# Create the plot
+plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
+                          size = NUM_LIST_ANNOTATIONS, color = gene_list)) +
+  geom_point(alpha = 0.5) +  
+  scale_color_manual(values = c("DNA" = "blue", "both" = "red")) +  # Custom colors for Component and Function
+  labs(x = "GO Terms", y = "Corrected P-value", 
+       title = "GO Term Enrichment for Gene List 1 (Component & Process)") +
+  theme_minimal() +
+  coord_flip() +  # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_size_continuous(name = "Number of Annotated Genes")  +
+  facet_wrap(~ ann, scales = "free_y")  # Separate Component vs Function
 
 
+plot(plot2)
+
+### maybe try separating by process vs component vs etc with different gene 
+## lists as the different colors
