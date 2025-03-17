@@ -48,6 +48,7 @@ list(attributes)
 filters <- listFilters(ensembl)
 View(filters)
 
+####### DNA list ###############
 results_dna <- getBM(
   attributes = c("external_gene_name", "entrezgene_id"),  # Gene names and Entrez IDs
   filters = "external_gene_name",                      # Use gene names as filter
@@ -64,10 +65,44 @@ View(attributes)
 
 dna_list<-results_dna$entrezgene_id
 
-write.table(dna_list, file="temp/genome/dna_entrezIDs.txt")
+write.table(dna_list, file="temp/genome/dna_entrezIDs.txt", 
+            row.names= FALSE, col.names= FALSE)
+
+####### RNA list #####################
+
+results_rna <- getBM(
+  attributes = c("external_gene_name", "entrezgene_id"),  # Gene names and Entrez IDs
+  filters = "external_gene_name",                      # Use gene names as filter
+  values = genes_rna,                                 # Your list of gene names
+  mart = ensembl                                       # The Ensembl mart
+)
+
+print(results_rna)
+
+rna_list<-results_rna$entrezgene_id
+
+write.table(rna_list, file="temp/transcriptome/rna_entrezIDs.txt", 
+            row.names= FALSE, col.names= FALSE)
+
+####### RNA list #########################
+
+results_both <- getBM(
+  attributes = c("external_gene_name", "entrezgene_id"),  # Gene names and Entrez IDs
+  filters = "external_gene_name",                      # Use gene names as filter
+  values = genes_both,                                 # Your list of gene names
+  mart = ensembl                                       # The Ensembl mart
+)
+
+both_list<-results_both$entrezgene_id
+
+write.table(both_list, file="temp/comparisons/rna&dna_entrezIDs.txt", 
+            row.names= FALSE, col.names= FALSE)
+
+
 #------------------------------------------------------------------------------
 ## Try to use clusterProfiler
 #------------------------------------------------------------------------------
+
 genes_dna<-as.list(genes_dna)
 str(genes_dna)
 
