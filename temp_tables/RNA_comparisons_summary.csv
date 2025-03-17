@@ -1,0 +1,10 @@
+﻿Position,Location,count
+genic,genic,2
+upstream,0-1kb,1
+upstream,1-5kb,3
+upstream,5-10kb,5
+upstream,chrom,44
+downstream,chrom,56
+downstream,0-1kb,0
+downstream,1-5kb,0
+downstream,5-10kb,0
