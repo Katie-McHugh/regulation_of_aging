@@ -235,15 +235,45 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PV
   geom_point(alpha = 0.5) +  
   scale_color_manual(values = c("DNA" = "blue", "both" = "red")) +  # Custom colors for Component and Function
   labs(x = "GO Terms", y = "Corrected P-value", 
-       title = "GO Term Enrichment for Gene List 1 (Component & Process)") +
+       title = "GO Term Enrichment") +
   theme_minimal() +
   coord_flip() +  # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_size_continuous(name = "Number of Annotated Genes")  +
-  facet_wrap(~ ann, scales = "free_y")  # Separate Component vs Function
-
-
+  facet_wrap(~ ann, scales = "free_y")  
 plot(plot2)
+ggsave(filename = "figures/FigureXX_GO_sepType.jpeg", plot = plot2 , width = 12, height = 4)
+
+
+### different style
+
+# relevel lists: 
+go_dna$gene_list<-as.factor(go_dna$gene_list)
+go_dna <- go_dna %>%
+  mutate(gene_list = recode(gene_list, "both" = "Combined"))
+go_dna$gene_list<-relevel(go_dna$gene_list, ref="DNA")
+
+plot3<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
+                          size = NUM_LIST_ANNOTATIONS, color = ann)) +
+  geom_point(alpha = 1) +  
+  scale_color_manual(values = c("component" = "blue", "process" = "red", "function"="goldenrod4")) +  # Custom colors for Component and Function
+  labs(x = "GO Terms", y = "Corrected P-value", 
+       title = "GO Term Enrichment") +
+  theme_minimal() +
+  coord_flip() +  # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_size_continuous(name = "Number of Annotated Genes")  +
+  facet_wrap(~gene_list, scales = "fixed")  + 
+  theme_light() +
+  theme(strip.text = element_text(size = 14, face = "bold"))
+
+plot(plot3)
+
+library(RColorBrewer)
+plot4 <- plot3 + scale_color_manual(values = brewer.pal(3, "Dark2"))
+plot(plot4)
+
+ggsave(filename = "figures/FigureXX_GO_sepList.jpeg", plot = plot4 , width = 8, height = 3.5)
 
 ### maybe try separating by process vs component vs etc with different gene 
 ## lists as the different colors
