@@ -214,7 +214,7 @@ sig_snps1<-subset(snps4, logp > bthresh_log)
 nrow(sig_snps1)
 nrow(sig_snps)
 
-
+View(sig_snps1)
 ### find any differences between two methods: 
 
 library(dplyr)
@@ -231,3 +231,12 @@ print(diff_2)
 all_differences <- bind_rows(diff_1, diff_2)
 print(all_differences) # two data frames are identical #yay!
 
+# method 2
+comparison <- sig_snps != sig_snps1
+which(comparison, arr.ind = TRUE)
+
+## method 3
+install.packages("waldo")  # If not already installed
+library(waldo)
+
+compare(sig_snps, sig_snps1)
