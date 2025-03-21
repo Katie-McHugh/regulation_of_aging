@@ -3,10 +3,8 @@ genic,genic,2,2
 upstream,1kb,1,1
 upstream,5kb,3,2
 upstream,10kb,6,3
-upstream,300kb,49,43
-upstream,chrom,52,3
+upstream,chrom,52,46
 downstream,1kb,1,1
 downstream,5kb,3,2
 downstream,10kb,8,5
-downstream,300kb,53,45
-downstream,chrom,54,1
+downstream,chrom,54,46

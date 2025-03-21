@@ -19,8 +19,8 @@ library(dplyr)
 
 ### relevel bars: 
 data$Position<-factor(data$Position, levels = c("genic", "upstream", "downstream"))
-#data$Location<-factor(data$Location, levels = c("genic", "1kb", "5kb", "10kb", "300kb", "chrom"))
-data$Location<-factor(data$Location, levels = c("chrom", "300kb", "10kb", "5kb", "1kb", "genic"))
+#data$Location<-factor(data$Location, levels = c("genic", "1kb", "5kb", "10kb", "chrom"))
+data$Location<-factor(data$Location, levels = c("chrom", "10kb", "5kb", "1kb", "genic"))
 ### Barplot of proportions for comparison
 barplot<-ggplot(data, aes(x = Position, y = exclusive, fill = Location)) +
   geom_bar(stat = "identity") +
@@ -45,7 +45,8 @@ barplot<-ggplot(data, aes(x = Position, y = exclusive, fill = Location)) +
   scale_y_continuous(breaks = seq(0, 60, by = 10))
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10))  # Wrap text of x-axis labels
 
-plot(barplot)
+plot(barplot) 
+View(data)
 
 #ggsave(filename = "figures/Figure4_annotations_barplot_short.pdf", plot = barplot , width = 6, height = 8)
 ggsave(filename = "figures/Figure5_locations_barplot.jpeg", plot = barplot , width = 6, height = 8)
