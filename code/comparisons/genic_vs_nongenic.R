@@ -63,6 +63,9 @@ print(feature_type)
 genic_sigs_f<- sigs_05_f[!sigs_05_f$Annotation %in% cat_remove,]
 nrow(genic_sigs_f) #463 genic annotations # very similar
 
+nrow(intergenic_sigs_f) # PLUS 2 in ARS that weren't annotated
+
+463+336+2 # genic+ intergenic + 2 unannotated ARS
 # most genic annotations are the first annotation, unsurprisingly
 View(genic_sigs_f)
 #which ones differ? 
