@@ -4,8 +4,10 @@
 
 ### correct for batch effect from 2 different sorting groups
 ## convert back to dataframe after batch correction to level data correctly
+
 #-------------------------------------------------------------------------------
 #Read in Gene Count Matrix, subset
+
 counts <- read.table("data/gene_count_matrix.txt", header = TRUE, row.names = 1, sep = "\t")
 CountData<-counts[,-(1:5)]
 CountData<-as.matrix(CountData) ## this is important--combat seq doesn't like dataframes
