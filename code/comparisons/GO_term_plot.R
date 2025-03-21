@@ -116,44 +116,6 @@ write.table(both_list, file="temp/comparisons/rna&dna_entrezIDs.txt",
 
 
 #------------------------------------------------------------------------------
-## Try to use clusterProfiler ##not really working yet ##
-#------------------------------------------------------------------------------
-
-lists<-list(DNA=as.character(dna_list), 
-            RNA=as.character(rna_list), 
-            Combined=as.character(both_list))
-            
-str(lists)
-
-# ck <- compareCluster(geneClusters = lists, 
-#                      fun = enrichGO, 
-#                      OrgDb = "org.Sc.sgd.db")
-
-# ck <- setReadable(ck, OrgDb = "org.Sc.sgd.db", keyType="ENTREZID")
-
-
-# dotplot(
-#   ck,
-#   x = "GeneRatio",
-#   color = "p.adjust",
-#   showCategory = 3,
-#   size = NULL,
-#   split = NULL,
-#   font.size = 12,
-#   title = "",
-#   label_format = 30,
-# )
-dna_list<-as.character(dna_list)
-head(dna_list)
-ggo <- groupGO(gene     = dna_list,
-               OrgDb    = "org.Sc.sgd.db",
-               ont      = "CC",
-               level    = 3,
-               readable = TRUE)
-View(ggo)
-
-
-#------------------------------------------------------------------------------
 # Try to load in GO-term data
 #------------------------------------------------------------------------------
 go_c<-read.table("results/GO_analyses/Genic/GO_genic_component.txt", 
