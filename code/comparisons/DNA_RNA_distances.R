@@ -6,6 +6,10 @@
 data<- read.csv("temp_tables/RNA_comparisons_summary.csv", header=TRUE)
 
 View(data)
+## counts column gives total (e.g. the variants within 1kb are also counted 
+## in the 5kb category)
+## exclusive column gives just that bin (e.g. variants between 1-5 kb, but not 
+## less than 1kb for the 5kb row)
 #------------------------------------------------------------------------------
 # Load necessary library
 library(ggplot2)
@@ -15,9 +19,10 @@ library(dplyr)
 
 ### relevel bars: 
 data$Position<-factor(data$Position, levels = c("genic", "upstream", "downstream"))
-View(data)
+#data$Location<-factor(data$Location, levels = c("genic", "1kb", "5kb", "10kb", "300kb", "chrom"))
+data$Location<-factor(data$Location, levels = c("chrom", "300kb", "10kb", "5kb", "1kb", "genic"))
 ### Barplot of proportions for comparison
-barplot<-ggplot(data, aes(x = Position, y = count, fill = Location)) +
+barplot<-ggplot(data, aes(x = Position, y = exclusive, fill = Location)) +
   geom_bar(stat = "identity") +
   theme_minimal() +
   scale_fill_brewer(palette = "Paired") +  # Use the discrete viridis color scale
