@@ -216,7 +216,7 @@ plot3<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PV
   scale_size_continuous(name = "Number of \nAnnotated \nGenes")  +
   facet_wrap(~gene_list, scales = "fixed")  + 
   theme_light() +
-  theme(strip.text = element_text(size = 14, face = "bold"))
+  theme(strip.text = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 10))
 
 plot(plot3)
 
@@ -224,7 +224,7 @@ library(RColorBrewer)
 plot4 <- plot3 + scale_color_manual(values = brewer.pal(3, "Dark2"))
 plot(plot4)
 
-ggsave(filename = "figures/FigureXX_GO_sepList.jpeg", plot = plot4 , width = 8, height = 3.5)
+ggsave(filename = "figures/FigureXX_GO_sepList.jpeg", plot = plot4 , width = 8, height = 7)
 
 ### maybe try separating by process vs component vs etc with different gene 
 ## lists as the different colors
