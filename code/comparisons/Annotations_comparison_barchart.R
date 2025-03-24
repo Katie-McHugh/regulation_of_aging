@@ -48,25 +48,24 @@ View(combined_data)
 barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotation )) +
   geom_bar(stat = "identity") +
   theme_minimal() +
-  scale_fill_brewer(palette = "Paired") +  # Use the discrete viridis color scale
-  labs(x = "Dataset", y = "Proportion of Annotations", fill = "Annotation") + 
+  scale_fill_manual(values = colorRampPalette(c("burlywood", "steelblue4"))(length(unique(combined_data$Annotation))),
+                    labels = function(x) str_wrap(x, width = 12))+ 
   theme(
     panel.border = element_rect(color = "black", size = 1, fill = "transparent"),  # Transparent fill for the border
     panel.grid.major = element_blank(),  # Removes major gridlines
     panel.grid.minor = element_blank(), 
     axis.text.x = element_text(
-      size = 12,  # Increase font size
+      size = 16,  # Increase font size
       angle = 0,  # Rotate the labels to avoid overlap  # Adjust horizontal justification
       vjust = 1  # Adjust vertical justification
     ),  # Increase font size of x-axis tick labels
-    axis.text.y = element_text(size = 14),  # Increase font size of y-axis tick labels
+    axis.text.y = element_text(size = 16),  # Increase font size of y-axis tick labels
     axis.title.y = element_text(size = 16),  # Increase font size of y-axis label
-    axis.title.x = element_blank() 
+    axis.title.x = element_blank(),
+    legend.title = element_text(size=16),
+    legend.text = element_text(size = 12)  # Adjust legend text size if needed
   ) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10))  # Wrap text of x-axis labels
-
-
-
 
 ### I could combine more categories to make it easier to see
 plot(barplot)
