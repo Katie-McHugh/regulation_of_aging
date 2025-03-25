@@ -103,3 +103,27 @@ combined<-c(dna, rna)
 combined<-as.character(combined)
 writeLines(combined, "temp/comparisons/genic_combined_GO_list.txt")
 
+#------------------------------------------------------------------------------
+
+## Create a bar that is 58% one color and 42% the other color (genic vs non-genic)
+## visual aid 
+
+
+# Create a data frame with the proportions
+data <- data.frame(
+  category = c("Blue", "RosyBrown"),
+  value = c(0.42, 0.58)
+)
+
+# Create the bar plot
+bar<-ggplot(data, aes(x = 1, y = value, fill = category)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  scale_fill_manual(values = c("Blue" = "steelblue4", "RosyBrown" = "rosybrown")) +
+  coord_flip() +  # Make it horizontal
+  theme_void() +  # Remove axes
+  theme(legend.position = "none")  # Hide legend
+
+plot(bar)
+
+
+ggsave(filename = "figures/visual_genic_prop.jpeg", plot = bar , width = 6, height = 1)
