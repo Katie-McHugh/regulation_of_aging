@@ -25,7 +25,7 @@ data$Location<-factor(data$Location, levels = c("chrom", "10kb", "5kb", "1kb", "
 barplot<-ggplot(data, aes(x = Position, y = exclusive, fill = Location)) +
   geom_bar(stat = "identity") +
   theme_minimal() +
-  scale_fill_manual(values = colorRampPalette(c("sienna", "orchid4", "olivedrab3", "paleturquoise4", "sandybrown"))(length(unique(data$Location))),
+  scale_fill_manual(values = colorRampPalette(c( "paleturquoise4","sienna4", "olivedrab4", "tan", "rosybrown"))(length(unique(data$Location))),
                     labels = function(x) str_wrap(x, width = 12))+  # Use the discrete viridis color scale
   labs(x = "Position", y = "Gene Variant Count", fill = "Location") + 
   theme(
