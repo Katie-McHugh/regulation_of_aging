@@ -48,7 +48,7 @@ View(combined_data)
 barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotation )) +
   geom_bar(stat = "identity") +
   theme_minimal() +
-  scale_fill_manual(values = colorRampPalette(c("burlywood", "steelblue4"))(length(unique(combined_data$Annotation))),
+  scale_fill_manual(values = colorRampPalette(c("black", "grey20", "grey40", "grey60","grey80"))(length(unique(combined_data$Annotation))),
                     labels = function(x) str_wrap(x, width = 12))+ 
   theme(
     panel.border = element_rect(color = "black", size = 1, fill = "transparent"),  # Transparent fill for the border
@@ -72,5 +72,5 @@ plot(barplot)
 
 
 # Save the plot using ggsave
-ggsave(filename = "figures/Figure4_annotations_barplot.pdf", plot = barplot , width = 6, height = 8)
-ggsave(filename = "figures/Figure4_annotations_barplot.jpeg", plot = barplot , width = 6, height = 8)
+ggsave(filename = "figures/Figure4_annotations_barplot_greyscale.pdf", plot = barplot , width = 6, height = 8)
+ggsave(filename = "figures/Figure4_annotations_barplot_greyscale.jpeg", plot = barplot , width = 6, height = 8)

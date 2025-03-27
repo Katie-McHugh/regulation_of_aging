@@ -14,6 +14,7 @@ View(data)
 # Load necessary library
 library(ggplot2)
 library(dplyr)
+library(stringr)
 #------------------------------------------------------------------------------
 # Categorize upstream
 
@@ -25,7 +26,7 @@ data$Location<-factor(data$Location, levels = c("chrom", "10kb", "5kb", "1kb", "
 barplot<-ggplot(data, aes(x = Position, y = exclusive, fill = Location)) +
   geom_bar(stat = "identity") +
   theme_minimal() +
-  scale_fill_manual(values = colorRampPalette(c( "paleturquoise4","sienna4", "olivedrab4", "tan", "rosybrown"))(length(unique(data$Location))),
+  scale_fill_manual(values = colorRampPalette(c( "grey75","grey50", "grey30", "black", "rosybrown"))(length(unique(data$Location))),
                     labels = function(x) str_wrap(x, width = 12))+  # Use the discrete viridis color scale
   labs(x = "Position", y = "Gene Variant Count", fill = "Location") + 
   theme(
@@ -50,5 +51,5 @@ plot(barplot)
 View(data)
 
 #ggsave(filename = "figures/Figure4_annotations_barplot_short.pdf", plot = barplot , width = 6, height = 8)
-ggsave(filename = "figures/Figure5_locations_barplot.jpeg", plot = barplot , width = 6, height = 8)
+ggsave(filename = "figures/Figure5_locations_barplot_greyscale.jpeg", plot = barplot , width = 6, height = 8)
 
