@@ -4,7 +4,7 @@
 
 ## load local cis-reg data 
 rna<-read.csv("results/variant_dist_table.csv")
-
+View(rna)
 
 ## load annotations for significant snps
 ann<-read.table("data/raw/annotated_snps.txt", header= TRUE)
@@ -74,11 +74,14 @@ dgv_2 <- dgv %>%
     )
   )
 
+View(dgv_2)
 
 ## merge back together
 variants<-rbind(ugv_2, dgv_2)
 variants$variant_positions<-as.numeric(variants$variant_positions)
-
+View(variants)
+nrow(variants)
+View(ann)
 # next combine with annotations for each chrom and pos
 # then look for other gene variants for those genes that are also within 10kb...
 
@@ -88,6 +91,9 @@ ann_var_i<-merge(variants, ann_i, by.x = c("Chromosome", "variant_positions"), b
 
 all_var<-rbind(ann_var, ann_var_i)
 all_var2<-all_var[,c("Chromosome", "variant_positions", "Gene.ID", "Gene.Name", "ANN")]
+View(all_var2)
+
+all_var2$ANN
 
 ###############################################################################
 # Look for ALL variants within 10kb of DEGS
@@ -99,10 +105,7 @@ sigs_05_f<-read.csv("temp/comparisons/sig_FIRSTannotation.csv")
 rna_list<-read.csv("data/clean/rnaseq_results_batch_sigs0.1_edited.csv") 
 ## will eventually need to re-generate this file, but for efficiency I just took it from the previous run
 
-################################################################################
-#########lowerPOS is literally the smaller POS number...
-#####   so lowerPOS is upstream and upperPOS is downstream!!!!!!!       ######
-################################################################################
+
 find_it_10kb <- function(data, chrom_value, lowerPOS, upperPOS) {
   # Ensure POS is numeric
   data$POS <- as.numeric(data$POS)
@@ -113,11 +116,11 @@ find_it_10kb <- function(data, chrom_value, lowerPOS, upperPOS) {
   # Find positions in the main gene region
   range <- filtered_data[filtered_data$POS >= lowerPOS & filtered_data$POS <= upperPOS, ]
   
-  # Variants within 10kb upstream of lowerPOS
-  smaller_pos <- filtered_data[filtered_data$POS >= (lowerPOS - 10000) & filtered_data$POS < lowerPOS, ]
+  # Variants within 10kb downstream of lowerPOS
+  smaller_pos <- filtered_data[filtered_data$POS >= (upperPOS - 10000) & filtered_data$POS < upperPOS, ]
   
   # Variants within 10kb upstream of upperPOS
-  larger_pos <- filtered_data[filtered_data$POS > upperPOS & filtered_data$POS <= (upperPOS + 10000), ]
+  larger_pos <- filtered_data[filtered_data$POS > lowerPOS & filtered_data$POS <= (lowerPOS + 10000), ]
   
   # Combine results
   in_range <- if (nrow(range) > 0) paste(range$POS, collapse = "|") else NA
