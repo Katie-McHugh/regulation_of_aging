@@ -224,4 +224,43 @@ variant_types <- variant_types %>%
 
 View(variant_types)
 
+#-------------------------------------------------------------------------------
+## write table
+
+write.csv(as.data.frame(variant_types), file = "temp_tables/local_variant_types.csv", row.names = FALSE, quote=FALSE)
+write.csv(as.data.frame(full_summary), file = "temp_tables/local_variant_full_summary.csv", row.names = FALSE, quote=FALSE)
+write.csv(as.data.frame(ann_local_var), file = "temp_tables/local_variants_ann.csv", row.names = FALSE, quote=FALSE)
+
+#-------------------------------------------------------------------------------
+## summarize variant types
+
+library(dplyr)
+
+categorized_summary <- variant_types %>%
+  # define each group by summing the columns that belong to it
+  mutate(
+    nonsynonymous   = missense_variant,
+    synonymous      = synonymous_variant,
+    inframe_indel   = rowSums(across(c(
+      conservative_inframe_insertion,
+      disruptive_inframe_insertion,
+      disruptive_inframe_deletion
+    )), na.rm = TRUE),
+    intergenic      = rowSums(across(c(
+      upstream_gene_variant,
+      downstream_gene_variant
+    )), na.rm = TRUE),
+    frameshift      = frameshift_variant,
+  ) %>%
+  # (if you really want to drop the original per‐type columns:)
+  select(-missense_variant, 
+         -synonymous_variant,
+         -conservative_inframe_insertion,
+         -disruptive_inframe_insertion,
+         -disruptive_inframe_deletion,
+         -upstream_gene_variant,
+         -downstream_gene_variant,
+         -frameshift_variant)
+
+write.csv(as.data.frame(categorized_summary), file = "temp_tables/local_variants_table.csv", row.names = FALSE, quote=FALSE)
 
