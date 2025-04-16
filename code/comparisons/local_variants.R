@@ -4,10 +4,30 @@
 
 ## load local cis-reg data 
 rna<-read.csv("results/variant_dist_table.csv")
+View(rna)
 
 ## load annotations for significant snps
-ann<-read.csv("temp/comparisons/sig_ALLannotations.csv")
-View(ann)
+ann<-read.table("data/raw/annotated_snps.txt", header= TRUE)
+ann_i<-read.table("data/raw/annotated_indels.txt", header=TRUE)
+
+dna<-read.csv("data/clean/GWAS_SNPS_cov20_maf05.csv")
+
+
+
+## convert roman numerals to chromosomes
+roman_to_chr <- setNames(
+  c(paste0("chr", 1:16), "chrmito"),
+  c("I", "II", "III", "IV", "V", "VI",
+    "VII", "VIII", "IX", "X", "XI", "XII", 
+    "XIII", "XIV", "XV", "XVI", "mitochondrion"))
+
+ann <-ann %>%                                 #fix chr format
+  mutate(CHROM= roman_to_chr[CHROM])
+
+ann_i <-ann_i %>%                                 #fix chr format
+  mutate(CHROM= roman_to_chr[CHROM])
+
+
 #------------------------------------------------------------------------------
 
 ## filter for local variants
@@ -49,7 +69,7 @@ dgv_2 <- dgv %>%
     variant_positions = as.numeric(variant_positions),  # convert from character
     variant_positions = if_else(
       is.na(variant_positions),
-      Start.Position - dist_from_DGV,
+      End.Position + dist_from_DGV,
       variant_positions
     )
   )
@@ -58,6 +78,150 @@ View(dgv_2)
 
 ## merge back together
 variants<-rbind(ugv_2, dgv_2)
-
+variants$variant_positions<-as.numeric(variants$variant_positions)
+View(variants)
+nrow(variants)
+View(ann)
 # next combine with annotations for each chrom and pos
 # then look for other gene variants for those genes that are also within 10kb...
+
+## merge
+ann_var<-merge(variants, ann, by.x = c("Chromosome", "variant_positions"), by.y = c("CHROM", "POS"))
+ann_var_i<-merge(variants, ann_i, by.x = c("Chromosome", "variant_positions"), by.y = c("CHROM", "POS"))
+
+all_var<-rbind(ann_var, ann_var_i)
+all_var2<-all_var[,c("Chromosome", "variant_positions", "Gene.ID", "Gene.Name", "ANN")]
+View(all_var2)
+
+all_var2$ANN
+
+###############################################################################
+# Look for ALL variants within 10kb of DEGS
+###############################################################################
+
+## Load in Data
+#-------------------------------------------------------------------------------
+sigs_05_f<-read.csv("temp/comparisons/sig_FIRSTannotation.csv")
+rna_list<-read.csv("data/clean/rnaseq_results_batch_sigs0.1_edited.csv") 
+## will eventually need to re-generate this file, but for efficiency I just took it from the previous run
+
+
+find_it_10kb <- function(data, chrom_value, lowerPOS, upperPOS) {
+  # Ensure POS is numeric
+  data$POS <- as.numeric(data$POS)
+  
+  # Filter for the specified chromosome
+  filtered_data <- data[data$CHROM == chrom_value, ]
+  
+  # Find positions in the main gene region
+  range <- filtered_data[filtered_data$POS >= lowerPOS & filtered_data$POS <= upperPOS, ]
+  
+  # Variants within 10kb downstream of lowerPOS
+  smaller_pos <- filtered_data[filtered_data$POS >= (upperPOS - 10000) & filtered_data$POS < upperPOS, ]
+  
+  # Variants within 10kb upstream of upperPOS
+  larger_pos <- filtered_data[filtered_data$POS > lowerPOS & filtered_data$POS <= (lowerPOS + 10000), ]
+  
+  # Combine results
+  in_range <- if (nrow(range) > 0) paste(range$POS, collapse = "|") else NA
+  nearby_smaller <- if (nrow(smaller_pos) > 0) paste(smaller_pos$POS, collapse = "|") else NA
+  nearby_larger <- if (nrow(larger_pos) > 0) paste(larger_pos$POS, collapse = "|") else NA
+  
+  return(list(
+    in_range = in_range,
+    nearby_smaller = nearby_smaller,
+    nearby_larger = nearby_larger
+  ))
+}
+
+
+find_sigs_3 <- function(data, range_table) {
+  # Apply the `find_it` function to each row of `range_table`
+  results <- apply(range_table, 1, function(row) {
+    chrom_value <- row["CHROM"]
+    lowerPOS <- as.numeric(row["lowerPOS"])
+    upperPOS <- as.numeric(row["upperPOS"])
+    
+    # Call the `find_it` function
+    find_it_10kb(data, chrom_value, lowerPOS, upperPOS)
+  })
+  
+  # Convert the results (list of lists) into a data frame
+  results_df <- do.call(rbind, lapply(results, as.data.frame))
+  
+  # Combine the original range_table with the results data frame
+  final_table <- cbind(range_table, results_df)
+  
+  # Return the updated table
+  return(final_table)
+}
+
+resultd <- find_sigs_3(sigs_05_f, rna_list)
+View(resultd)
+
+#-------------------------------------------------------------------------------
+## write table
+
+write.csv(as.data.frame(resultd), file = "temp_tables/local_variants.csv", row.names = FALSE, quote=FALSE)
+
+#-------------------------------------------------------------------------------
+## Great, now separate each variant into its own row again...
+
+library(dplyr)
+library(tidyr)
+
+# Start with your full table: e.g., local_all
+local_all <- resultd %>%
+  pivot_longer(cols = c(in_range, nearby_smaller, nearby_larger),
+               names_to = "source",
+               values_to = "variant_position") %>%
+  separate_rows(variant_position, sep = "\\|\\s*") %>%
+  filter(!is.na(variant_position) & variant_position != "")
+
+local_all<-local_all[, c("Gene_ID", "Gene_Name", "CHROM", "variant_position", "source", "padj", "log2FoldChange")]
+
+View(local_all)
+
+#-------------------------------------------------------------------------------
+## Now we can assign annotations...
+View(local_all)
+
+ann_var_all<-merge(local_all, ann, by.x = c("CHROM", "variant_position"), by.y = c("CHROM", "POS"))
+ann_var_all_i<-merge(local_all, ann_i, by.x = c("CHROM", "variant_position"), by.y = c("CHROM", "POS"))
+
+ann_local_var<-rbind(ann_var_all, ann_var_all_i)
+
+ann_local_var<-ann_local_var[,c("Gene_ID", "Gene_Name", "CHROM", "variant_position", "source", "padj", "log2FoldChange", "ANN")]
+View(ann_local_var)
+
+#-------------------------------------------------------------------------------
+## Format *another* table that describes each gene and the number of gene variants upstream, in_range, and downstream
+
+variant_counts <- ann_local_var %>%
+  group_by(Gene_Name, source) %>%
+  summarise(n_variants = n(), .groups = "drop") %>%
+  pivot_wider(names_from = source, values_from = n_variants, values_fill = 0)
+
+View(variant_counts)
+
+# Step 1: Extract the second field from the ANN column
+ann_counts <- ann_local_var %>%
+  mutate(ann_type = str_split(ANN, "\\|") %>% map_chr(~ .x[2])) %>%
+  group_by(Gene_Name, ann_type) %>%
+  summarise(n_ann = n(), .groups = "drop") %>%
+  pivot_wider(names_from = ann_type, values_from = n_ann, values_fill = 0)
+
+full_summary <- left_join(variant_counts, ann_counts, by = "Gene_Name")
+
+View(full_summary)
+
+variant_types <- full_summary %>%
+  mutate(variant_count = in_range + nearby_smaller + nearby_larger)
+
+variant_types <- variant_types %>%
+  mutate(variant_count = in_range + nearby_smaller + nearby_larger) %>%
+  select(-in_range, -nearby_smaller, -nearby_larger)
+
+View(variant_types)
+
+
