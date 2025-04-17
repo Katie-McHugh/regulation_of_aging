@@ -4,7 +4,7 @@
 
 ## load local cis-reg data 
 rna<-read.csv("results/variant_dist_table.csv")
-View(rna)
+
 
 ## load annotations for significant snps
 ann<-read.table("data/raw/annotated_snps.txt", header= TRUE)
@@ -31,7 +31,7 @@ ann_i <-ann_i %>%                                 #fix chr format
 #------------------------------------------------------------------------------
 
 ## filter for local variants
-local<-subset(rna, dist_from_UGV<10000 | dist_from_DGV <10000)
+local<-subset(rna, dist_from_UGV<5000 | dist_from_DGV <5000)
 local_data<-local[,c("Gene.ID", "Gene.Name", "Chromosome", "Start.Position", 
                       "End.Position", "variant_positions", 
                      "dist_from_UGV", "dist_from_DGV")]
@@ -47,7 +47,7 @@ local_clean <- local_data %>%
 # Find variant locations
 
 #split into UGV vs DGV
-ugv<-subset(local_clean, dist_from_UGV<10000)
+ugv<-subset(local_clean, dist_from_UGV<5000)
 
 # replace NAs with variant positions for variants outside of genes
 ugv_2 <- ugv %>%
@@ -61,7 +61,7 @@ ugv_2 <- ugv %>%
   )
 
 #exclude RFA3 and WSC4, those already included in UGV list
-dgv<-subset(local_clean, dist_from_DGV<10000 & dist_from_DGV>1)
+dgv<-subset(local_clean, dist_from_DGV<5000 & dist_from_DGV>1)
 
 # replace NAs with variant positions for variants outside of genes
 dgv_2 <- dgv %>%
@@ -74,14 +74,11 @@ dgv_2 <- dgv %>%
     )
   )
 
-View(dgv_2)
 
 ## merge back together
 variants<-rbind(ugv_2, dgv_2)
 variants$variant_positions<-as.numeric(variants$variant_positions)
-View(variants)
-nrow(variants)
-View(ann)
+
 # next combine with annotations for each chrom and pos
 # then look for other gene variants for those genes that are also within 10kb...
 
@@ -91,9 +88,6 @@ ann_var_i<-merge(variants, ann_i, by.x = c("Chromosome", "variant_positions"), b
 
 all_var<-rbind(ann_var, ann_var_i)
 all_var2<-all_var[,c("Chromosome", "variant_positions", "Gene.ID", "Gene.Name", "ANN")]
-View(all_var2)
-
-all_var2$ANN
 
 ###############################################################################
 # Look for ALL variants within 10kb of DEGS
@@ -105,8 +99,11 @@ sigs_05_f<-read.csv("temp/comparisons/sig_FIRSTannotation.csv")
 rna_list<-read.csv("data/clean/rnaseq_results_batch_sigs0.1_edited.csv") 
 ## will eventually need to re-generate this file, but for efficiency I just took it from the previous run
 
-
-find_it_10kb <- function(data, chrom_value, lowerPOS, upperPOS) {
+################################################################################
+#########lowerPOS is literally the smaller POS number...
+#####   so lowerPOS is upstream and upperPOS is downstream!!!!!!!       ######
+################################################################################
+find_it_1kb <- function(data, chrom_value, lowerPOS, upperPOS) {
   # Ensure POS is numeric
   data$POS <- as.numeric(data$POS)
   
@@ -116,21 +113,21 @@ find_it_10kb <- function(data, chrom_value, lowerPOS, upperPOS) {
   # Find positions in the main gene region
   range <- filtered_data[filtered_data$POS >= lowerPOS & filtered_data$POS <= upperPOS, ]
   
-  # Variants within 10kb downstream of lowerPOS
-  smaller_pos <- filtered_data[filtered_data$POS >= (upperPOS - 10000) & filtered_data$POS < upperPOS, ]
+  # Variants within 10kb upstream of lowerPOS
+  smaller_pos <- filtered_data[filtered_data$POS >= (lowerPOS - 5000) & filtered_data$POS < lowerPOS, ]
   
   # Variants within 10kb upstream of upperPOS
-  larger_pos <- filtered_data[filtered_data$POS > lowerPOS & filtered_data$POS <= (lowerPOS + 10000), ]
+  larger_pos <- filtered_data[filtered_data$POS > upperPOS & filtered_data$POS <= (upperPOS + 5000), ]
   
   # Combine results
   in_range <- if (nrow(range) > 0) paste(range$POS, collapse = "|") else NA
-  nearby_smaller <- if (nrow(smaller_pos) > 0) paste(smaller_pos$POS, collapse = "|") else NA
-  nearby_larger <- if (nrow(larger_pos) > 0) paste(larger_pos$POS, collapse = "|") else NA
+  upstream <- if (nrow(smaller_pos) > 0) paste(smaller_pos$POS, collapse = "|") else NA
+  downstream <- if (nrow(larger_pos) > 0) paste(larger_pos$POS, collapse = "|") else NA
   
   return(list(
     in_range = in_range,
-    nearby_smaller = nearby_smaller,
-    nearby_larger = nearby_larger
+    upstream = upstream,
+    downstream = downstream
   ))
 }
 
@@ -143,7 +140,7 @@ find_sigs_3 <- function(data, range_table) {
     upperPOS <- as.numeric(row["upperPOS"])
     
     # Call the `find_it` function
-    find_it_10kb(data, chrom_value, lowerPOS, upperPOS)
+    find_it_1kb(data, chrom_value, lowerPOS, upperPOS)
   })
   
   # Convert the results (list of lists) into a data frame
@@ -162,7 +159,7 @@ View(resultd)
 #-------------------------------------------------------------------------------
 ## write table
 
-write.csv(as.data.frame(resultd), file = "temp_tables/local_variants.csv", row.names = FALSE, quote=FALSE)
+#write.csv(as.data.frame(resultd), file = "temp_tables/local_variants_1kb.csv", row.names = FALSE, quote=FALSE)
 
 #-------------------------------------------------------------------------------
 ## Great, now separate each variant into its own row again...
@@ -172,7 +169,7 @@ library(tidyr)
 
 # Start with your full table: e.g., local_all
 local_all <- resultd %>%
-  pivot_longer(cols = c(in_range, nearby_smaller, nearby_larger),
+  pivot_longer(cols = c(in_range, upstream, downstream),
                names_to = "source",
                values_to = "variant_position") %>%
   separate_rows(variant_position, sep = "\\|\\s*") %>%
@@ -216,20 +213,20 @@ full_summary <- left_join(variant_counts, ann_counts, by = "Gene_Name")
 View(full_summary)
 
 variant_types <- full_summary %>%
-  mutate(variant_count = in_range + nearby_smaller + nearby_larger)
+  mutate(variant_count = in_range + upstream + downstream)
 
 variant_types <- variant_types %>%
-  mutate(variant_count = in_range + nearby_smaller + nearby_larger) %>%
-  select(-in_range, -nearby_smaller, -nearby_larger)
+  mutate(variant_count = in_range + upstream + downstream) %>%
+  select(-in_range, -upstream, -downstream)
 
 View(variant_types)
 
 #-------------------------------------------------------------------------------
 ## write table
 
-write.csv(as.data.frame(variant_types), file = "temp_tables/local_variant_types.csv", row.names = FALSE, quote=FALSE)
-write.csv(as.data.frame(full_summary), file = "temp_tables/local_variant_full_summary.csv", row.names = FALSE, quote=FALSE)
-write.csv(as.data.frame(ann_local_var), file = "temp_tables/local_variants_ann.csv", row.names = FALSE, quote=FALSE)
+#write.csv(as.data.frame(variant_types), file = "temp_tables/local_variant_types_1kb.csv", row.names = FALSE, quote=FALSE)
+#write.csv(as.data.frame(full_summary), file = "temp_tables/local_variant_full_summary_1kb.csv", row.names = FALSE, quote=FALSE)
+#write.csv(as.data.frame(ann_local_var), file = "temp_tables/local_variants_ann_1kb.csv", row.names = FALSE, quote=FALSE)
 
 #-------------------------------------------------------------------------------
 ## summarize variant types
@@ -262,5 +259,5 @@ categorized_summary <- variant_types %>%
          -downstream_gene_variant,
          -frameshift_variant)
 
-write.csv(as.data.frame(categorized_summary), file = "temp_tables/local_variants_table.csv", row.names = FALSE, quote=FALSE)
+#write.csv(as.data.frame(categorized_summary), file = "temp_tables/local_variants_table_1kb.csv", row.names = FALSE, quote=FALSE)
 

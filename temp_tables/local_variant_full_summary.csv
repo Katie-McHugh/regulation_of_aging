@@ -1,4 +1,4 @@
-Gene_Name,nearby_larger,nearby_smaller,in_range,conservative_inframe_insertion,disruptive_inframe_deletion,disruptive_inframe_insertion,missense_variant,upstream_gene_variant,downstream_gene_variant,synonymous_variant,frameshift_variant
+Gene_Name,downstream,upstream,in_range,conservative_inframe_insertion,disruptive_inframe_deletion,disruptive_inframe_insertion,missense_variant,upstream_gene_variant,downstream_gene_variant,synonymous_variant,frameshift_variant
 AHP1,10,0,0,1,2,1,6,0,0,0,0
 CCW12,10,0,0,1,2,1,6,0,0,0,0
 DIA4,3,0,0,0,0,0,0,3,0,0,0
