@@ -10,7 +10,7 @@ selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.1.csv", row.names
 selected_genes_adj2<-read.csv("temp/transcriptome/RNA_genes_p<0.05.csv", row.names= "X")
 
 ### load in design file
-colData<-read.table("data/design.txt", header=TRUE, row.names = "sample")
+colData<-read.table("data/design_files/design.txt", header=TRUE, row.names = "sample")
 
 # change "old" to "aged"
 colData <- colData %>%
@@ -75,6 +75,8 @@ rownames(logfc_info) <- logfc_info$Gene_Name
 lfc_colors <- colorRampPalette(c("purple", "white", "darkgreen"))(100)
 # bM_colors<- colorRampPalette(c("white", "black"))(100)
 
+
+
 # Create a data frame for annotation, including LFC and BM
 annotation_row <- data.frame(
   LFC = logfc_info$log2FoldChange 
@@ -91,13 +93,15 @@ head(annotation_col)
 annotation_colors <- list(
   condition = age_colors,
   pair= subject_colors,
-  LFC = lfc_colors#,  # Use your color palette for LFC
+  LFC = lfc_colors #,  # Use your color palette for LFC
   # LBM = bM_colors
 )
 
 ### check that everything looks right
 all(rownames(annotation_row) == rownames(norm_adj_mat))  # Check if row names match
 all(rownames(annotation_col) == colnames(norm_adj_mat))
+
+View(logfc_info)
 
 #-------------------------------------------------------------------------------
 ## Plot heatmap
