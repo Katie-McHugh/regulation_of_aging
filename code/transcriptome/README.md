@@ -1,5 +1,38 @@
 
+##################################################################################
 ### Notes on TWAS Analysis
+##################################################################################
+
+### Table of Contents: 
+#---------------------------------------------------------------------------------------------------------------------------------------
+1) batch_adjust_DESEQ.R
+2) DGE_gene_lists.R
+3) heatmap.R
+4) rna_supp_table
+5) notes of generation of gene count matrix via CQLS server
+
+#---------------------------------------------------------------------------------------------------------------------------------------
+### 1) batch_adjust_DESEQ.R
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+#### Takes gene count matrix (generated in #5, "data/gene_count_matrix.txt") and corrects for batch effect between replicate group 1 and replicate group 2 using design file ("data/design.txt") using ComBatSeq (Zhang et al. 2020)
+
+#### Uses batch corrected gene count matrix to generate a DESEQ object ("temp/transcriptome/normalized_counts_deseq.csv" using DESeq2 (Love et al 2014) 
+
+#### "young" is used as the reference condition, so all logFC should be reflective of the difference in old populations in comparison to young (e.g. positive values indicate increased expression in aged, negative values indicate decreased expression in aged)
+
+#---------------------------------------------------------------------------------------------------------------------------------------
+### 2) DGE_gene_lists.R
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+#### Uses DESeq object to generate a list of differentially expressed genes using thresholds of p<0.05 and p<0.1. 
+
+#---------------------------------------------------------------------------------------------------------------------------------------
+### 3) heatmap.R
+#---------------------------------------------------------------------------------------------------------------------------------------
+
+#### Creates a heatmap using the pheatmap package (citation)
+#---------------------------------------------------------------------------------------------------------------------------------------
 
 #### Generation of gene count matrix
 
