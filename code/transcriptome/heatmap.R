@@ -1,5 +1,20 @@
+#############################################################################
 ### Generating DGE Heatmap
+#############################################################################
+
+#### Note about LFC figure legend: 
 #-------------------------------------------------------------------------------
+## Pheatmap's side color legend (the LFC bar) is an estimate, and by default it
+# will underestimate the labels assigned to the legend for the colors it uses
+# e.g., the legend doesn't capture the full range of values 
+# there is no way to manually correct pheatmap to tell it to re-assign 
+# the min and max to the ACTUAL min and max--so the scale of the LFC bar 
+# matches the data, but the actual values aren't perfect
+
+## Spent a long time trying to append an accurate legend, but it doesn't seem to
+# be possible using pheatmap
+#-------------------------------------------------------------------------------
+
 ## Load and Organize data
 
 ### Load normalized counts for visualization
