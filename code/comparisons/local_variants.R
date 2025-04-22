@@ -121,13 +121,13 @@ find_it_10kb <- function(data, chrom_value, lowerPOS, upperPOS) {
   
   # Combine results
   in_range <- if (nrow(range) > 0) paste(range$POS, collapse = "|") else NA
-  nearby_smaller <- if (nrow(smaller_pos) > 0) paste(smaller_pos$POS, collapse = "|") else NA
-  nearby_larger <- if (nrow(larger_pos) > 0) paste(larger_pos$POS, collapse = "|") else NA
+  upstream <- if (nrow(smaller_pos) > 0) paste(smaller_pos$POS, collapse = "|") else NA
+  downstream <- if (nrow(larger_pos) > 0) paste(larger_pos$POS, collapse = "|") else NA
   
   return(list(
     in_range = in_range,
-    nearby_smaller = nearby_smaller,
-    nearby_larger = nearby_larger
+    upstream = upstream,
+    downstream = downstream
   ))
 }
 
@@ -169,7 +169,7 @@ library(tidyr)
 
 # Start with your full table: e.g., local_all
 local_all <- resultd %>%
-  pivot_longer(cols = c(in_range, nearby_smaller, nearby_larger),
+  pivot_longer(cols = c(in_range, upstream, downstream),
                names_to = "source",
                values_to = "variant_position") %>%
   separate_rows(variant_position, sep = "\\|\\s*") %>%
@@ -213,11 +213,11 @@ full_summary <- left_join(variant_counts, ann_counts, by = "Gene_Name")
 View(full_summary)
 
 variant_types <- full_summary %>%
-  mutate(variant_count = in_range + nearby_smaller + nearby_larger)
+  mutate(variant_count = in_range + upstream + downstream)
 
 variant_types <- variant_types %>%
-  mutate(variant_count = in_range + nearby_smaller + nearby_larger) %>%
-  select(-in_range, -nearby_smaller, -nearby_larger)
+  mutate(variant_count = in_range + upstream + downstream) %>%
+  select(-in_range, -upstream, -downstream)
 
 View(variant_types)
 
