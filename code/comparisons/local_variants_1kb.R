@@ -31,7 +31,7 @@ ann_i <-ann_i %>%                                 #fix chr format
 #------------------------------------------------------------------------------
 
 ## filter for local variants
-local<-subset(rna, dist_from_UGV<5000 | dist_from_DGV <5000)
+local<-subset(rna, dist_from_UGV<1000 | dist_from_DGV <1000)
 local_data<-local[,c("Gene.ID", "Gene.Name", "Chromosome", "Start.Position", 
                       "End.Position", "variant_positions", 
                      "dist_from_UGV", "dist_from_DGV")]
@@ -47,7 +47,7 @@ local_clean <- local_data %>%
 # Find variant locations
 
 #split into UGV vs DGV
-ugv<-subset(local_clean, dist_from_UGV<5000)
+ugv<-subset(local_clean, dist_from_UGV<1000)
 
 # replace NAs with variant positions for variants outside of genes
 ugv_2 <- ugv %>%
@@ -61,7 +61,7 @@ ugv_2 <- ugv %>%
   )
 
 #exclude RFA3 and WSC4, those already included in UGV list
-dgv<-subset(local_clean, dist_from_DGV<5000 & dist_from_DGV>1)
+dgv<-subset(local_clean, dist_from_DGV<1000 & dist_from_DGV>1)
 
 # replace NAs with variant positions for variants outside of genes
 dgv_2 <- dgv %>%
@@ -114,10 +114,10 @@ find_it_1kb <- function(data, chrom_value, lowerPOS, upperPOS) {
   range <- filtered_data[filtered_data$POS >= lowerPOS & filtered_data$POS <= upperPOS, ]
   
   # Variants within 10kb upstream of lowerPOS
-  smaller_pos <- filtered_data[filtered_data$POS >= (lowerPOS - 5000) & filtered_data$POS < lowerPOS, ]
+  smaller_pos <- filtered_data[filtered_data$POS >= (lowerPOS - 1000) & filtered_data$POS < lowerPOS, ]
   
   # Variants within 10kb upstream of upperPOS
-  larger_pos <- filtered_data[filtered_data$POS > upperPOS & filtered_data$POS <= (upperPOS + 5000), ]
+  larger_pos <- filtered_data[filtered_data$POS > upperPOS & filtered_data$POS <= (upperPOS + 1000), ]
   
   # Combine results
   in_range <- if (nrow(range) > 0) paste(range$POS, collapse = "|") else NA
