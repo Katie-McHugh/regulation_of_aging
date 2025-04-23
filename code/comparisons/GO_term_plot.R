@@ -6,27 +6,27 @@
 ## Load in packages
 #------------------------------------------------------------------------------
 
-# if (!require("BiocManager", quietly = TRUE))
-#   install.packages("BiocManager")
+ if (!require("BiocManager", quietly = TRUE))
+   install.packages("BiocManager")
 
-# BiocManager::install("pathview")
-# BiocManager::install("enrichplot")
-# #library(enrichplot)
-# 
-# #BiocManager::install("org.Sc.sgd.db")
-# 
-# # Install biomaRt package (if not already installed)
-# BiocManager::install("biomaRt")
-# 
-# # Load the biomaRt library
-# library(biomaRt)
-# 
-# # Install the necessary package
-# #BiocManager::install("org.Sc.eg.db")
-# # Load the package
-# #library(org.Sc.eg.db)
-# 
-# 
+ BiocManager::install("pathview")
+ BiocManager::install("enrichplot")
+ #library(enrichplot)
+
+ #BiocManager::install("org.Sc.sgd.db")
+
+ # Install biomaRt package (if not already installed)
+ BiocManager::install("biomaRt")
+
+ # Load the biomaRt library
+ library(biomaRt)
+
+ # Install the necessary package
+ BiocManager::install("org.Sc.eg.db")
+ # Load the package
+ library(org.Sc.eg.db)
+
+
 # #------------------------------------------------------------------------------
 # ## Load in gene lists #make sure using only lists of genic variants
 # #------------------------------------------------------------------------------
@@ -228,3 +228,137 @@ ggsave(filename = "figures/FigureXX_GO_sepList.jpeg", plot = plot4 , width = 8, 
 
 ### maybe try separating by process vs component vs etc with different gene 
 ## lists as the different colors
+#------------------------------------------------------------------------------
+
+
+### Version 2
+###############################################################################
+#### Use genes implicated in both lists instead of either list
+###############################################################################
+
+library(dplyr)
+library(ggplot2)
+library(stringr)
+
+#------------------------------------------------------------------------------
+# Try to load in GO-term data
+#------------------------------------------------------------------------------
+go_c<-read.table("results/GO_analyses/Genic/GO_genic_component.txt", 
+                 header=TRUE, sep = "\t", quote = "")
+
+go_p <- read.table("results/GO_analyses/Genic/GO_genic_process.txt", 
+                   header = TRUE, sep = "\t", quote = "")
+
+go_overlap_p<-read.table("results/GO_analyses/Overlap_List/Overlap_list_process.txt", 
+                      header=TRUE, sep = "\t", quote = "")
+
+
+
+## add column identifiers to combine lists
+go_c$gene_list<-"DNA"
+go_p$gene_list<-"DNA"
+go_c$ann<-"component"
+go_p$ann<-"process"
+go_overlap_p$gene_list<- "both"
+go_overlap_p$ann<-"process"
+
+
+go_dna <- bind_rows(go_c, go_p, go_overlap_p)
+View(go_dna)
+
+#------------------------------------------------------------------------------
+# Create GO-plots
+#------------------------------------------------------------------------------
+
+DNA_c_plot<-ggplot(go_c, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+  geom_point() +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(x = "GO Terms", y = "P-value", title = "GO_dna_component") +
+  theme_minimal() +
+  coord_flip() + # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+DNA_p_plot<-ggplot(go_p, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+  geom_point() +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(x = "GO Terms", y = "P-value", title = "GO DNA process") +
+  theme_minimal() +
+  coord_flip() + # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot(DNA_p_plot)
+plot(DNA_c_plot)
+
+## combined plot
+
+# Create the plot
+c_plot<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
+                           size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+  geom_point(alpha = 0.5) +
+  scale_color_gradient(low = "blue", high = "red") +
+  labs(x = "GO Terms", y = "Corrected P-value", 
+       title = "GO Term Enrichment for Gene List 1 (Component & Function)") +
+  theme_minimal() +
+  coord_flip() +  # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  facet_wrap(~ ann, scales = "free_y") +  # Separate Component vs Function
+  theme_light() +
+  theme(strip.text = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 10))
+
+plot(c_plot)
+
+## same plot, different colors
+
+# Create the plot
+plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
+                          size = NUM_LIST_ANNOTATIONS, color = gene_list)) +
+  geom_point(alpha = 0.5) +  
+  scale_color_manual(values = c("DNA" = "blue", "Shared" = "red")) +  # Custom colors for Component and Function
+  labs(x = "GO Terms", y = "Corrected P-value", 
+       title = "GO Term Enrichment") +
+  theme_minimal() +
+  coord_flip() +  # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_size_continuous(name = "Number of Annotated Genes")  +
+  facet_wrap(~ ann, scales = "free_y")  +
+  theme_light() +
+  theme(strip.text = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 10))
+
+plot(plot2)
+ggsave(filename = "figures/FigureXX_GO_sepType_v2.jpeg", plot = plot2 , width = 12, height = 4)
+
+
+### different style
+
+# relevel lists: 
+go_dna$gene_list<-as.factor(go_dna$gene_list)
+go_dna <- go_dna %>%
+  mutate(gene_list = recode(gene_list, "both" = "Shared"))
+go_dna$gene_list<-relevel(go_dna$gene_list, ref="DNA")
+
+plot3<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
+                          size = NUM_LIST_ANNOTATIONS, color = ann)) +
+  geom_point(alpha = 1) +  
+  scale_color_manual(name = "GO-Term \nCategory", values = c("component" = "blue", "process" = "red", "function"="goldenrod4")) +  # Custom colors for Component and Function
+  labs(x = "GO Terms", y = "Corrected P-value", 
+       title = "GO Term Enrichment") +
+  theme_minimal() +
+  coord_flip() +  # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +  # Wrap y-axis labels
+  scale_size_continuous(name = "Number of \nAnnotated \nGenes")  +
+  facet_wrap(~gene_list, scales = "fixed")  + 
+  theme_light() +
+  theme(strip.text = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 10))
+
+plot(plot3)
+
+library(RColorBrewer)
+plot4 <- plot3 + scale_color_manual(values = brewer.pal(3, "Dark2"))
+plot(plot4)
+
+ggsave(filename = "figures/FigureXX_GO_sepList_v2.jpeg", plot = plot4 , width = 8, height = 7)
+
+### maybe try separating by process vs component vs etc with different gene 
+## lists as the different colors
+
