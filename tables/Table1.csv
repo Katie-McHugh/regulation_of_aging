@@ -1,0 +1,21 @@
+Gene Variants,,Variant Locations,,,Variant Types,,,,
+Gene_Name,total_variants,downstream,upstream,within_transcript,missense_variants,synonymous_variants,frameshift_variants,inframe indels,intergenic
+AHP1,10,10,0,0,6,0,0,4,0
+CCW12,10,10,0,0,6,0,0,4,0
+DIA4,3,3,0,0,0,0,0,0,3
+DNM1,1,1,0,0,0,0,0,0,1
+EKI1,2,2,0,0,0,1,0,1,0
+FIT2,14,1,13,0,4,3,1,0,6
+MRP1,1,0,1,0,0,1,0,0,0
+RFA3,39,15,20,4,10,17,0,0,12
+SPG5,1,1,0,0,0,0,0,0,1
+TOS2,1,0,1,0,0,0,0,0,1
+WSC4,14,10,2,2,4,10,0,0,0
+YDR543C,1,0,1,0,0,0,0,0,1
+YJL218W,26,26,0,0,7,18,0,0,1
+YNR066C,1,0,1,0,0,1,0,0,0
+,,,,,,,,,
+"Table 1: Differentially expressed genes with significant gene variants located within 10kb of the gene transcript (including those within the transcript itself). The total number of variants within a range 10kb upstream to 10kb downstream of the gene is shown.  Of these variants, the number s located upstream, downstream, and within the gene is described.  Furthermore,  the identities of each variant type are described.",,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
