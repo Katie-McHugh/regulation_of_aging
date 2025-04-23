@@ -167,7 +167,6 @@ write.csv(as.data.frame(resultd), file = "temp_tables/local_variants.csv", row.n
 library(dplyr)
 library(tidyr)
 
-# Start with your full table: e.g., local_all
 local_all <- resultd %>%
   pivot_longer(cols = c(in_range, upstream, downstream),
                names_to = "source",
@@ -249,7 +248,6 @@ categorized_summary <- variant_types %>%
     )), na.rm = TRUE),
     frameshift      = frameshift_variant,
   ) %>%
-  # (if you really want to drop the original per‐type columns:)
   select(-missense_variant, 
          -synonymous_variant,
          -conservative_inframe_insertion,
