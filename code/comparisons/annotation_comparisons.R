@@ -6,6 +6,7 @@
 
 ### significant data
 sigs_05_f<-read.csv("temp/comparisons/sig_FIRSTannotation.csv")
+View(sigs_05_f)
 sigs_05_f<-subset(sigs_05_f, TYPE=="SNP")
 sigs_05_sep<-read.csv("temp/comparisons/sig_ALLannotations.csv")
 sigs_05_sep<-subset(sigs_05_sep, TYPE=="SNP")
