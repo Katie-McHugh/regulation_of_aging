@@ -142,7 +142,9 @@ View(go_dna)
 # Create GO-plots
 #------------------------------------------------------------------------------
 
-DNA_c_plot<-ggplot(go_c, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+DNA_c_plot<-ggplot(go_c, aes(x = reorder(TERM, -CORRECTED_PVALUE), 
+                             y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, 
+                             color = CORRECTED_PVALUE)) +
   geom_point() +
   scale_color_gradient(low = "blue", high = "red") +
   labs(x = "GO Terms", y = "P-value", title = "GO_dna_component") +
@@ -150,7 +152,9 @@ DNA_c_plot<-ggplot(go_c, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED
   coord_flip() + # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-DNA_p_plot<-ggplot(go_p, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+DNA_p_plot<-ggplot(go_p, aes(x = reorder(TERM, -CORRECTED_PVALUE), 
+                             y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, 
+                             color = CORRECTED_PVALUE)) +
   geom_point() +
   scale_color_gradient(low = "blue", high = "red") +
   labs(x = "GO Terms", y = "P-value", title = "GO DNA process") +
@@ -183,7 +187,7 @@ plot(c_plot)
 plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
                           size = NUM_LIST_ANNOTATIONS, color = gene_list)) +
   geom_point(alpha = 0.5) +  
-  scale_color_manual(values = c("DNA" = "blue", "both" = "red")) +  # Custom colors for Component and Function
+  scale_color_manual(values = c("DNA" = "blue", "both" = "red")) +              # Custom colors for Component and Function
   labs(x = "GO Terms", y = "Corrected P-value", 
        title = "GO Term Enrichment") +
   theme_minimal() +
@@ -192,7 +196,8 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PV
   scale_size_continuous(name = "Number of Annotated Genes")  +
   facet_wrap(~ ann, scales = "free_y")  
 plot(plot2)
-ggsave(filename = "figures/FigureXX_GO_sepType.jpeg", plot = plot2 , width = 12, height = 4)
+ggsave(filename = "figures/FigureXX_GO_sepType.jpeg", plot = plot2 , 
+       width = 12, height = 4)
 
 
 ### different style
@@ -206,17 +211,22 @@ go_dna$gene_list<-relevel(go_dna$gene_list, ref="DNA")
 plot3<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
                           size = NUM_LIST_ANNOTATIONS, color = ann)) +
   geom_point(alpha = 1) +  
-  scale_color_manual(name = "GO-Term \nCategory", values = c("component" = "blue", "process" = "red", "function"="goldenrod4")) +  # Custom colors for Component and Function
+  scale_color_manual(name = "GO-Term \nCategory", 
+                     values = c("component" = "blue", 
+                                "process" = "red",
+                                "function"="goldenrod4")) +                      # Custom colors for Component and Function
   labs(x = "GO Terms", y = "Corrected P-value", 
        title = "GO Term Enrichment") +
   theme_minimal() +
   coord_flip() +  # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +  # Wrap y-axis labels
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +              # Wrap y-axis labels
   scale_size_continuous(name = "Number of \nAnnotated \nGenes")  +
   facet_wrap(~gene_list, scales = "fixed")  + 
   theme_light() +
-  theme(strip.text = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 10))
+  theme(strip.text = element_text(size = 14, face = "bold"), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 10))
 
 plot(plot3)
 
@@ -270,20 +280,24 @@ View(go_dna)
 # Create GO-plots
 #------------------------------------------------------------------------------
 
-DNA_c_plot<-ggplot(go_c, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+DNA_c_plot<-ggplot(go_c, aes(x = reorder(TERM, -CORRECTED_PVALUE), 
+                             y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, 
+                             color = CORRECTED_PVALUE)) +
   geom_point() +
   scale_color_gradient(low = "blue", high = "red") +
   labs(x = "GO Terms", y = "P-value", title = "GO_dna_component") +
   theme_minimal() +
-  coord_flip() + # Flip coordinates to make the plot horizontal
+  coord_flip() +                                                                # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-DNA_p_plot<-ggplot(go_p, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, color = CORRECTED_PVALUE)) +
+DNA_p_plot<-ggplot(go_p, aes(x = reorder(TERM, -CORRECTED_PVALUE),
+                             y = CORRECTED_PVALUE, size = NUM_LIST_ANNOTATIONS, 
+                             color = CORRECTED_PVALUE)) +
   geom_point() +
   scale_color_gradient(low = "blue", high = "red") +
   labs(x = "GO Terms", y = "P-value", title = "GO DNA process") +
   theme_minimal() +
-  coord_flip() + # Flip coordinates to make the plot horizontal
+  coord_flip() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 plot(DNA_p_plot)
@@ -299,33 +313,43 @@ c_plot<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_P
   labs(x = "GO Terms", y = "Corrected P-value", 
        title = "GO Term Enrichment for Gene List 1 (Component & Function)") +
   theme_minimal() +
-  coord_flip() +  # Flip coordinates to make the plot horizontal
+  coord_flip() +                                                                # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  facet_wrap(~ ann, scales = "free_y") +  # Separate Component vs Function
+  facet_wrap(~ ann, scales = "free_y") +                                        # Separate Component vs Function
   theme_light() +
-  theme(strip.text = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 10))
+  theme(strip.text = element_text(size = 14, face = "bold"), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 10))
 
 plot(c_plot)
 
 ## same plot, different colors
 
+#if one isn't showing up, the name is probably wrong...this is how to fix it
+go_dna <- go_dna %>%
+  mutate(gene_list = recode(gene_list, "both" = "Shared"))                       #if one isn'y showing up, the name is probably wrong...this is how to fix it
+
 # Create the plot
-plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
+plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
+                          y = CORRECTED_PVALUE, 
                           size = NUM_LIST_ANNOTATIONS, color = gene_list)) +
   geom_point(alpha = 0.5) +  
-  scale_color_manual(values = c("DNA" = "blue", "Shared" = "red")) +  # Custom colors for Component and Function
+  scale_color_manual(values = c("DNA" = "blue", "Shared" = "red")) +             # Custom colors for Component and Function 
   labs(x = "GO Terms", y = "Corrected P-value", 
        title = "GO Term Enrichment") +
   theme_minimal() +
   coord_flip() +  # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_size_continuous(name = "Number of Annotated Genes")  +
-  facet_wrap(~ ann, scales = "free_y")  +
+  scale_size_continuous(name = "Number of \nAnnotated Genes")  +
+  facet_wrap(~ ann, scales = "free_y", dir = "v")  +                             #dir v stacks vertically instead of horizontally
   theme_light() +
-  theme(strip.text = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 10))
+  theme(strip.text = element_text(size = 14, face = "bold"), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 10))
 
 plot(plot2)
-ggsave(filename = "figures/FigureXX_GO_sepType_v2.jpeg", plot = plot2 , width = 12, height = 4)
+ggsave(filename = "figures/FigureXX_GO_sepType_v3.jpeg", plot = plot2 ,
+       width = 7, height = 7) 
 
 
 ### different style
@@ -339,17 +363,22 @@ go_dna$gene_list<-relevel(go_dna$gene_list, ref="DNA")
 plot3<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
                           size = NUM_LIST_ANNOTATIONS, color = ann)) +
   geom_point(alpha = 1) +  
-  scale_color_manual(name = "GO-Term \nCategory", values = c("component" = "blue", "process" = "red", "function"="goldenrod4")) +  # Custom colors for Component and Function
+  scale_color_manual(name = "GO-Term \nCategory", 
+                     values = c("component" = "blue", 
+                                "process" = "red", 
+                                "function"="goldenrod4")) +                      # Custom colors for Component and Function
   labs(x = "GO Terms", y = "Corrected P-value", 
        title = "GO Term Enrichment") +
   theme_minimal() +
   coord_flip() +  # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +  # Wrap y-axis labels
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +               # Wrap y-axis labels
   scale_size_continuous(name = "Number of \nAnnotated \nGenes")  +
   facet_wrap(~gene_list, scales = "fixed")  + 
   theme_light() +
-  theme(strip.text = element_text(size = 14, face = "bold"), axis.text.y = element_text(size = 10), axis.text.x = element_text(size = 10))
+  theme(strip.text = element_text(size = 14, face = "bold"), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 10))
 
 plot(plot3)
 
