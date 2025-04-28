@@ -19,7 +19,9 @@ library(patchwork)
 
 # Read in data
 ```{r}
-cf =read.csv("CMHtest_cov_freq_matrix.csv", header= TRUE)
+cf =read.csv("data/clean/CMHtest_cov_freq_matrix.csv", header= TRUE)
+data<-read.table("data/raw/annotated_indels.txt")
+
 ```
 
 # Creating coverage matrix
