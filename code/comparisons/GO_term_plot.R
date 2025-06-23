@@ -20,11 +20,14 @@
 
  # Load the biomaRt library
  library(biomaRt)
+ library(ggplot2)
+ library(stringr)
+ library(stringi)
 
- # Install the necessary package
- BiocManager::install("org.Sc.eg.db")
- # Load the package
- library(org.Sc.eg.db)
+ # # Install the necessary package
+ # BiocManager::install("org.Sc.eg.db")
+ # # Load the package
+ # library(org.Sc.eg.db)
 
 
 # #------------------------------------------------------------------------------
@@ -133,9 +136,9 @@ go_both_f$ann<-"function"
 go_both_c$ann<-"component"
 
 
+View(go_c)
 
-
-go_dna <- bind_rows(go_c, go_p, go_both_p, go_both_c, go_both_f)
+go_dna <- rbind(go_c, go_p, go_both_p, go_both_c, go_both_f)
 View(go_dna)
 
 #------------------------------------------------------------------------------
@@ -334,9 +337,8 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
                           y = CORRECTED_PVALUE, 
                           size = NUM_LIST_ANNOTATIONS, color = gene_list)) +
   geom_point(alpha = 0.5) +  
-  scale_color_manual(values = c("DNA" = "blue", "Shared" = "red")) +             # Custom colors for Component and Function 
-  labs(x = "GO Terms", y = "Corrected P-value", 
-       title = "GO Term Enrichment") +
+  scale_color_manual(values = c("DNA" = "steelblue", "Shared" = "navy")) +             # Custom colors for Component and Function 
+  labs(x = "GO Terms", y = "Corrected P-value") +
   theme_minimal() +
   coord_flip() +  # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
