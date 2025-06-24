@@ -239,6 +239,39 @@ plot(plot4)
 
 ggsave(filename = "figures/FigureXX_GO_sepList.jpeg", plot = plot4 , width = 8, height = 7)
 
+
+######### PLOT 3 but DNA list only
+View(go_dna)
+go_dna2<-subset(go_dna, gene_list == "DNA")
+View(go_dna2)
+
+plot5<-ggplot(go_dna2, aes(x = reorder(TERM, -CORRECTED_PVALUE), y = CORRECTED_PVALUE, 
+                          size = NUM_LIST_ANNOTATIONS, color = ann)) +
+  geom_point(alpha = 1) +  
+  scale_color_manual(name = "GO-Term \nCategory", 
+                     values = c("component" = "blue", 
+                                "process" = "red",
+                                "function"="goldenrod4")) +                      # Custom colors for Component and Function
+  labs(x = "GO Terms", y = "Corrected P-value", 
+       title = "GO Term Enrichment") +
+  theme_minimal() +
+  coord_flip() +  # Flip coordinates to make the plot horizontal
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) +              # Wrap y-axis labels
+  scale_size_continuous(name = "Number of \nAnnotated \nGenes")  +
+  facet_wrap(~gene_list, scales = "fixed")  + 
+  theme_light() +
+  theme(strip.text = element_text(size = 14, face = "bold"), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 10))
+
+plot(plot5)
+
+library(RColorBrewer)
+plot6 <- plot5 + scale_color_manual(values = brewer.pal(3, "Dark2"))
+
+ggsave(filename = "figures/FigureXX_GO_sepList_dna_only.jpeg", plot = plot6 , width = 5, height = 6)
+
 ### maybe try separating by process vs component vs etc with different gene 
 ## lists as the different colors
 #------------------------------------------------------------------------------
