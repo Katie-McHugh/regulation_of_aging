@@ -19,7 +19,14 @@ top <- 30
 bottom <- 0
 
 # Open the PDF device with the specified file path
-pdf(file = "figures/indels&SNPs_nuclear_manhattan.pdf", height = 5, width = 10)
+#pdf(file = "figures/indels&SNPs_nuclear_manhattan_dpi.pdf", height = 5, width = 10)
+?export
+
+install.packages("svglite")
+library(svglite)
+svglite::svglite("figures/indels_SNPs_nuclear_manhattan.svg", width = 10, height = 5)
+
+
 
 par(mar = c(4, 5, 3, 3) + 0.3)
 

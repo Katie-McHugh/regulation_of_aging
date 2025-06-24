@@ -17,6 +17,7 @@ snps4$logFWER = (-log10(snps4$fwer))
 
 # Open the PDF device with the specified file path
 pdf(file = "temp_figs/nuclearSNPs_ManhattanPlot.pdf", height = 5, width = 18)
+?pdf()
 
 x=snps4$MB
 y=snps4$logp
