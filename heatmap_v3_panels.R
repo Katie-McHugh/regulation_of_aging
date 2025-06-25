@@ -1,4 +1,15 @@
 #############################################################################
+### Heatmap V3: Panels by function # complex heatmap
+#############################################################################
+
+# if (!requireNamespace("BiocManager", quietly = TRUE))
+#   install.packages("BiocManager")
+# BiocManager::install("ComplexHeatmap")
+
+library(ComplexHeatmap)
+library(circlize)
+library(dplyr)
+
 ### Generating DGE Heatmap
 #############################################################################
 
@@ -122,10 +133,7 @@ View(logfc_info)
 ## Plot heatmap
 ### p < 0.1
 
-#pdf("temp_figs/heatmap_DESEQadj_p<0.1.pdf", width = 8, height = 12)
-jpeg("figures/heatmap_DESEQadj_p<0.01.jpeg", width = 12, height = 18, units = "in", res = 300, quality = 85)
-
-pheatmap(
+heatmap<-pheatmap(
   norm_adj_mat, # Scale the data by rows (genes)
   cluster_rows = TRUE,
   cluster_cols = FALSE,
@@ -138,5 +146,73 @@ pheatmap(
   fontsize_row = 10, # Adjust the font size of row names
   fontsize_col = 10, # Adjust the font size of column names
   cellheight = 12)
+heatmap
 
+#-------------------------------------------------------------------------------
+## Convert to complex heatmap
+
+c_heatmap<-ComplexHeatmap::pheatmap(
+  norm_adj_mat, # Scale the data by rows (genes)
+  cluster_rows = TRUE,
+  cluster_cols = FALSE,
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+  annotation_row = annotation_row,
+  annotation_col = annotation_col,
+  annotation_colors = annotation_colors,
+  annotation_legend = TRUE, 
+  fontsize_row = 10, 
+  fontsize_col = 10,
+  cellheight = 12)
+
+ComplexHeatmap::pheatmap(
+  norm_adj_mat, # Scale the data by rows (genes)
+  cluster_rows = TRUE,
+  cluster_cols = FALSE,
+  show_rownames = TRUE,
+  show_colnames = FALSE,
+  annotation_row = annotation_row,
+  annotation_col = annotation_col,
+  annotation_colors = annotation_colors,
+  annotation_legend = TRUE, 
+  fontsize_row = 10, 
+  fontsize_col = 10,
+  cellheight = 12)
+print(c_heatmap)
+
+
+pdf("test_heatmap.pdf", width=8, height=10)
+draw(c_heatmap)
 dev.off()
+quartz()
+draw(c_heatmap)
+
+
+#---------------------------------------------------------------------------
+## subset by panel 
+
+## List genes belonging to each category ## some are listed more than once
+group_list<-list(
+"dna"=c("CLB6","UBC13", "CDC45", "RFA3", "MHR1", "MAG1", "ACT1", "POL12"),
+"ion"=c("ATX1", "ATX2", "AHP1", "FIT2", "VMA10", "DNM1", "CTO1", "ISD11"),
+"biosynth"=c("MET17", "EKI1", "CYB5", "ERG25", "IPT1", "TMA17"),
+"protein"=c("CPR6", "SOM1", "EMA19", "SSA1", "SUE1", "TOS2","WSC4", "VID25", "SPG5", "MKK1","RPN6"),
+"trans"=c("AIR2", "OPI1", "BAS1", "RRP36", "DIA4", "GCR1", "TRM5", "TOD6", "PCL5", "SUI2", "MRP1", "NDT80"),
+"other"=c("YRO2", "PER33", "ARI1", "YDR543C", "YNR066C", "IRC18", "JIP4", "EFM4", "YJL218W", "COA2", "ARO10", "SPS4", "SOK1", "CWP1","CCW12","YLR363W-A")
+)
+
+gene_group <- unlist(group_list)
+group_labels <- rep(names(group_list), lengths(group_list))
+names(group_labels) <- gene_group
+head(gene_group)
+
+
+### subset by panel
+dna<- norm_sigs2[norm_sigs2$Gene_Name %in% dna_list, ]
+ion<- norm_sigs2[norm_sigs2$Gene_Name %in% ion_list, ]
+biosynth<-norm_sigs2[norm_sigs2$Gene_Name %in% biosynth_list, ]
+protein<-norm_sigs2[norm_sigs2$Gene_Name %in% protein_list, ]
+trans<-norm_sigs2[norm_sigs2$Gene_Name %in% trans_list, ]
+structural<-norm_sigs2[norm_sigs2$Gene_Name %in% structural_list, ]
+other<-norm_sigs2[norm_sigs2$Gene_Name %in% other_list, ]
+
