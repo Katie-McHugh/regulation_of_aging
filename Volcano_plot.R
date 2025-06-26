@@ -41,8 +41,10 @@ p<-EnhancedVolcano(res_adj2,
                 x = 'log2FoldChange',
                 y = 'padj',
                 title = 'All DEGs',
-                FCcutoff = 0.5,
+                FCcutoff = TRUE,
+                #col = c("red", "grey70", "red", "red"), #control point colors
                 pCutoff = 0.1,
+                cutoffLineCol = "grey50",
                 pointSize = 3.0,
                 labSize = 2.0, 
                 selectLab = NA,
@@ -60,6 +62,7 @@ p2<-p +
   geom_text_repel(data = selected_data,
                   aes(x = log2FoldChange, y = -log10(padj), label = Gene_Name),
                   size = 3,
+                  fontface = "bold",
                   box.padding = 0.8,          # More space around label box
                   point.padding = 1,        # More space around data point
                   segment.color = "black",    # Keep connectors
@@ -67,13 +70,24 @@ p2<-p +
                   min.segment.length = 0.2,   # Avoid tiny/tangled segments
                   max.overlaps = Inf,         # Avoid skipping labels due to overlap
                   force = 3,                # Stronger repulsion (try 1–5)
-                  nudge_y = 0.2              # Optional vertical nudge 
+                  nudge_y = 0.1              # Optional vertical nudge 
   ) +
   theme(panel.grid.minor = element_blank()) +
-  theme(panel.grid.major = element_blank())
+  theme(panel.grid.major = element_blank())+
+  labs(title = NULL, subtitle = NULL, caption = NULL) +  # Remove title, subtitle, caption
+  theme(legend.position = "none")         
 
 
 plot(p2)
+
+#pdf("temp_figs/Volcano_DESEQadj_p<0.1.pdf", width = 8, height = 6)
+pdf("temp_figs/Volcano_DESEQp<0.1.pdf", width = 4, height = 3)
+p2
+dev.off()
+
+pdf("temp_figs/Volcano_DESEQp<0.1_v2.pdf", width = 4, height = 3)
+p2
+dev.off()
 
 # P<0.1
 EnhancedVolcano(selected_genes_adj,
