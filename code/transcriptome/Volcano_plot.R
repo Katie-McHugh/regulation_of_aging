@@ -17,10 +17,12 @@ library(ggplot2)
 ## Load in Data
 #------------------------------------------------------------------------------
 ### Load normalized counts for visualization
+View(norm_dds)
+norm_dds<-read.csv("temp/transcriptome/normalized_counts_deseq.csv")
 res_adj<-read.csv("temp/transcriptome/rnaseq_results_batch_adjusted.csv", header=TRUE)
 selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
 gene_key<- read.table("temp/transcriptome/key_geneIDtoName.txt")
-View(res_adj)
+
 ## Simple Volcano Plot
 #------------------------------------------------------------------------------
 ### Load list of genes for headmap
@@ -34,32 +36,21 @@ labs <- ifelse(res_adj2$Gene_Name %in% selected_genes, res_adj2$Gene_Name, NA)
 
 # ALL DEGs
 
-custom_colors <- ifelse(res_adj2$log2FoldChange < 0, "steelblue", "red")
-names(custom_colors) <- rownames(res_adj2)
-
-stopifnot(all(rownames(res) %in% names(custom_colors)))
-
 p<-EnhancedVolcano(res_adj2,
                 lab = labs,
                 x = 'log2FoldChange',
                 y = 'padj',
                 title = 'All DEGs',
-                FCcutoff = FALSE,
-                #col = c("green", "steelblue", "orange", "red"), #control point colors
+                FCcutoff = TRUE,
+                #col = c("red", "grey70", "red", "red"), #control point colors
                 pCutoff = 0.1,
-                colCustom = custom_colors,
-                colAlpha = 0.7,
-                cutoffLineCol = "black",
+                cutoffLineCol = "grey50",
                 pointSize = 3.0,
                 labSize = 2.0, 
                 selectLab = NA,
                 xlim = c(-2, 2), 
                 ylim=c(0, 3)
                 )
-
-
-
-plot(p)
 
 selected_data <- subset(res_adj2, Gene_Name %in% selected_genes)
 
@@ -94,7 +85,7 @@ pdf("temp_figs/Volcano_DESEQp<0.1.pdf", width = 4, height = 3)
 p2
 dev.off()
 
-pdf("temp_figs/Volcano_DESEQp<0.1_v4.pdf", width = 8, height = 6)
+pdf("temp_figs/Volcano_DESEQp<0.1_v2.pdf", width = 4, height = 3)
 p2
 dev.off()
 
