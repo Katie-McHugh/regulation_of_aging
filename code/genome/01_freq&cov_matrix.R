@@ -8,20 +8,22 @@ snps<-read.csv("data/clean/GWAS_SNPS_cov20_maf05.csv")
 
 
 #------------------------------------------------------------------------------
-snps5<- snps %>%
-  select(-starts_with("alt_"))
-snps6 <- snps5[, -c(29:34)]
+cov<- snps %>%
+   select(-starts_with("alt_"))
+View(cov)
+snps6 <- snps[, -c(3:4)]
+View(snps6)
 
 ## Data filtering: frequencies
-freq <- apply(snps3[,5:54],1,function(x) (x[seq(1,48,2)]/(x[seq(2,49,2)]))) 
+freq <- apply(snps6[,3:50],1,function(x) (x[seq(1,48,2)]/(x[seq(2,49,2)]))) 
 freq2 <- t(freq)  # this transposes the new matrix
-freq3 <- cbind(snps3[,1:2],freq2)  
-View(freq3)
-freq3<-freq3[, -c(1:2)]
+freq3 <- cbind(snps5[,1:2],freq2)  
+View(freq4)
+freq4<-freq3[, -c(1:2)]
 
-cov_freq<-cbind(snps6, freq3)
-cov_freq1<-cov_freq[,-c(30:31)]
-cov_freq2<-cov_freq1[,-c(3:4)]
+cov_freq<-cbind(cov, freq4)
+View(cov_freq1)
+cov_freq1<-cov_freq[,-c(3:4, 29:33)]
 
 #------------------------------------------------------------------------------
-write.csv(cov_freq2, file= "data/clean/CMHtest_cov_freq_matrix.csv", row.names=FALSE)
+write.csv(cov_freq1, file= "data/clean/CMHtest_cov_freq_matrix.csv", row.names=FALSE)

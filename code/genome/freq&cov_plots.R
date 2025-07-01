@@ -17,32 +17,33 @@ library(patchwork)
 # Read in data
 #------------------------------------------------------------------------------
 cf =read.csv("data/clean/CMHtest_cov_freq_matrix.csv", header= TRUE)
-data<-read.table("data/raw/annotated_indels.txt")
+# data<-read.table("data/raw/annotated_indels.txt")
 View(cf)
 #------------------------------------------------------------------------------
 
 
 # Creating coverage matrix
 #------------------------------------------------------------------------------
-coverage<-cf[, c(1:27)]
+coverage<-cf[, c(1:26)]
+View(coverage)
 
-c_long <- reshape2::melt(coverage, id.vars = c("CHROM", "POS", "logp"))
+c_long <- reshape2::melt(coverage, id.vars = c("CHROM", "POS"))
 cov_long <- c_long %>%
   mutate(age = ifelse(grepl("old", variable), "old", "young"),
          pair = as.numeric(gsub("[^0-9]", "", variable)))
+
 #------------------------------------------------------------------------------
 
 # Frequency matrix
 #------------------------------------------------------------------------------
-freq<-cf[, c(1:2,27,30:53)]
+freq<-cf[, c(1:2,27:50)]
+View(freq)
 
-
-f_long <- reshape2::melt(freq, id.vars = c("CHROM", "POS", "logp"))
+f_long <- reshape2::melt(freq, id.vars = c("CHROM", "POS"))
 freq_long <- f_long %>%
   mutate(age = ifelse(grepl("old", variable), "old", "young"),
          pair = as.numeric(gsub("[^0-9]", "", variable)))
 
-View(freq_long)
 #------------------------------------------------------------------------------
 
 # Frequency Plot
@@ -88,7 +89,7 @@ cov_plot<-ggplot(cov_snp, aes(x = factor(age, levels = c("young", "old")),
 merged_plot <- plot_grid(freq_plot, cov_plot, ncol = 2)
 
 
-ggsave("chr11pos68563_tor2.pdf", plot = merged_plot, height = 4, width = 8)
+#ggsave("chr11pos68563_tor2.pdf", plot = merged_plot, height = 4, width = 8)
 
 print(merged_plot)
 #------------------------------------------------------------------------------
