@@ -41,7 +41,7 @@
 #### Generates table showing relationships between DEGs and significant gene variants from genome data ("temp/comparisons/sig_FIRSTannotation.csv") and gene list from 02_DGE_gene_lists.R
 
 #---------------------------------------------------------------------------------------------------------------------------------------
-### 4) 03_Volcano_plot.R
+### 5) 03_Volcano_plot.R
 #---------------------------------------------------------------------------------------------------------------------------------------
 
 #### Creates a volcano plot to show p-values and log2FC between DEGs using adjusted counts matrix from  01_batch_adjust_DESEQ.R and and gene list and key from 02_DGE_gene_lists.R.
