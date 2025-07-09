@@ -23,7 +23,7 @@ gene_key<- read.table("temp/transcriptome/key_geneIDtoName.txt")
 View(res_adj)
 ## Simple Volcano Plot
 #------------------------------------------------------------------------------
-### Load list of genes for headmap
+### Load list of genes for heatmap
 
 res_adj2<-merge(res_adj, gene_key, by.x="X", by.y="Gene_ID")
 
@@ -32,12 +32,12 @@ selected_genes<-c("AHP1", "CCW12", "DIA4", "DNM1", "EKI1", "MRP1", "WSC4",
 
 labs <- ifelse(res_adj2$Gene_Name %in% selected_genes, res_adj2$Gene_Name, NA)
 
+
 # ALL DEGs
 
 custom_colors <- ifelse(res_adj2$log2FoldChange < 0, "steelblue", "red")
 names(custom_colors) <- rownames(res_adj2)
 
-stopifnot(all(rownames(res) %in% names(custom_colors)))
 
 p<-EnhancedVolcano(res_adj2,
                 lab = labs,
@@ -48,8 +48,8 @@ p<-EnhancedVolcano(res_adj2,
                 #col = c("green", "steelblue", "orange", "red"), #control point colors
                 pCutoff = 0.1,
                 colCustom = custom_colors,
-                colAlpha = 0.7,
-                cutoffLineCol = "black",
+                colAlpha = 0.8,
+                cutoffLineCol = "grey45",
                 pointSize = 3.0,
                 labSize = 2.0, 
                 selectLab = NA,
@@ -63,24 +63,44 @@ plot(p)
 
 selected_data <- subset(res_adj2, Gene_Name %in% selected_genes)
 
+#------------------------------------------------------------------------------
+### split data for easier labelling
+
+# Split the selected data
+neg_LFC <- selected_data[selected_data$log2FoldChange < 0, ]
+pos_LFC <- selected_data[selected_data$log2FoldChange >= 0, ]
+#------------------------------------------------------------------------------
+
 # Add bigger hollow circles around those points on top of existing plot
 p2<-p + 
   geom_point(data = selected_data, 
              aes(x = log2FoldChange, y = -log10(padj)),
              shape = 21, size = 3.5, color = "black", fill = NA, stroke = 0.5)+ 
-  geom_text_repel(data = selected_data,
+  geom_text_repel(data = neg_LFC,
                   aes(x = log2FoldChange, y = -log10(padj), label = Gene_Name),
-                  size = 3,
+                  size = 3, fontface = "bold",
+                  box.padding = 1, 
+                  point.padding = 1,
+                  segment.color = "black", 
+                  segment.size = 0.2,
+                  min.segment.length = 0.1, 
+                  max.overlaps = Inf,
+                  force = 3,
+                  nudge_x = -0.1, 
+                  nudge_y = 0.35) +
+  geom_text_repel(data = pos_LFC,
+                  aes(x = log2FoldChange, y = -log10(padj), label = Gene_Name),
+                  size = 3, 
                   fontface = "bold",
-                  box.padding = 0.8,          # More space around label box
-                  point.padding = 1,        # More space around data point
-                  segment.color = "black",    # Keep connectors
-                  segment.size = 0.3,         # Thinner connector lines
-                  min.segment.length = 0.2,   # Avoid tiny/tangled segments
-                  max.overlaps = Inf,         # Avoid skipping labels due to overlap
-                  force = 3,                # Stronger repulsion (try 1–5)
-                  nudge_y = 0.1              # Optional vertical nudge 
-  ) +
+                  box.padding = 1, 
+                  point.padding = 1,
+                  segment.color = "black", 
+                  segment.size = 0.2,
+                  min.segment.length = 0.1, 
+                  max.overlaps = Inf,
+                  force = 2,
+                  nudge_x = 0.15, 
+                  nudge_y = 0.35) +
   theme(panel.grid.minor = element_blank()) +
   theme(panel.grid.major = element_blank())+
   labs(title = NULL, subtitle = NULL, caption = NULL) +  # Remove title, subtitle, caption
@@ -90,7 +110,7 @@ p2<-p +
 plot(p2)
 
 #pdf("temp_figs/Volcano_DESEQadj_p<0.1.pdf", width = 8, height = 6)
-pdf("temp_figs/Volcano_DESEQp<0.1.pdf", width = 4, height = 3)
+pdf("figures/Figure3_Volcano.pdf", width = 8, height = 6)
 p2
 dev.off()
 
@@ -98,25 +118,4 @@ pdf("temp_figs/Volcano_DESEQp<0.1_v4.pdf", width = 8, height = 6)
 p2
 dev.off()
 
-# P<0.1
-EnhancedVolcano(selected_genes_adj,
-                lab = selected_genes_adj$Gene_Name,
-                x = 'log2FoldChange',
-                y = 'padj')
-
-
-library(ggplot2)
-
-# Base volcano points
-ggplot(res_adj2, aes(x = log2FoldChange, y = -log10(padj))) +
-  geom_point(color = "grey60", shape = 20) +  # all points
-  
-  # Add highlighted points with different shape and color
-  geom_point(data = subset(res_adj2, Gene_Name %in% selected_genes),
-             aes(x = log2FoldChange, y = -log10(padj)),
-             color = "red", shape = 21, size = 3) +
-  
-  # Add labels for selected genes
-  geom_text(data = subset(res_adj2, Gene_Name %in% selected_genes),
-            aes(label = Gene_Name), size = 3, vjust = 1.5)
 

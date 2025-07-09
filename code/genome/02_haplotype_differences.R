@@ -1,13 +1,17 @@
 ### Plot Haplotype frequencies 
+#------------------------------------------------------------------------------
 
 
 ## Haplotypes were estimated using code in "Haplotype_estimation_eNotebook_version" script.  Make sure to update this script (and re-read in the data below) if any changes are made to the filtering parameters.
+#------------------------------------------------------------------------------
 
 ### Haplotypes estimated 10/2/24 using file GWAS_SNPS_cov20_maf5.csv created above
 founderA1=read.table ("temp/genome/founderA1_10kb_cov20_maf5.txt", header=TRUE) 
 founderA2=read.table ("temp/genome/founderA2_10kb_cov20_maf5.txt", header=TRUE)
 founderB3=read.table ("temp/genome/founderB3_10kb_cov20_maf5.txt", header=TRUE)
 founderB4=read.table ("temp/genome/founderB4_10kb_cov20_maf5.txt", header=TRUE)
+
+#------------------------------------------------------------------------------
 
 ## Find the differences in haplotype frequencies between paired young and old replicates
 for (i in 1:12) {
@@ -26,7 +30,9 @@ for (i in 1:12) {
   founderB4[[paste0("diff", i)]] <- founderB4[[paste0("hap.old", sprintf("%02d", i))]] - founderB4[[paste0("hap.young", sprintf("%02d", i))]]
 }
 
-View(founderA1)
+#------------------------------------------------------------------------------
+
+
 ## Find the mean differences across all pairs from the differences calculated above, and the variance
 founderA1$meandiff=apply(founderA1[28:39],1,mean) # this is a first-pass simple effort to quantify consistent differences in haplotypes across replicates, per founder
 
@@ -37,6 +43,8 @@ founderB3$meandiff=apply(founderB3[28:39],1,mean) # this is a first-pass simple 
 
 
 founderB4$meandiff=apply(founderB4[28:39],1,mean) # this is a first-pass simple effort to quantify consistent differences in haplotypes across replicates, per founder
+
+#------------------------------------------------------------------------------
 
 # Non-cumulative offsets #from Gaxis in Part 1B
 non_cumulative_offsets <- c(0,
@@ -72,6 +80,8 @@ apply_specific_offsets <- function(df, offsets) {
   
   return(df)
 }
+#------------------------------------------------------------------------------
+
 
 # Apply the function to each dataset with cumulative offsets
 founderA1 <- apply_specific_offsets(founderA1, named_cumulative_offsets)

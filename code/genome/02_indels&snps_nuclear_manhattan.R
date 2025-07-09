@@ -1,14 +1,20 @@
 ### Plot of nuclear SNPs/indels overlaid
+#------------------------------------------------------------------------------
 
-### !!! need to have MB scale for read-in data
+# Load in packages
+#install.packages("svglite")
+library(svglite)
+
+#------------------------------------------------------------------------------
 
 ## load in snp and indel data
+#------------------------------------------------------------------------------
 indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
 indels4<-read.csv("temp/genome/indels_CMHtest_results_nuclear.csv")
 snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
 snps4<-read.csv("temp/genome/WG_CMHtest_results_nuclear.csv")
 
-View(snps4)
+#------------------------------------------------------------------------------
 
 x1<-indels4$MB
 y1<-indels4$logp
@@ -20,12 +26,8 @@ bottom <- 0
 
 # Open the PDF device with the specified file path
 #pdf(file = "figures/indels&SNPs_nuclear_manhattan_dpi.pdf", height = 5, width = 10)
-?export
 
-install.packages("svglite")
-library(svglite)
-svglite::svglite("figures/indels_SNPs_nuclear_manhattan.svg", width = 10, height = 5)
-
+svglite::svglite("figures/test.svg", width = 10, height = 5)
 
 
 par(mar = c(4, 5, 3, 3) + 0.3)
