@@ -110,7 +110,7 @@ pdf(file = "figures/Fig1_Manhattan&Haps.pdf", height = 12, width = 18)
  
 par(mfrow = c(2, 1),
     cex = 1.3,            # increase font size 
-    mar = c(4, 8, 2, 2),   # inner margins: bottom, left, top, right
+    mar = c(4, 10, 2, 2),   # inner margins: bottom, left, top, right
     oma = c(1, 1, 1, 0))   # outer margins: bottom, left, top, right
 
 
@@ -195,7 +195,7 @@ plot(founderA1$MB,founderA1$meandiff,
      cex.lab= 2,
      type="n",
      axes=FALSE,
-     ylab=bquote("Diff in Hap Freq"))
+     ylab=bquote("Haplotype Frequency \nDifference"))
 
 mtext("B", side = 3, adj = 0, line = 1.5, cex = 2.5, font=2)
 
