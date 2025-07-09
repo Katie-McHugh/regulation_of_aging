@@ -31,6 +31,7 @@
 14) 02_haplotype_differences.R is the script used to calculate the difference in haplotype frequencies across the genome to use for plotting
 15) 02_supp_table_sig_variant_list.R is the script used to create the supplementary table of all significant variants from teh genome data
 16) 02_freq&cov_plots.R script used to plot coverage and frequency by replicate for individual SNPs.  Uses table generated in 01_freq&cov_matrix.R.
+17) 02_Fig1_GTWAS.R is the script used to generate figure 1
 
 ### [transcriptome](/code/transcriptome) folder:
 
