@@ -11,6 +11,7 @@
 
 library(EnhancedVolcano)
 library(ggplot2)
+library(viridis)
 
 #------------------------------------------------------------------------------
 
@@ -34,8 +35,18 @@ labs <- ifelse(res_adj2$Gene_Name %in% selected_genes, res_adj2$Gene_Name, NA)
 
 
 # ALL DEGs
+#------------------------------------------------------------------------------
+## Color selection 
 
-custom_colors <- ifelse(res_adj2$log2FoldChange < 0, "steelblue", "red")
+# basic. ## these colors match the heatmap
+custom_colors <- ifelse(res_adj2$log2FoldChange < 0, "mediumpurple4", "darkgreen")
+
+# Viridis
+#vir_colors <- viridis(6, option = "D")
+
+# Assign colors based on sign of log2FoldChange
+#custom_colors <- ifelse(res_adj2$log2FoldChange < 0, vir_colors[3], vir_colors[6])
+
 names(custom_colors) <- rownames(res_adj2)
 
 
@@ -59,7 +70,7 @@ p<-EnhancedVolcano(res_adj2,
 
 
 
-plot(p)
+#plot(p)
 
 selected_data <- subset(res_adj2, Gene_Name %in% selected_genes)
 
@@ -108,10 +119,10 @@ p2<-p +
   theme(legend.position = "none")         
 
 
-plot(p2)
+#plot(p2)
 
 #pdf("temp_figs/Volcano_DESEQadj_p<0.1.pdf", width = 8, height = 6)
-pdf("figures/Figure3_Volcano.pdf", width = 8, height = 6)
+pdf("figures/Figure3_Volcano_test.pdf", width = 8, height = 6)
 p2
 dev.off()
 

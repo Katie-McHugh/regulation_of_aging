@@ -1,5 +1,12 @@
 ########## Annotations pie chart ####################################
 
+#------------------------------------------------------------------------------
+## Load libraries
+library(dplyr)
+library(stringr)
+library(ggplot2)
+#------------------------------------------------------------------------------
+
 ### load in data
 dataset1<-read.csv("temp/comparisons/SNPs_annotation_counts_pie.csv")
 dataset2<-read.csv("temp/comparisons/SNPs_ref_annotation_counts_pie.csv")
@@ -39,7 +46,7 @@ combined_data <- combined_data %>%
   mutate(Annotation = reorder(Annotation, Proportion)) %>%
   ungroup()
 
-write.csv(combined_data, file="tables/annotations_table.csv")
+#write.csv(combined_data, file="tables/annotations_table.csv")
 
 
 View(combined_data)
@@ -48,8 +55,12 @@ View(combined_data)
 barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotation )) +
   geom_bar(stat = "identity") +
   theme_minimal() +
-  scale_fill_manual(values = colorRampPalette(c("black", "grey20", "grey40", "grey60","grey80"))(length(unique(combined_data$Annotation))),
-                    labels = function(x) str_wrap(x, width = 12))+ 
+  # scale_fill_manual(values = colorRampPalette(c("black", "grey20", "grey40", "grey60","grey80"))(length(unique(combined_data$Annotation))),
+  #                   labels = function(x) str_wrap(x, width = 12))+ 
+  scale_fill_viridis_d(
+    option = "D",  # Options A–F; "D" is vibrant and good for categories
+    labels = function(x) str_wrap(x, width = 12)
+  )+
   theme(
     panel.border = element_rect(color = "black", size = 1, fill = "transparent"),  # Transparent fill for the border
     panel.grid.major = element_blank(),  # Removes major gridlines
@@ -63,7 +74,7 @@ barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotatio
     axis.title.y = element_text(size = 16),  # Increase font size of y-axis label
     axis.title.x = element_blank(),
     legend.title = element_text(size=16),
-    legend.text = element_text(size = 12)  # Adjust legend text size if needed
+    legend.text = element_text(size = 16)  # Adjust legend text size if needed
   ) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10))  # Wrap text of x-axis labels
 
@@ -72,5 +83,5 @@ plot(barplot)
 
 
 # Save the plot using ggsave
-ggsave(filename = "figures/Figure4_annotations_barplot_greyscale.pdf", plot = barplot , width = 6, height = 8)
+ggsave(filename = "figures/Figure4_annotations_barplot_color.pdf", plot = barplot , width = 6, height = 8) 
 ggsave(filename = "figures/Figure4_annotations_barplot_greyscale.jpeg", plot = barplot , width = 6, height = 8)
