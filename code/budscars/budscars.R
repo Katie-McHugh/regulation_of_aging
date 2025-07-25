@@ -138,14 +138,19 @@ compare_means(avg_scars_all~age, data=scars, group.by="strain", paired=TRUE)
 # scars$strain <- as.factor(scars$strain)
 # View(scars)
 
+library(viridis)
 #set Theme
 My_Theme = theme(
   axis.text.x = element_text(size = 14),
   axis.title.y = element_text(size = 16), 
   axis.text.y = element_text(size = 14))
 
+# Use the Okabe-Ito colorblind-friendly palette
+okabe_ito <- palette.colors(8, palette = "Okabe-Ito")
+custom_colors <- c("young" = okabe_ito[7], "aged" = okabe_ito[6])
+
 #bud scars plot as PDF
-pdf("figures/SuppFig1_BUDSCARS.pdf",height=4, width=8)
+pdf("figures/SuppFig1_BUDSCARS_v2.pdf",height=4, width=8)
 scars$strain<-factor(scars$strain, c("4S", "YPS128" ,"Y12", "DBVPG6044", "DBVPG6765"))
 scarsplot<-ggplot(scars, aes(x = age, y = avg_scars_all, group = replicate))+
   geom_point(aes(color = age), size = 3)+
@@ -154,7 +159,8 @@ scarsplot<-ggplot(scars, aes(x = age, y = avg_scars_all, group = replicate))+
   facet_wrap(~ strain, 
              strip.position = "top", ncol = 5)+   #put facet label to the top 
   theme_pubr()+
-  color_palette("jco")+
+  scale_color_manual(values = custom_colors) +
+  #scale_color_manual(values = c("young" = "orange", "aged" = "steelblue4"))+
   theme(strip.placement = "outside",   #move the facet label
         strip.text = element_text(size = 14),
         axis.title.x = element_blank(),

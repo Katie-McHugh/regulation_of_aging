@@ -5,6 +5,15 @@
 library(dplyr)
 library(stringr)
 library(ggplot2)
+
+okabe_ito_palette <- c("#D55E00",
+                       "#F0E442",
+                       "#56B4E9",
+                       "#0072B2", 
+                       "#E69F00")
+                       #"#009E73",
+                       #"#CC79A7"
+
 #------------------------------------------------------------------------------
 
 ### load in data
@@ -20,7 +29,6 @@ combined_data <- bind_rows(
   group_by(Dataset) %>%
   mutate(Proportion = Annotation_Count / sum(Annotation_Count))
 
-View(combined_data)
 combined_data <- combined_data %>%
   mutate(
     # Remove underscores
@@ -49,18 +57,21 @@ combined_data <- combined_data %>%
 #write.csv(combined_data, file="tables/annotations_table.csv")
 
 
-View(combined_data)
-
 ### Barplot of proportions for comparison
 barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotation )) +
   geom_bar(stat = "identity") +
   theme_minimal() +
   # scale_fill_manual(values = colorRampPalette(c("black", "grey20", "grey40", "grey60","grey80"))(length(unique(combined_data$Annotation))),
   #                   labels = function(x) str_wrap(x, width = 12))+ 
-  scale_fill_viridis_d(
-    option = "D",  # Options A–F; "D" is vibrant and good for categories
+  # scale_fill_viridis_d(
+  #   option = "D",  # Options A–F; "D" is vibrant and good for categories
+  #   labels = function(x) str_wrap(x, width = 12)
+  # )+
+  scale_fill_manual(
+    values = okabe_ito_palette[1:length(unique(combined_data$Annotation))],
     labels = function(x) str_wrap(x, width = 12)
   )+
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Wrap text of x-axis labels
   theme(
     panel.border = element_rect(color = "black", size = 1, fill = "transparent"),  # Transparent fill for the border
     panel.grid.major = element_blank(),  # Removes major gridlines
@@ -75,8 +86,7 @@ barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotatio
     axis.title.x = element_blank(),
     legend.title = element_text(size=16),
     legend.text = element_text(size = 16)  # Adjust legend text size if needed
-  ) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))  # Wrap text of x-axis labels
+  ) 
 
 ### I could combine more categories to make it easier to see
 plot(barplot)

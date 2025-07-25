@@ -15,6 +15,15 @@
 # be possible using pheatmap
 #-------------------------------------------------------------------------------
 library(pheatmap)
+
+okabe_ito_palette <- c("#D55E00",
+                       "#F0E442",
+                       "#56B4E9",
+                       "#0072B2", 
+                       "#E69F00")
+"#009E73",
+"#CC79A7"
+
 ## Load and Organize data
 
 ### Load normalized counts for visualization
@@ -87,7 +96,7 @@ logfc_info<-unique(selected_genes_adj[,c("log2FoldChange", "logBM", "padj", "Gen
 rownames(logfc_info) <- logfc_info$Gene_Name
 
 # Create a color palette for the LFC values
-lfc_colors <- colorRampPalette(c("purple", "white", "darkgreen"))(100)
+lfc_colors <- colorRampPalette(c("#CC79A7", "white", "#009E73"))(100)
 # bM_colors<- colorRampPalette(c("white", "black"))(100)
 
 
@@ -122,8 +131,7 @@ View(logfc_info)
 ## Plot heatmap
 ### p < 0.1
 
-#pdf("temp_figs/heatmap_DESEQadj_p<0.1.pdf", width = 8, height = 12)
-jpeg("figures/heatmap_DESEQadj_p<0.01.jpeg", width = 12, height = 18, units = "in", res = 300, quality = 85)
+pdf("figures/SuppFig_heatmap_v2.pdf", width = 20, height = 16)
 
 pheatmap(
   norm_adj_mat, # Scale the data by rows (genes)
@@ -135,8 +143,9 @@ pheatmap(
   annotation_col = annotation_col,
   annotation_colors = annotation_colors,
   annotation_legend = TRUE, 
-  fontsize_row = 10, # Adjust the font size of row names
-  fontsize_col = 10, # Adjust the font size of column names
-  cellheight = 12)
+  fontsize_row = 16, # Adjust the font size of row names
+  fontsize_col = 16, # Adjust the font size of column names
+  fontsize = 21,        # 🔼 Increase overall font size,,
+  cellheight = 16)
 
 dev.off()

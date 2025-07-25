@@ -26,6 +26,17 @@ library(RColorBrewer)
 library(dplyr)
 library(viridis)
 
+okabe_ito_palette <- c(
+  "Black"        = "#000000",
+  "Orange"       = "#E69F00",
+  "sky_blue"     = "#56B4E9",
+  "bluish_green" = "#009E73",
+  "Yellow"       = "#F0E442",
+  "Blue"         = "#0072B2",
+  "vermilion"    = "#D55E00",
+  "reddish_purple" = "#CC79A7"
+)
+
 #------------------------------------------------------------------------------
 # load in GO-term data
 #------------------------------------------------------------------------------
@@ -74,7 +85,7 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
   scale_size_continuous(name = "Number of \nAnnotated Genes")  +
   scale_color_manual(
     name = "Gene List",  # Set legend title
-    values = c("DNA" = "darkgreen", "Shared" = "navy")
+    values = c("DNA" = "#CC79A7", "Shared" = "#009E73")
   ) +
   facet_wrap(~ ann, scales = "free_y", dir = "v")  +                             #dir v stacks vertically instead of horizontally
   theme_light() +
@@ -88,7 +99,7 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
 
 plot(plot2)
 ggsave(filename = "figures/Figure2_GO.jpeg", plot = plot2 ,
-       width = 7, height = 7) 
+       width = 8, height = 7) 
 
 #plot3 <- plot2 + scale_color_manual( name = "Gene List", values = brewer.pal(3, "Dark2"))
 

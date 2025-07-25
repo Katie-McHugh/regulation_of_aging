@@ -1,11 +1,11 @@
 # regulation_of_aging
 
-## Genome- and transcriptome- wide association study of aging in S. cerevisiae. PhD dissertation chapter.
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 
 This repository contains the code and data for the analysis of: 
 
-xxx
+## Genome- and transcriptome- wide association study of aging in S. cerevisiae.
 
 ### Repository content: 
 
@@ -28,7 +28,6 @@ This folder contains three subdirectories: [raw](/data/raw) , [clean](/data/clea
 
 ##### [Design Files](/data/design_files)
 1) design.txt contains replicate identifying information for the transcriptomic analysis
-
 
 
 #### [Code Folder](/code)

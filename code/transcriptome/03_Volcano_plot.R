@@ -13,6 +13,17 @@ library(EnhancedVolcano)
 library(ggplot2)
 library(viridis)
 
+okabe_ito_palette <- c(
+  "Black"        = "#000000",
+  "Orange"       = "#E69F00",
+  "sky_blue"     = "#56B4E9",
+  "bluish_green" = "#009E73",
+  "Yellow"       = "#F0E442",
+  "Blue"         = "#0072B2",
+  "vermilion"    = "#D55E00",
+  "reddish_purple" = "#CC79A7"
+)
+
 #------------------------------------------------------------------------------
 
 ## Load in Data
@@ -39,7 +50,8 @@ labs <- ifelse(res_adj2$Gene_Name %in% selected_genes, res_adj2$Gene_Name, NA)
 ## Color selection 
 
 # basic. ## these colors match the heatmap
-custom_colors <- ifelse(res_adj2$log2FoldChange < 0, "mediumpurple4", "darkgreen")
+#custom_colors <- ifelse(res_adj2$log2FoldChange < 0, "mediumpurple4", "darkgreen")
+custom_colors <- ifelse(res_adj2$log2FoldChange < 0,  "#CC79A7", "#009E73")
 
 # Viridis
 #vir_colors <- viridis(6, option = "D")
