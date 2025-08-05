@@ -5,7 +5,7 @@
 
 This repository contains the code and data for the analysis of: 
 
-## Genome- and transcriptome- wide association study of aging in S. cerevisiae.
+## Age-specific variation in genomic and transcriptomic signals reveal little evidence for cis-regulatory interactions modulating aging in Saccharomyces cerevisiae
 
 ### Repository content: 
 
@@ -22,9 +22,12 @@ This folder contains three subdirectories: [raw](/data/raw) , [clean](/data/clea
 6) gene_count_matrix.txt contains the gene count matrix from the transcriptomic sequencing (notes for generation are contained in the README.md file in the [transcriptomics code folder](/code/transcriptome).
 
 ##### [Clean](/data/clean)
-1) rnaseq_results_batch_sigs01_edited.csv
-2) GWAS_SNPS_cov20_maf05.csv contains the SNP table after filtering for a coverage of 20 and a minor allele frequency of 0.05
-3) indels_cov20_maf05.csv contains the indel table after filtering for a coverage of 20 and a minor allele frequency of 0.05
+1) scarsdata.txt contains the compiled bud scar count data 
+2) rnaseq_results_batch_sigs01_edited.csv contains the results of the transcriptomic analysis (adjusted for the batch effect) and filtered for adjusted p<0.1.
+3) GWAS_SNPS_cov20_maf05.csv contains the SNP table after filtering for a coverage of 20 and a minor allele frequency of 0.05
+4) indels_cov20_maf05.csv contains the indel table after filtering for a coverage of 20 and a minor allele frequency of 0.05
+5) CMHtest_cov_freq_matrix.csv
+6) rnaseq_GO_terms.csv 
 
 ##### [Design Files](/data/design_files)
 1) design.txt contains replicate identifying information for the transcriptomic analysis

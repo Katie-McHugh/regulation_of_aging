@@ -7,7 +7,7 @@
 
 ##  Sub-folders: 
 
-1) [genome](/code/genome) contains all scripts needed for genome-wide analysis
+1) [genome](/code/genome) contains all scripts needed for whole-genome sequencing analysis
 2) [transcriptome](/code/transcriptome) folder contains all scripts needed for transcriptome analysis
 3) [comparisons](/comparisons) folder contains scripts for regulatory analysis and other combined analyses
 
@@ -15,13 +15,13 @@
 
 **number prefixes indicate sequential scripts**
 
-1) 00_SNPs_filter_maf&cov.R contains the script used to filter the preliminary SNP table for minor allele frequencies and coverage. 
-2) 00_indels_filter_maf&cov.R contains the script used to filter the preliminary indel table for minor allele frequencies and coverage.
-3) 00_founder_info.R contains code to generate a table of information for the founder haplotypes. 
-4) 01_CMHtest_SNPdata.R contains the script used to run the CMH test for the SNP data
-5) 01_indels_cmhtest.R contains the script used to run the CMH test for the indel data
-6) 01_freq&cov_matrix.R contains code to generate a table of frequency and coverage values at each SNP position used to create plots in the 02_freq&cov_plots.R script.
-7) 01_Haplotype_estimation_eNotebook_version.R is the script that was used to estimate the haploype frequencies for each replicate. This script was transferred over after use, and was used iteratively to run for each chromosome and then they were all bound together into a single file. 
+1) 00_SNPs_filter_maf&cov.R contains the script used to filter the preliminary SNP table for minor allele frequencies and coverage. Output sent to "clean" folder as GWAS_SNPS_cov20_maf05.csv.
+2) 00_indels_filter_maf&cov.R contains the script used to filter the preliminary indel table for minor allele frequencies and coverage. Output sent to "clean" folder as indels_cov20_maf05.csv.
+3) 00_founder_info.R contains code to generate a table of information for the founder haplotypes using founder_states.txt file (generated from an earlier experiment).
+4) 01_CMHtest_SNPdata.R contains the script used to run the CMH test on GWAS_SNPS_cov20_maf05.csv for the SNP data.  Output is sent to results folder.
+5) 01_indels_cmhtest.R contains the script used to run the CMH test for the indel data, output to results folder.
+6) 01_freq&cov_matrix.R contains code to generate a table of frequency and coverage values at each SNP position used to create plots in the 02_freq&cov_plots.R script. Output to data/clean.
+7) 01_Haplotype_estimation_eNotebook_version.R is the script that was used to estimate the haploype frequencies for each replicate. This script was transferred over to repository after use. It was used iteratively to run for each chromosome and then they were all bound together into a single file for each founder (founderXX_10kb_cov20_maf5.txt) and deposited in the "temp" folder.
 8) 02_nuclearSNPs_ManhattanPlot.R is the script used to generate a manhattan plot for the nuclear SNPs
 9) 02_mitoSNPs_ManhattanPlot.R is the script used to generate a manhattan plot for the mitochondrial SNPs
 10) 02_indels_nuclear_manhattan.R is the script used to generate a manhattan plot for the nuclear indels
@@ -57,6 +57,8 @@
 11) 00_local_variants_1kb.R same as local_variants.R, just with a more restrictive (1kb) range
 12) coding_vs_noncoding_fig.R creates an infographic representing the number of coding variants, but does not require any of the previous scripts or data.
 
+### [budscars](/budscars) folder: 
+1) budscars.R contains the script used for the statistical tests for budscar counts and the data used for supplementary table 1. This script also creates Supplementary Figure 2.
 
 _outputs should be dumped into temp folders_
 
