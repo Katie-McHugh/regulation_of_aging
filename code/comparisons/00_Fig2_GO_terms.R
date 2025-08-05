@@ -111,7 +111,7 @@ my_colors <- viridis(n + 1, option = "D")[-c(1, 3, 5)] # skip colors too light f
 
 plot3 <- plot2 +  scale_color_manual(values = my_colors)
 
-ggsave(filename = "figures/Figure2_GO_v2.jpeg", plot = plot3 , width = 8, height = 7)
+#ggsave(filename = "figures/Figure2_GO_v2.jpeg", plot = plot3 , width = 8, height = 7)
 
 ### maybe try separating by process vs component vs etc with different gene 
 ## lists as the different colors

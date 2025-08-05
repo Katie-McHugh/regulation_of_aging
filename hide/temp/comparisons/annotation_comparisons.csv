@@ -1,0 +1,21 @@
+Annotation,Data_first,Ref_first,Data_all,Ref_all
+downstream_gene_variant,3.43797,0.60300,40.77178,41.81619
+missense_variant,23.16891,20.92597,3.57222,3.03627
+start_lost,0.14948,0.04185,0.02205,0.00597
+stop_gained,0.14948,0.17811,0.02205,0.02571
+synonymous_variant,37.51868,39.26717,5.60088,5.72314
+upstream_gene_variant,35.57549,38.77682,44.14553,43.64096
+initiator_codon_variant,    NA,0.00215,    NA,0.00031
+missense_variant&splice_region_variant,    NA,0.00215,    NA,0.00077
+splice_acceptor_variant&intron_variant,    NA,0.00215,    NA,0.00031
+splice_donor_variant&intron_variant,    NA,0.00429,    NA,0.00092
+splice_region_variant&intron_variant,    NA,0.02039,    NA,0.00337
+splice_region_variant&non_coding_transcript_exon_variant,    NA,0.00429,    NA,0.00061
+splice_region_variant&stop_retained_variant,    NA,0.06760,    NA,0.01010
+splice_region_variant&synonymous_variant,    NA,0.00536,    NA,0.00077
+stop_lost,    NA,0.04828,    NA,0.00704
+stop_lost&splice_region_variant,    NA,0.03219,    NA,0.00474
+stop_retained_variant,    NA,0.01824,    NA,0.00260
+intergenic_region,    NA,    NA,5.66703,5.48959
+intron_variant,    NA,    NA,0.17641,0.16544
+non_coding_transcript_exon_variant,    NA,    NA,0.02205,0.06520

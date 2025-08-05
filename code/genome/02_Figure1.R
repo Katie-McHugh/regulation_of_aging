@@ -4,10 +4,10 @@
 ## load in snp and indel data
 #------------------------------------------------------------------------------
 ## Variant data
-indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
-indels4<-read.csv("temp/genome/indels_CMHtest_results_nuclear.csv")
-snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
-snps4<-read.csv("temp/genome/WG_CMHtest_results_nuclear.csv")
+indels3<-read.csv("results/genome/indels_CMHtest_results.csv")
+indels4<-read.csv("results/genome/indels_CMHtest_results_nuclear.csv")
+snps3<-read.csv("results/genome/WG_CMHtest_results.csv")
+snps4<-read.csv("results/genome/WG_CMHtest_results_nuclear.csv")
 
 ## Haplotype data
 founderA1=read.table ("temp/genome/founderA1_10kb_cov20_maf5.txt", header=TRUE) 

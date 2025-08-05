@@ -94,4 +94,3 @@ plot(barplot)
 
 # Save the plot using ggsave
 ggsave(filename = "figures/Figure4_annotations_barplot_color.pdf", plot = barplot , width = 6, height = 8) 
-ggsave(filename = "figures/Figure4_annotations_barplot_greyscale.jpeg", plot = barplot , width = 6, height = 8)

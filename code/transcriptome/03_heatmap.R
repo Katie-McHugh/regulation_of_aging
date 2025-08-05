@@ -15,14 +15,14 @@
 # be possible using pheatmap
 #-------------------------------------------------------------------------------
 library(pheatmap)
-
-okabe_ito_palette <- c("#D55E00",
-                       "#F0E442",
-                       "#56B4E9",
-                       "#0072B2", 
-                       "#E69F00")
-"#009E73",
-"#CC79A7"
+# 
+# okabe_ito_palette <- c("#D55E00",
+#                        "#F0E442",
+#                        "#56B4E9",
+#                        "#0072B2", 
+#                        "#E69F00")
+# "#009E73",
+# "#CC79A7"
 
 ## Load and Organize data
 
@@ -30,8 +30,8 @@ okabe_ito_palette <- c("#D55E00",
 norm_dds<-read.csv("temp/transcriptome/normalized_counts_deseq.csv")
 
 ### Load list of genes for headmap
-selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
-selected_genes_adj2<-read.csv("temp/transcriptome/RNA_genes_p<0.05.csv", row.names= "X")
+selected_genes_adj<-read.csv("results/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
+selected_genes_adj2<-read.csv("results/transcriptome/RNA_genes_p<0.05.csv", row.names= "X")
 
 ### load in design file
 colData<-read.table("data/design_files/design.txt", header=TRUE, row.names = "sample")
@@ -131,7 +131,7 @@ View(logfc_info)
 ## Plot heatmap
 ### p < 0.1
 
-pdf("figures/SuppFig_heatmap_v2.pdf", width = 20, height = 16)
+pdf("figures/SuppFig5_heatmap.pdf", width = 24, height = 16)
 
 pheatmap(
   norm_adj_mat, # Scale the data by rows (genes)
@@ -143,9 +143,11 @@ pheatmap(
   annotation_col = annotation_col,
   annotation_colors = annotation_colors,
   annotation_legend = TRUE, 
-  fontsize_row = 16, # Adjust the font size of row names
-  fontsize_col = 16, # Adjust the font size of column names
-  fontsize = 21,        # 🔼 Increase overall font size,,
-  cellheight = 16)
+  fontsize = 12,           # Increase overall font size
+  fontsize_row = 14,       # Row name font size
+  fontsize_col = 14,       # Column name font size
+  cellheight = 15,         # Increase cell height
+  cellwidth = 15           # Increase cell width if needed
+)
 
 dev.off()

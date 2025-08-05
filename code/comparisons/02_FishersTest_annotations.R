@@ -8,7 +8,7 @@ sigs<-read.csv("temp/comparisons/significant_annotations_count.csv")
 
 ## table of annotation types for all annotated SNPs in SNPeff
 ref<-read.csv("temp/comparisons/ref_annotations_count.csv")
-View(ref)
+
 
 #------------------------------------------------------------------------------
 ### Reorganize datasets
@@ -77,8 +77,8 @@ fisher_result <- fisher.test(contingency_table, simulate.p.value = TRUE)
 print(fisher_result)
 ##p <<0.01
 
-chisq_result <- chisq.test(contingency_table)
-print(chisq_result)
+# chisq_result <- chisq.test(contingency_table)
+# print(chisq_result)
 
 chisq.test(contingency_table, simulate.p.value = TRUE, B = 10000)
 # View results

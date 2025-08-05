@@ -1,0 +1,11 @@
+"","Dataset","Annotation","Annotation_Count","Proportion"
+"1","Significant Regions","nonsynonymous variant",155,0.23168908819133
+"2","Significant Regions","synonymous variant",251,0.375186846038864
+"3","Significant Regions","upstream gene variant",238,0.35575485799701
+"4","Significant Regions","downstream gene variant",23,0.0343796711509716
+"5","Significant Regions","Other",2,0.00298953662182362
+"6","Whole Genome","nonsynonymous variant",19503,0.20925965665236
+"7","Whole Genome","synonymous variant",36597,0.392671673819742
+"8","Whole Genome","upstream gene variant",36140,0.387768240343348
+"9","Whole Genome","downstream gene variant",562,0.00603004291845494
+"10","Whole Genome","Other",398,0.00427038626609442

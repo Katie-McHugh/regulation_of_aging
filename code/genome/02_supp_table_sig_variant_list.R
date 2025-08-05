@@ -4,8 +4,8 @@ library(dplyr)
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 ## read in data
-snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
-indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
+snps3<-read.csv("results/genome/WG_CMHtest_results.csv")
+indels3<-read.csv("results/genome/indels_CMHtest_results.csv")
 ann_snps<-read.table("data/raw/annotated_snps.txt", header=TRUE)
 ann_indels<-read.table("data/raw/annotated_indels.txt", header= TRUE)
 
@@ -66,7 +66,7 @@ nrow(combined_sigs) #801 combined SNPs/indels #includes mito
 #------------------------------------------------------------------------------
 
 # Save the file to the new directory
-write.csv(combined_sigs, file = "temp/genome/sigs_SNPs&indels_padj<0.05.csv", row.names = FALSE)
+write.csv(combined_sigs, file = "results/genome/sigs_SNPs&indels_padj<0.05.csv", row.names = FALSE)
 
 #------------------------------------------------------------------------------
 
@@ -94,7 +94,7 @@ ann_sigs_all<-combined_ann_sigs2[,c(1:8, 56:63)]
 ann_sigs_all<-rbind(ann_sigs_all)
 
 # Save the file to the new directory
-write.csv(ann_sigs_all, file = "temp_tables/supp_table_complete_sig_list_p<0.05.csv", row.names = FALSE)
+write.csv(ann_sigs_all, file = "results/genome/supp_table_complete_sig_list_p<0.05.csv", row.names = FALSE)
 
 nrow(ann_sigs_all) #799 total sigs # missing 2 indels from chr3
 
@@ -162,5 +162,5 @@ View(sorted_table)
 #------------------------------------------------------------------------------
 ## save table: 
 
-write.csv(sorted_table, file="tables/GenomicVariantAnnotationsTable.csv", row.names=FALSE)
+write.csv(sorted_table, file="tables/SuppTable2_GenomicVariantAnn.csv", row.names=FALSE)
 #------------------------------------------------------------------------------

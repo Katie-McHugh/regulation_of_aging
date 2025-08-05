@@ -8,12 +8,12 @@
 #-------------------------------------------------------------------------------
 #Read in Gene Count Matrix, subset
 
-counts <- read.table("data/gene_count_matrix.txt", header = TRUE, row.names = 1, sep = "\t")
+counts <- read.table("data/clean/gene_count_matrix.txt", header = TRUE, row.names = 1, sep = "\t")
 CountData<-counts[,-(1:5)]
 CountData<-as.matrix(CountData) ## this is important--combat seq doesn't like dataframes
 
 ## read in design file and designate as factors/matrix
-colData <- read.table("data/design.txt", header = TRUE, sep = "\t", row.names = 1)
+colData <- read.table("data/design_files/design.txt", header = TRUE, sep = "\t", row.names = 1)
 colData<-as.matrix(colData)
 
 #-------------------------------------------------------------------------------
@@ -65,7 +65,6 @@ mean_baseMean <- mean(filtered_res$baseMean, na.rm = TRUE)
 # Print the result
 mean_baseMean
 
-head(results(dds_adj1, tidy=TRUE)) #cleaner results table
 summary(dds_adj1) #summary table
 dds_adj1 <- dds_adj1[order(dds_adj1$padj),] #sort by p-value
 
@@ -78,6 +77,7 @@ head(resOrdered_adj)
 write.csv(as.data.frame(resOrdered_adj), 
           file="temp/transcriptome/rnaseq_results_batch_adjusted.csv") ### this contains 
 ## results from the dds object
+
 write.csv(normalized_counts_adj, file="temp/transcriptome/normalized_counts_deseq.csv")
 
 ### additional options for plotting and visualization in Analysis_eNotebook_Part2_DGE.rmd file

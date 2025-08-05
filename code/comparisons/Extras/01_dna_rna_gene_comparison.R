@@ -11,7 +11,7 @@ sigs_05_f<- read.csv("temp/comparisons/sig_FIRSTannotation.csv")
 # load in gene lists (genic vs non-genic script)
 gene_list_all_ann<- read.table("temp/comparisons/ALLannotations_list.txt", header=FALSE)
 gene_list_first_ann<- read.table("temp/comparisons/FIRSTannotation_list.txt", header=FALSE)
-rna_list<-read.table("temp/transcriptome/DGEgene_list.txt", header= FALSE)
+rna_list<-read.table("results/transcriptome/DGEgene_list.txt", header= FALSE)
 colnames(rna_list)[1]<-"Gene_Name"
 
 #------------------------------------------------------------------------------

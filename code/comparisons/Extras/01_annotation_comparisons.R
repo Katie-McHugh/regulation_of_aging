@@ -5,62 +5,61 @@
 ## Load in data
 
 ### significant data
-sigs_05_f<-read.csv("temp/comparisons/sig_FIRSTannotation.csv")
-View(sigs_05_f)
+sigs_05_f<-read.csv("temp/comparisons/sig_FIRSTannotation.csv") 
 sigs_05_f<-subset(sigs_05_f, TYPE=="SNP")
 sigs_05_sep<-read.csv("temp/comparisons/sig_ALLannotations.csv")
 sigs_05_sep<-subset(sigs_05_sep, TYPE=="SNP")
+
 ### whole genome annotations
-###ann_i<-read.table("data/annotated_indels.txt", header=TRUE)
-ann_s<-read.table("data/annotated_snps.txt", header=TRUE)
+###ann_i<-read.table("data/annotated_indels.txt", header=TRUE) #indels
+ann_s<-read.table("data/raw/annotated_snps.txt", header=TRUE)  #snps
 
 #-------------------------------------------------------------------------------
 ### Create tables to visualize the data
 
-### first annotation in SNPeff for given variant, sorted by annotation type
-gene_annotation_table_first<- sigs_05_f %>%
-  group_by(Gene_Name) %>%
-  summarize(Annotations = paste(sort(unique(Annotation)), collapse = ", ")) %>%
-  ungroup()
-
-
-### Create a new table that counts how many genes have each combination of annotations
-gene_annotation_count_first <- sigs_05_f %>%
-  group_by(Annotation) %>%
-  summarize(Annotation_Count = n()) %>%
-  ungroup()
-
-###########################################
-# use gene_annotation_count_first for stats
-############################################
-
-
-### Convert counts to percentages
-gene_annotation_first_percent <- sigs_05_f %>%
-  group_by(Annotation) %>%
-  summarize(Annotation_Count = n()) %>%
-  ungroup() %>%
-  mutate(Total_Annotations = sum(Annotation_Count)) %>%
-  mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
-  ungroup()
+# ### first annotation in SNPeff for given variant, sorted by annotation type
+# gene_annotation_table_first<- sigs_05_f %>%
+#   group_by(Gene_Name) %>%
+#   summarize(Annotations = paste(sort(unique(Annotation)), collapse = ", ")) %>%
+#   ungroup()
+# 
+# 
+# ### Create a new table that counts how many genes have each combination of annotations
+# gene_annotation_count_first <- sigs_05_f %>%
+#   group_by(Annotation) %>%
+#   summarize(Annotation_Count = n()) %>%
+#   ungroup()
+# 
+# ###########################################
+# # use gene_annotation_count_first for stats
+# ############################################
+# 
+# ### Convert counts to percentages
+# gene_annotation_first_percent <- sigs_05_f %>%
+#   group_by(Annotation) %>%
+#   summarize(Annotation_Count = n()) %>%
+#   ungroup() %>%
+#   mutate(Total_Annotations = sum(Annotation_Count)) %>%
+#   mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
+#   ungroup()
 
 
 ### Looking at all annotations from significant data 
 ### _sep = separated out each variants annotations into unique rows
 
-gene_annotation_count_all <- sigs_05_sep %>%
-  group_by(Annotation) %>%
-  summarize(Annotation_Count = n()) %>%
-  ungroup()
-
-### Percentages
-gene_annotation_all_percent <- sigs_05_sep %>%
-  group_by(Annotation) %>%
-  summarize(Annotation_Count = n()) %>%
-  ungroup() %>%
-  mutate(Total_Annotations = sum(Annotation_Count)) %>%
-  mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
-  ungroup()
+# gene_annotation_count_all <- sigs_05_sep %>%
+#   group_by(Annotation) %>%
+#   summarize(Annotation_Count = n()) %>%
+#   ungroup()
+# 
+# ### Percentages
+# gene_annotation_all_percent <- sigs_05_sep %>%
+#   group_by(Annotation) %>%
+#   summarize(Annotation_Count = n()) %>%
+#   ungroup() %>%
+#   mutate(Total_Annotations = sum(Annotation_Count)) %>%
+#   mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
+#   ungroup()
 
 
 ###############################################################################
@@ -101,9 +100,7 @@ ref_first_ann <- ann_f3 %>%
   mutate(Percentage = (Annotation_Count / Total_Annotations) * 100) %>%
   ungroup()
 
-write.csv(ref_first_ann, "ref_annotations_count.csv")
-
-View(ref_first_ann)
+write.csv(ref_first_ann, "temp/comparisons/ref_annotations_count.csv")
 
 ###########################################
 # use ref_first_ann for stats
@@ -112,7 +109,7 @@ View(ref_first_ann)
 
 ### this looks at ALL annotations, not just the first annotation
 
-#### Step 1: Split the ANN column into individual annotations ### this creates a new row for each annotation
+#### Split the ANN column into individual annotations ### this creates a new row for each annotation
 ann_all <- ann %>%
   mutate(Annotations_List = strsplit(as.character(ANN), ",")) %>%  # Split the annotations by comma
   unnest(Annotations_List)  # Expand the list into multiple rows

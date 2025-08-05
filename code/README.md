@@ -20,18 +20,25 @@
 3) 00_founder_info.R contains code to generate a table of information for the founder haplotypes using founder_states.txt file (generated from an earlier experiment).
 4) 01_CMHtest_SNPdata.R contains the script used to run the CMH test on GWAS_SNPS_cov20_maf05.csv for the SNP data.  Output is sent to results folder.
 5) 01_indels_cmhtest.R contains the script used to run the CMH test for the indel data, output to results folder.
-6) 01_freq&cov_matrix.R contains code to generate a table of frequency and coverage values at each SNP position used to create plots in the 02_freq&cov_plots.R script. Output to data/clean.
-7) 01_Haplotype_estimation_eNotebook_version.R is the script that was used to estimate the haploype frequencies for each replicate. This script was transferred over to repository after use. It was used iteratively to run for each chromosome and then they were all bound together into a single file for each founder (founderXX_10kb_cov20_maf5.txt) and deposited in the "temp" folder.
-8) 02_nuclearSNPs_ManhattanPlot.R is the script used to generate a manhattan plot for the nuclear SNPs
-9) 02_mitoSNPs_ManhattanPlot.R is the script used to generate a manhattan plot for the mitochondrial SNPs
-10) 02_indels_nuclear_manhattan.R is the script used to generate a manhattan plot for the nuclear indels
-11) 02_indels_mito_manhattan.R is the script used to generate a manhattan plot for the mitochondrial indels
-12) 02_indels&snps_nuclear_manhattan.R is the script used to generate a manhattan plot that overlays the indels on top of the SNP manhattan plot
-13) 02_indels&snps_mito_manhattan.R is the script used to generate a manhattan plot that overlays the indels on top of the SNP manhattan plot for the mitochondria
-14) 02_haplotype_differences.R is the script used to calculate the difference in haplotype frequencies across the genome to use for plotting
-15) 02_supp_table_sig_variant_list.R is the script used to create the supplementary table of all significant variants from teh genome data
-16) 02_freq&cov_plots.R script used to plot coverage and frequency by replicate for individual SNPs.  Uses table generated in 01_freq&cov_matrix.R.
-17) 02_Fig1_GTWAS.R is the script used to generate figure 1
+6) 01_Haplotype_estimation_eNotebook_version.R is the script that was used to estimate the haploype frequencies for each replicate. This script was transferred over to repository after use. It was used iteratively to run for each chromosome and then they were all bound together into a single file for each founder (founderXX_10kb_cov20_maf5.txt) and deposited in the "temp" folder.
+7) 02_Delta_plots.R contains the script used to generate supplementary figure 4 (measures of haplotype differentiation)
+8) 02_SuppFig3_indels&snps_mito_manhattan.R is the script used to generate supplementary figure 3, a manhattan plot that overlays the indels on top of the SNP manhattan plot for the mitochondria
+9) 02_supp_table_sig_variant_list.R is the script used to create the supplementary table 2 containing all significant variants from the genome data (a small edit was later done to fill in annotations for the 2 indels that are not annotated in SNPeff)
+10) 02_Figure1.R is the script used to generate figure 1, containing the nuclear SNP and indel manhattan plot and founder haplotype frequencies across the genome.
+
+#### [Extras](/code/genome/Extras) folder: 
+
+**contains code not used in final manuscript, but previously used in other presentation formats** 
+
+1) 01_freq&cov_matrix.R contains code to generate a table of frequency and coverage values at each SNP position used to create plots in the 02_freq&cov_plots.R script. Output to data/clean.
+2) 02_nuclearSNPs_ManhattanPlot.R is the script used to generate a manhattan plot for the nuclear SNPs
+3) 02_haplotype_differences.R is the script used to calculate the difference in haplotype frequencies across the genome to use for plotting
+4) 02_mitoSNPs_ManhattanPlot.R is the script used to generate a manhattan plot for the mitochondrial SNPs
+5) 02_indels_nuclear_manhattan.R is the script used to generate a manhattan plot for the nuclear indels
+6) 02_indels_mito_manhattan.R is the script used to generate a manhattan plot for the mitochondrial indels
+7) 02_indels&snps_nuclear_manhattan.R is the script used to generate a manhattan plot that overlays the indels on top of the SNP manhattan plot
+8) 02_freq&cov_plots.R script used to plot coverage and frequency by replicate for individual SNPs.  Uses table generated in 01_freq&cov_matrix.R.
+
 
 ### [transcriptome](/code/transcriptome) folder:
 

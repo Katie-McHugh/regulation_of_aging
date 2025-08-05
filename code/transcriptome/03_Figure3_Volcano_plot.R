@@ -30,7 +30,7 @@ okabe_ito_palette <- c(
 #------------------------------------------------------------------------------
 ### Load normalized counts for visualization
 res_adj<-read.csv("temp/transcriptome/rnaseq_results_batch_adjusted.csv", header=TRUE)
-selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
+selected_genes_adj<-read.csv("results/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
 gene_key<- read.table("temp/transcriptome/key_geneIDtoName.txt")
 View(res_adj)
 ## Simple Volcano Plot
@@ -134,9 +134,9 @@ p2<-p +
 #plot(p2)
 
 #pdf("temp_figs/Volcano_DESEQadj_p<0.1.pdf", width = 8, height = 6)
-pdf("figures/Figure3_Volcano_test.pdf", width = 8, height = 6)
-p2
-dev.off()
+# pdf("figures/Figure3_Volcano_test.pdf", width = 8, height = 6)
+# p2
+# dev.off()
 
 pdf("figures/Figure3_Volcano.pdf", width = 8, height = 6)
 p2

@@ -24,15 +24,15 @@ cat_remove<- c("intron_variant", "intergenic_region", "upstream_gene_variant",
                "downstream_gene_variant", "non_coding_transcript_exon_variant")
 genic_sigs_sep<- sigs_05_sep[!sigs_05_sep$Annotation %in% cat_remove,]
 nrow(genic_sigs_sep) #473 genic annotations
-View(genic_sigs_sep)
+
 
 intergenic_sigs_f<- sigs_05_f[sigs_05_f$Annotation %in% cat_remove,]
 nrow(intergenic_sigs_f) #336 intergenic annotations
-View(intergenic_sigs_f)
-View(genic_sigs_sep)
+
+
 
 intergenic_sigs_sep<- sigs_05_sep[sigs_05_sep$Annotation %in% cat_remove,]
-View(intergenic_sigs_sep) #336 intergenic annotations
+#View(intergenic_sigs_sep) #336 intergenic annotations
 
 #------------------------------------------------------------------------------
 ### what are the intergenic variants? 
@@ -65,7 +65,7 @@ nrow(genic_sigs_f) #463 genic annotations # very similar
 
 nrow(intergenic_sigs_f) # PLUS 2 in ARS that weren't annotated
 
-463+336+2 # genic+ intergenic + 2 unannotated ARS
+#463+336+2 # genic+ intergenic + 2 unannotated ARS
 # most genic annotations are the first annotation, unsurprisingly
 View(genic_sigs_f)
 #which ones differ? 
@@ -96,7 +96,7 @@ write.csv(genic_sigs_f, file="temp/comparisons/genic_sigs.csv")
 
 ## Create a combined GO-list for genic SNPs and RNA-seq genes
 
-rna<-read.table("temp/transcriptome/DGEgene_list.txt")
+rna<-read.table("results/transcriptome/DGEgene_list.txt")
 dna<-as.vector(genic_list)
 rna<-as.vector(rna)
 combined<-c(dna, rna)
@@ -105,25 +105,3 @@ writeLines(combined, "temp/comparisons/genic_combined_GO_list.txt")
 
 #------------------------------------------------------------------------------
 
-## Create a bar that is 58% one color and 42% the other color (genic vs non-genic)
-## visual aid 
-
-
-# Create a data frame with the proportions
-data <- data.frame(
-  category = c("Blue", "RosyBrown"),
-  value = c(0.42, 0.58)
-)
-
-# Create the bar plot
-bar<-ggplot(data, aes(x = 1, y = value, fill = category)) +
-  geom_bar(stat = "identity", width = 0.5) +
-  scale_fill_manual(values = c("Blue" = "steelblue4", "RosyBrown" = "rosybrown")) +
-  coord_flip() +  # Make it horizontal
-  theme_void() +  # Remove axes
-  theme(legend.position = "none")  # Hide legend
-
-plot(bar)
-
-
-ggsave(filename = "figures/visual_genic_prop.jpeg", plot = bar , width = 6, height = 1)

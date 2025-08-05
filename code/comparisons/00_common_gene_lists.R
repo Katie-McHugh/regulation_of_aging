@@ -8,7 +8,7 @@
 #------------------------------------------------------------------------------
 
 # load in significant genome data
-sigs_05<-read.csv("temp_tables/supp_table_complete_sig_list_p<0.05.csv")
+sigs_05<-read.csv("results/genome/supp_table_complete_sig_list_p<0.05.csv")
 
 #------------------------------------------------------------------------------
 ### Look at the annotations for our DNA gene lists
