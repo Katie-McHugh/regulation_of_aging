@@ -138,7 +138,7 @@ pdf("figures/Figure3_Volcano_test.pdf", width = 8, height = 6)
 p2
 dev.off()
 
-pdf("temp_figs/Volcano_DESEQp<0.1_v4.pdf", width = 8, height = 6)
+pdf("figures/Figure3_Volcano.pdf", width = 8, height = 6)
 p2
 dev.off()
 
