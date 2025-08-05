@@ -82,10 +82,11 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
   theme_minimal() +
   coord_flip() +  # Flip coordinates to make the plot horizontal
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_size_continuous(name = "Number of \nAnnotated Genes")  +
+  scale_size_continuous(name = "Number of \nAnnotated Genes", 
+                        range = c(3, 8))  +
   scale_color_manual(
     name = "Gene List",  # Set legend title
-    values = c("DNA" = "#CC79A7", "Shared" = "#009E73")
+    values = c("DNA" =  "#56B4E9", "Shared" = "#E69F00")
   ) +
   facet_wrap(~ ann, scales = "free_y", dir = "v")  +                             #dir v stacks vertically instead of horizontally
   theme_light() +
@@ -98,6 +99,7 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
         legend.text = element_text(size = 12))
 
 plot(plot2)
+
 ggsave(filename = "figures/Figure2_GO.jpeg", plot = plot2 ,
        width = 8, height = 7) 
 

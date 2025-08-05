@@ -1,4 +1,4 @@
-founders_4S=read.table("all_founders.txt",header=T)
+founders_4S=read.table("data/clean/all_founders.txt",header=T)
 
 index=c(2,3,4,5,10,11,12,13,30,31,32,33,76,77)
 test=founders_4S[index]
@@ -24,5 +24,5 @@ index=c(1:4,15:19)
 test8=test7[index]
 founder_states=test8
 
-write.table(founder_states,file="founder_states.txt",quote=FALSE)
+write.table(founder_states,file="data/clean/founder_states.txt",quote=FALSE)
 
