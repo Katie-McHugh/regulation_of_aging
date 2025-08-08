@@ -1,4 +1,4 @@
-founders_4S=read.table("data/clean/all_founders.txt",header=T)
+founders_4S=read.table("data/raw/all_founders.txt",header=T)
 
 index=c(2,3,4,5,10,11,12,13,30,31,32,33,76,77)
 test=founders_4S[index]
