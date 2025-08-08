@@ -8,7 +8,7 @@
 1) 00_common_gene_lists.R
 2) 00_local_variants.R
 3) 02_Fig2_GO_terms.R
-4)01_genic_vs_nongenic.R
+4) 01_genic_vs_nongenic.R
 5) ) 01_SNP_annotation_comparisons.R
 6) 02_FishersTest_annotations.R
 7) 02_Figure4_barchart.R
@@ -27,10 +27,10 @@
 #### Script that is used to create Table 1, showing potential local cis-regulatory variants.  Can adjust the distance (default 10kb) used to determine what a "local" variant is.
 
 #---------------------------------------------------------------------------------------------------------------------------------------
-### 3) 00_Fig2_GO_terms.R
+### 3) 02_Fig2_GO_terms.R
 #---------------------------------------------------------------------------------------------------------------------------------------
 
-#### Script that uses the outputs of the GO-term analyses performed using the Saccharomyces Genome Database GO analysis tool to visualize GO-term enrichment. 
+#### Script that uses the outputs of the GO-term analyses performed using the Saccharomyces Genome Database GO analysis tool to visualize GO-term enrichment. Requires output of 01_genic_vs_nongenic.R to run GO-terms analysis.
 
 #---------------------------------------------------------------------------------------------------------------------------------------
 ### 4) 01_genic_vs_nongenic.R
