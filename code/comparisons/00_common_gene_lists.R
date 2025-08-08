@@ -1,10 +1,10 @@
 ### Creating simplified gene lists for next steps 
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
-## First step in Part 3 of GTWAS Analysis
+## First step in Part 3 of GTWAS Analysis (comparing genomic and transcriptomic
+## results)
 
- ##### next steps = dna_rna_gene_comparison.R and genic_vs_nongenic.R scripts
-
+ ##### precursor to: genic_vs_nongenic.R 
 #------------------------------------------------------------------------------
 
 # load in significant genome data
