@@ -1,6 +1,11 @@
 #############################################################################
-### Budscars Plot
+### Budscars 
 #############################################################################
+
+#------------------------------------------------------------------------------
+## This script performs analysis for budscar data (Supplementary table 1) and 
+### creates Supplementary Figure 2 to visualize bud scar data
+#------------------------------------------------------------------------------
 
 ## Load Libraries
 #------------------------------------------------------------------------------
@@ -12,23 +17,26 @@ library(DescTools)
 library(tidyverse)
 library(magrittr)
 library(rstatix)
+library(viridis)
 #------------------------------------------------------------------------------
 
 #read in and manage data
 #------------------------------------------------------------------------------
-scars2=read.table("data/clean/scarsdata.txt",header=T)
-scars2$strain=as.factor(scars2$strain)
-scars=subset(scars2, replicate!="2.7")
-scars$strain <- as.character(scars$strain)
-scars$strain[scars$strain == '4x'] <- '4S'
-scars$strain <- as.factor(scars$strain)
+scars2=read.table("data/clean/scarsdata.txt",header=T) ## cleaned scar data
+scars2$strain=as.factor(scars2$strain)                 ## set strains as factor
+scars=subset(scars2, replicate!="2.7")                 ## remove extra rep to 
+                                                       ### even out # of observations 
+                                                       ### for stats (MB, via, & counts)
+scars$strain <- as.character(scars$strain)             ## set strains as character
+scars$strain[scars$strain == '4x'] <- '4S'             ## rename to accurate strain name
+scars$strain <- as.factor(scars$strain)                ## set back to factor
 #------------------------------------------------------------------------------
 
 #############################################################################
 ### Statistics
 #############################################################################
 
-## Table 1
+## Generate Supplementary Table 1
 #------------------------------------------------------------------------------
 ### Calculating Averages for young and old fractions
 
@@ -64,7 +72,6 @@ summary(SYdbvpg6765$avg_scars_all)
 #------------------------------------------------------------------------------
 ### Checking normality of residuals
 #------------------------------------------------------------------------------
-
 scars4S=subset(scars, strain=="4S")
 scarsY12=subset(scars, strain=="Y12")
 scarsYPS128=subset(scars, strain=="YPS128")
@@ -126,19 +133,9 @@ compare_means(avg_scars_all~age, data=scars, group.by="strain", paired=TRUE)
 ### Plotting
 #############################################################################
 
-## Figure 1
+## Create Supplementary Figure 2
 #------------------------------------------------------------------------------
 
-#read in and manage data
-# scars2=read.table("scarsdata.txt",header=T)
-# scars2$strain=as.factor(scars2$strain)
-# scars=subset(scars2, replicate!="2.7")
-# scars$strain <- as.character(scars$strain)
-# scars$strain[scars$strain == '4x'] <- '4S'
-# scars$strain <- as.factor(scars$strain)
-# View(scars)
-
-library(viridis)
 #set Theme
 My_Theme = theme(
   axis.text.x = element_text(size = 14),
