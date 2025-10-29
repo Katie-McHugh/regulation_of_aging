@@ -1,4 +1,4 @@
-
+library(poolSeq) #for CMH test
 ### Run a CMH test on SNP data
 
 snps3<-read.csv("data/clean/GWAS_SNPS_cov20_maf05.csv")
