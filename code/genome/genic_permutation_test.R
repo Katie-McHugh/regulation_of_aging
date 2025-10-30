@@ -5,6 +5,8 @@
 #--------------------------------------------------------------------------
 ## Load Libraries and functions
 #--------------------------------------------------------------------------
+library(tidyr)
+library(dplyr)
 
 roman_to_chr <- setNames(
   c(paste0("chr", 1:16), "chrmito"),
@@ -108,7 +110,7 @@ all_variants<- all_variants %>%
 View(all_variants)
 
 #--------------------------------------------------------------------------
-# all_snps$coding is TRUE/FALSE or 1/0
+# all_snps coding is TRUE/FALSE or 1/0
 
 ## Perform a permutation enrichment test to see if we are observing a higher than expected
 ### proportion of significant SNPs being in coding regions compared to the genome 
@@ -118,32 +120,32 @@ n_gwas <- 801  # Number of significant GWAS variants (SNPS and indels) that we i
 k_obs <-  473 # Number of GWAS SNPs in coding regions from our significant variants
 
 # Permutation parameters
-n_perm <- 1000 ### perform 100000 permutations
+n_perm <- 1000 ### perform 1000 permutations
 perm_counts <- numeric(n_perm)
 
 set.seed(123)  # For reproducibility
 
-## sample 801 SNPs without replacement 100000 times
+## sample 801 SNPs without replacement 1000 times
 for (i in 1:n_perm) {
   sampled_snps <- sample(all_variants$genic, n_gwas, replace = FALSE)
   perm_counts[i] <- sum(sampled_snps)
 }
 
-# Calculate empirical p-value
-p_value <- sum(perm_counts >= k_obs) / n_perm
-mean_coding_prop <- mean(all_variants$genic_binary)
-expected_mean <- n_gwas * mean_coding_prop
-
-p_value
-mean_coding_prop
-expected_mean
+# # Calculate empirical p-value
+# p_value <- sum(perm_counts >= k_obs) / n_perm 
+# mean_coding_prop <- mean(all_variants$genic_binary)
+# expected_mean <- n_gwas * mean_coding_prop
+# 
+# p_value
+# mean_coding_prop
+# expected_mean
 
 ## we seem to be filtering out a lot of the noncoding regions...which probably 
 ## makes sense
 
 # Visualize
 hist<-hist(perm_counts, breaks = 30, main = "Permutation Test: Coding SNPs",
-     xlab = "Number of coding SNPs in random set")
+     xlab = "Number of coding SNPs in random set") +
 abline(v = k_obs, col = "red", lwd = 2)
 
 plot(hist)
