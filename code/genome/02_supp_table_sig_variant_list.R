@@ -1,6 +1,7 @@
 ### Create Supplementary Table
 
 library(dplyr)
+library(tidyr)
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 ## read in data
@@ -159,8 +160,26 @@ sorted_table <- complete_table %>%
 
 dim(sorted_table)
 View(sorted_table)
+
+sorted_table1 <- sorted_table %>%
+  mutate(First_ANN = sapply(strsplit(ANN, ","), `[`, 1))
+
+### Step 2: Separate the First_ANN column by pipe character into multiple columns
+sorted_table2 <- sorted_table1 %>%
+  separate(First_ANN, 
+           into = c("Allele", "Annotation", "Annotation_Impact", "Gene_Name",
+                    "Gene_ID", "Feature_Type", "Feature_ID",
+                    "Transcript_BioType", "Rank", "HGVS.c", "HGVS.p", 
+                    "cDNA.pos / cDNA.length", "CDS.pos / CDS.length",
+                    "AA.pos / AA.length", "Distance", "INFO"), 
+           sep = "\\|", fill = "right")
+
+View(sorted_table2)
+supplementary_table_3<-sorted_table2[, c("CHROM", "POS", "TYPE", "pval", "logp",
+                                         "Gene_Name", "Annotation")]
+View(supplementary_table_3)
 #------------------------------------------------------------------------------
 ## save table: 
 
-write.csv(sorted_table, file="tables/SuppTable2_GenomicVariantAnn.csv", row.names=FALSE)
+write.csv(supplementary_table_3, file="tables/SuppTable3_GenomicVariantAnn_GBE.csv", row.names=FALSE)
 #------------------------------------------------------------------------------
