@@ -100,8 +100,9 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
 
 plot(plot2)
 
-ggsave(filename = "figures/Figure2_GO.jpeg", plot = plot2 ,
-       width = 8, height = 7) 
+ggsave(filename = "figures/Figure2_GO.tif", plot = plot2 ,
+       width = 8, height = 7, dpi = 400) 
+
 
 #plot3 <- plot2 + scale_color_manual( name = "Gene List", values = brewer.pal(3, "Dark2"))
 
