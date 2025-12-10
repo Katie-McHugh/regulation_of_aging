@@ -15,6 +15,7 @@
 # be possible using pheatmap
 #-------------------------------------------------------------------------------
 library(pheatmap)
+library(tidyverse)
 # 
 # okabe_ito_palette <- c("#D55E00",
 #                        "#F0E442",
@@ -131,7 +132,11 @@ View(logfc_info)
 ## Plot heatmap
 ### p < 0.1
 
-pdf("figures/SuppFig5_heatmap.pdf", width = 24, height = 16)
+#pdf("figures/SuppFig3_heatmap.pdf", width = 8, height = 12)
+tiff(file = "figures/SuppFig3_heatmap.tiff", height = 9.5, width = 7.5,
+units = "in",
+res = 400,
+compression = "lzw")
 
 pheatmap(
   norm_adj_mat, # Scale the data by rows (genes)
@@ -143,11 +148,11 @@ pheatmap(
   annotation_col = annotation_col,
   annotation_colors = annotation_colors,
   annotation_legend = TRUE, 
-  fontsize = 12,           # Increase overall font size
-  fontsize_row = 14,       # Row name font size
-  fontsize_col = 14,       # Column name font size
-  cellheight = 15,         # Increase cell height
-  cellwidth = 15           # Increase cell width if needed
+  fontsize = 10,           # Increase overall font size
+  fontsize_row = 10,       # Row name font size
+  fontsize_col = 10,       # Column name font size
+  cellheight = 10,         # Increase cell height
+  cellwidth = 10         # Increase cell width if needed
 )
 
 dev.off()
