@@ -147,7 +147,12 @@ okabe_ito <- palette.colors(8, palette = "Okabe-Ito")
 custom_colors <- c("young" = okabe_ito[7], "aged" = okabe_ito[6])
 
 #bud scars plot as PDF
-pdf("figures/SuppFig2_BUDSCARS.pdf",height=4, width=8)
+#pdf("figures/SuppFig2_BUDSCARS.pdf",height=4, width=8)
+tiff(file = "figures/SuppFig5_BUDSCARS.tiff", height = 4, width = 8,
+     units = "in",
+     res = 400,
+     compression = "lzw")
+
 scars$strain<-factor(scars$strain, c("4S", "YPS128" ,"Y12", "DBVPG6044", "DBVPG6765"))
 scarsplot<-ggplot(scars, aes(x = age, y = avg_scars_all, group = replicate))+
   geom_point(aes(color = age), size = 3)+
