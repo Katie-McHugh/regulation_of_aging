@@ -139,7 +139,7 @@ p2<-p +
 # dev.off()
 
 #pdf("figures/Figure3_Volcano.pdf", width = 8, height = 6)
-tiff(file = "figures/Figure3_Volcano.tiff", height = 6, width = 6,
+tiff(file = "figures/Figure3_Volcano_BN.tiff", height = 6, width = 7,
      units = "in",
      res = 400,
      compression = "lzw")
