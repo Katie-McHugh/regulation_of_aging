@@ -3,7 +3,8 @@
 #------------------------------------------------------------------------------
 
 ### Load results object
-res_adj<-read.csv("temp/transcriptome/rnaseq_results_batch_adjusted.csv", header=TRUE)
+res_adj<-read.csv("data/clean/rnaseq_results_batch_adjusted.csv", header=TRUE)
+
 head(res_adj)
 # find genes below p<0.05
 sig_genes_adj <- res_adj[which(res_adj$padj <= 0.05), ] #27 genes 
