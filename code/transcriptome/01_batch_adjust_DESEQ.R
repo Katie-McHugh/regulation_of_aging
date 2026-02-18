@@ -2,6 +2,18 @@
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
 
+## libraries
+#-------------------------------------------------------------------------------
+
+install.packages("BiocManager")
+BiocManager::install("DESeq2")
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("sva")
+library(sva)
+#-------------------------------------------------------------------------------
+
 ### correct for batch effect from 2 different sorting groups
 ## convert back to dataframe after batch correction to level data correctly
 
@@ -78,6 +90,6 @@ write.csv(as.data.frame(resOrdered_adj),
           file="temp/transcriptome/rnaseq_results_batch_adjusted.csv") ### this contains 
 ## results from the dds object
 
-write.csv(normalized_counts_adj, file="temp/transcriptome/normalized_counts_deseq.csv")
+write.csv(normalized_counts_adj, file="results/transcriptome/normalized_counts_deseq.csv")
 
 ### additional options for plotting and visualization in Analysis_eNotebook_Part2_DGE.rmd file
