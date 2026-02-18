@@ -12,6 +12,7 @@ if (!require("BiocManager", quietly = TRUE))
 
 BiocManager::install("sva")
 library(sva)
+library(DESeq2)
 #-------------------------------------------------------------------------------
 
 ### correct for batch effect from 2 different sorting groups
@@ -20,7 +21,7 @@ library(sva)
 #-------------------------------------------------------------------------------
 #Read in Gene Count Matrix, subset
 
-counts <- read.table("data/clean/gene_count_matrix.txt", header = TRUE, row.names = 1, sep = "\t")
+counts <- read.table("data/raw/gene_count_matrix.txt", header = TRUE, row.names = 1, sep = "\t")
 CountData<-counts[,-(1:5)]
 CountData<-as.matrix(CountData) ## this is important--combat seq doesn't like dataframes
 
@@ -87,9 +88,9 @@ head(resOrdered_adj)
 #-------------------------------------------------------------------------------
 # write data
 write.csv(as.data.frame(resOrdered_adj), 
-          file="temp/transcriptome/rnaseq_results_batch_adjusted.csv") ### this contains 
+          file="data/clean/rnaseq_results_batch_adjusted.csv") ### this contains 
 ## results from the dds object
 
-write.csv(normalized_counts_adj, file="results/transcriptome/normalized_counts_deseq.csv")
+write.csv(normalized_counts_adj, file="data/clean/normalized_counts_deseq.csv")
 
 ### additional options for plotting and visualization in Analysis_eNotebook_Part2_DGE.rmd file
