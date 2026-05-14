@@ -3,7 +3,7 @@
 #------------------------------------------------------------------------------
 
 ### Load results object
-res_adj<-read.csv("data/clean/rnaseq_results_batch_adjusted.csv", header=TRUE)
+res_adj<-read.csv("data/clean/rnaseq_results_batch_adjusted_young_ref.csv", header=TRUE)
 
 head(res_adj)
 # find genes below p<0.05
@@ -12,6 +12,7 @@ sig_genes_adj <- res_adj[which(res_adj$padj <= 0.05), ] #27 genes
 #p<0.1
 sig_genes_permissive_adj <- res_adj[which(res_adj$padj <= 0.1), ] #60 genes #includes RFA3 and FIT2...
 nrow(sig_genes_permissive_adj)
+View(sig_genes_permissive_adj)
 
 #------------------------------------------------------------------------------
 # reformat annotation table

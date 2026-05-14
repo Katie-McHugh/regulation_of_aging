@@ -75,7 +75,7 @@ Used alignment.sh file for alignment in the filtered_samples folder:
     done
 done)
 
-##### output saved to STAR_output folder within filtered_sampes folder
+##### output saved to STAR_output folder within filtered_samples folder
 the feature_counts.sh file was used on the alignments, along with the yeast.2023.mRNA.sgd.gff reference file:
 
 for sample_type in "OLD" "YOUNG"; do
