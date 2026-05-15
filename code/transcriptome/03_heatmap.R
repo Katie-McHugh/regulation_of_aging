@@ -133,7 +133,7 @@ View(logfc_info)
 ### p < 0.1
 
 #pdf("figures/SuppFig3_heatmap.pdf", width = 8, height = 12)
-tiff(file = "figures/SuppFig3_heatmap.tiff", height = 9.5, width = 7.5,
+tiff(file = "figures/SuppFig3_heatmap.tiff", height = 12, width = 12,
 units = "in",
 res = 400,
 compression = "lzw")
@@ -147,12 +147,15 @@ pheatmap(
   annotation_row = annotation_row,
   annotation_col = annotation_col,
   annotation_colors = annotation_colors,
+  treeheight_row = 20,  
   annotation_legend = TRUE, 
   fontsize = 10,           # Increase overall font size
   fontsize_row = 10,       # Row name font size
   fontsize_col = 10,       # Column name font size
   cellheight = 10,         # Increase cell height
-  cellwidth = 10         # Increase cell width if needed
+  cellwidth = 20        # Increase cell width if needed
 )
 
 dev.off()
+
+

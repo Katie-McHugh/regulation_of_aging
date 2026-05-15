@@ -81,3 +81,6 @@ gene_names_p05<-unique(sig_genes_adj_1$Gene_Name)
 gene_names_p10<-unique(sig_genes_permissive_adj_1$Gene_Name)
 
 writeLines(gene_names_p10, "results/transcriptome/DGEgene_list.txt")
+
+
+
