@@ -28,10 +28,10 @@ CountData<-as.matrix(CountData) ## this is important--combat seq doesn't like da
 ## read in design file and designate as factors/matrix
 colData <- read.table("data/design_files/design.txt", header = TRUE, sep = "\t", row.names = 1)
 colData$batch <- c(
-  "B1", "B1", "B1", "B1","B1", "B1", 
-  "B2", "B2", "B2", "B2", "B2", "B2",
-  "B1", "B1", "B1", "B1","B1", "B1", 
-  "B2", "B2", "B2", "B2", "B2", "B2"
+  "Batch 1", "Batch 1", "Batch 1", "Batch 1", "Batch 1", "Batch 1", 
+  "Batch 2", "Batch 2", "Batch 2", "Batch 2", "Batch 2", "Batch 2",
+  "Batch 1", "Batch 1", "Batch 1", "Batch 1", "Batch 1", "Batch 1", 
+  "Batch 2", "Batch 2", "Batch 2", "Batch 2", "Batch 2", "Batch 2"
 )
 colData<-as.matrix(colData)
 
@@ -105,59 +105,101 @@ write.csv(normalized_counts_adj, file="data/clean/normalized_counts_deseq.csv")
 ### additional options for plotting and visualization in Analysis_eNotebook_Part2_DGE.rmd file
 
 
-#--------------- PCAs
+#--------------- PCAs for dds object -------------------#
 
 # VISUALIZATION ONLY-- transform  data to make it homoskedastic (variance of the residual is constant)  #this is JUST for visualization
 rlog_dds<-rlog(dds_adj)
-df <-as.data.frame(assay(rlog_dds)[,12:13])
+class(rlog_dds)
 
+## test transformation #better than vst
+df <-as.data.frame(assay(rlog_dds)[,12:13])
 test<-ggplot(df, aes(x= RNAseq_OLD_rep12.bam, y=RNAseq_YOUNG_rep01.bam)) +geom_hex(bins=100, colour="orange", fill="black")+coord_fixed()+theme_classic()
 ggsave("figures/test_adjusted.pdf", test)
 
 #PCA
-pca_plot<-plotPCA(rlog_dds)
-pca2<-plotPCA(rlog_dds, intgroup = "batch")
-ggsave("figures/pca_RNAseq_adjusted.pdf", pca_plot)
 
+#pca_dds<-plotPCA(rlog_dds, intgroup = "batch")
+#pca_dds2<-plotPCA(rlog_dds, intgroup = "condition")
 
-pcaData <- plotPCA(rlog_dds,
+## ggplot is easier to work with
+
+pcaData_dds <- plotPCA(rlog_dds,
                    intgroup = c("batch","condition"),
                    returnData = TRUE)
+attr(pcaData_dds, "percentVar")
 
-p2<-ggplot(pcaData,
-          aes(PC1, PC2,
-              color = batch, 
-              shape = condition)) +
-  geom_point(size = 4)
-
-p2<-p2+theme_bw() +
-  theme(panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank(), 
-        axis.text = element_text(size = 14), 
-        axis.title = element_text(size = 16), 
-        legend.text = element_text(size = 14)) 
+percentVar <- round(100 * attr(pcaData_dds, "percentVar"), 2)
 
 
+pca_dds1 <- ggplot(pcaData_dds, aes(PC1, PC2, color = batch)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c("Batch 1" = "steelblue", "Batch 2" = "tomato")) +
+  scale_x_continuous(expand = expansion(mult = 0.15)) +
+  scale_y_continuous(expand = expansion(mult = 0.15)) +
+  labs(x = paste0('PC1: ', percentVar[1], '%'),
+       y = paste0('PC2: ', percentVar[2], '%'),
+       color = "Batch") +
+  theme_bw()
 
-ggsave("figures/pca_RNAseq_batch_adjusted.pdf", p2)
+pca_dds1
 
-?plotPCA
+pca_dds2 <- ggplot(pcaData_dds, aes(PC1, PC2, color = condition)) +
+  geom_point(size = 3) +
+  scale_color_manual(values = c("old" = "orange", "young" = "purple"), 
+                     breaks = c("old", "young")) +
+  scale_x_continuous(expand = expansion(mult = 0.15)) +
+  scale_y_continuous(expand = expansion(mult = 0.15)) +
+  labs(x = paste0('PC1: ', percentVar[1], '%'),
+       y = paste0('PC2: ', percentVar[2], '%'),
+       color = "condition") +
+  theme_bw()
 
-#generate a loading plot
-#transpose data
-t_rld<-t(assay((rlog_dds)))
-t_rld[1:3,1:4]
+pca_dds2
 
-pca<-prcomp(t_rld)
-plot(pca)
+library(patchwork)
 
-#loadings
-names(pca)
-loadings<-as.data.frame(pca$rotation)
-head(loadings)
-loadingplot(loadings$PC1, threshold = 0.1)
-plot_load<-loadingplot(loadings$PC1,threshold= 0.1)
-row.names(dds)[plot_load$var.names] ###BUT...the PCA doesn't look awesome, so I'm not sure how useful this really is
+pca_dds_adj_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('C', 'D'))))
+pca_dds_adj_combined
+ggsave("temp/transcriptome/pca_dds_adjusted.pdf", pca_dds_adj_combined, width = 4.085, height = 8.06)
+
+# pcaData <- plotPCA(rlog_dds,
+#                    intgroup = c("batch","condition"),
+#                    returnData = TRUE)
+# 
+# p2<-ggplot(pcaData,
+#           aes(PC1, PC2,
+#               color = batch, 
+#               shape = condition)) +
+#   geom_point(size = 4)
+# 
+# p2<-p2+theme_bw() +
+#   theme(panel.grid.major = element_blank(), 
+#         panel.grid.minor = element_blank(), 
+#         axis.text = element_text(size = 14), 
+#         axis.title = element_text(size = 16), 
+#         legend.text = element_text(size = 14)) 
+# 
+# 
+# 
+# ggsave("figures/pca_RNAseq_batch_adjusted.pdf", p2)
+# 
+# ?plotPCA
+# 
+# #generate a loading plot
+# #transpose data
+# t_rld<-t(assay((rlog_dds)))
+# t_rld[1:3,1:4]
+# 
+# pca<-prcomp(t_rld)
+# plot(pca)
+# 
+# #loadings
+# names(pca)
+# loadings<-as.data.frame(pca$rotation)
+# head(loadings)
+# loadingplot(loadings$PC1, threshold = 0.1)
+# plot_load<-loadingplot(loadings$PC1,threshold= 0.1)
+# row.names(dds)[plot_load$var.names] ###BUT...the PCA doesn't look awesome, so I'm not sure how useful this really is
 
 
 
