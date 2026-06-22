@@ -118,11 +118,11 @@ SNPeff_stats <- SNPeff_ann_long %>%
 # Katie and Molly: You may not want to do all of this filtering so you could skip or modify to filter another way if desired.
 
 # Filter out SNPs we don't care about:
-# So the ones downstream or upstream > 1000 bp
-SNPeff_stats_filtered_1000 <- SNPeff_stats %>%
+# So the ones downstream or upstream > 5000 bp
+SNPeff_stats_filtered_5000 <- SNPeff_stats %>%
   filter(
-    !(Effect == "downstream_gene_variant") &
-      !(Effect == "upstream_gene_variant" & as.numeric(Distance) > 1000) &
+    !(Effect == "downstream_gene_variant" & as.numeric(Distance) > 5000) &
+      !(Effect == "upstream_gene_variant" & as.numeric(Distance) > 5000) &
       !(Effect == "intergenic_region")
   )
 
@@ -421,22 +421,22 @@ ridge_in_gene <- ggplot(gene_summary, aes(x = n_in_gene, y = In_sigs, fill = In_
 ridge_in_gene
 
 # In gene per kb
-ingeneperkb.mod <- lm(n_in_gene_per_kb_tf ~ In_time_series, data = gene_summary)
+ingeneperkb.mod <- lm(n_in_gene_per_kb_tf ~ In_sigs, data = gene_summary)
 summary(ingeneperkb.mod)
 plot(ingeneperkb.mod)
 # Make plot
-ridge_in_gene_per_kb <- ggplot(gene_summary, aes(x = n_in_gene_per_kb_tf, y = In_time_series, fill = In_time_series)) +
+ridge_in_gene_per_kb <- ggplot(gene_summary, aes(x = n_in_gene_per_kb_tf, y = In_sigs, fill = In_sigs)) +
   geom_density_ridges(
     alpha = 0.6, scale = 2, color = "white", bandwidth = 0.2, rel_min_height = 0.01,
     jittered_points = TRUE, position = position_points_jitter(width = 0.1, height = 0),
     point_shape = "|", point_size = 4, point_color = "grey40"
   ) +
   geom_errorbar(
-    data = get_ridge_ci("n_in_gene_per_kb_tf"), aes(y = In_time_series, xmin = ci_low, xmax = ci_high),
+    data = get_ridge_ci("n_in_gene_per_kb_tf"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
     orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
   ) +
   geom_point(
-    data = get_ridge_ci("n_in_gene_per_kb_tf"), aes(x = mean_val, y = In_time_series),
+    data = get_ridge_ci("n_in_gene_per_kb_tf"), aes(x = mean_val, y = In_sigs),
     inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
   ) +
   labs(x = "Number of SNPs in genes per kb", y = "", title = "Distribution of SNP counts in genes per kb") +
@@ -448,9 +448,7 @@ ridge_in_gene_per_kb <- ggplot(gene_summary, aes(x = n_in_gene_per_kb_tf, y = In
            label = "italic(beta)==0.29 ~ ';' ~ italic(p)==0.003",
            parse = TRUE
   ) +
-  # annotate("text", x = 4.4, y = 3.4, size = 3,
-  #          label = "# SNPs per kb in gene ~ Time Series overlap (Yes/No)",
-  #          parse = FALSE)+
+
   theme(legend.position = "none")
 ridge_in_gene_per_kb
 
@@ -550,8 +548,6 @@ ridge_in_intron <- ggplot(gene_summary, aes(x = n_introns, y = In_sigs, fill = I
   theme(legend.position = "none")
 ridge_in_intron
 
-
-
 # In gene per kb
 ingeneperkb.mod <- glm(n_in_gene_per_kb_tf ~ In_sigs, data = gene_summary)
 summary(ingeneperkb.mod)
@@ -588,6 +584,6 @@ ridge_in_gene_per_kb
 
 ridges_patch <- (ridge_in_gene_per_kb / ridge_in_exon / ridge_in_intron / ridge_upstream / ridge_gene_length)
 
-ggsave(filename = "figures/ridgeline_column_plot.png", plot = ridges_patch, width = 7, height = 12, dpi = 300)
+ggsave(filename = "figures/ridgeline_column_plot_5kb.png", plot = ridges_patch, width = 7, height = 12, dpi = 300)
 
 
