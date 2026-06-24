@@ -6,13 +6,21 @@ library(dplyr)
 library(stringr)
 library(ggplot2)
 
-okabe_ito_palette <- c("#D55E00",
-                       "#F0E442",
-                       "#56B4E9",
-                       "#0072B2", 
-                       "#E69F00")
-                       #"#009E73",
-                       #"#CC79A7"
+# okabe_ito_palette <- c("#D55E00",
+#                        "#F0E442",
+#                        "#56B4E9",
+#                        "#0072B2", 
+#                        "#E69F00")
+#                        #"#009E73",
+#                        #"#CC79A7"
+
+okabe_ito_palette <- c("darkslategray2",
+                       "darkslategray3",
+                       "darkslategray4",
+                       "darkslategray",
+                       "black") ## change to greyscale
+#"#009E73",
+#"#CC79A7"
 
 #------------------------------------------------------------------------------
 
@@ -84,13 +92,15 @@ barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotatio
     axis.text.y = element_text(size = 16),  # Increase font size of y-axis tick labels
     axis.title.y = element_text(size = 16),  # Increase font size of y-axis label
     axis.title.x = element_blank(),
-    legend.title = element_text(size=16),
+    legend.position = "bottom",
+    legend.title = element_blank(),
     legend.text = element_text(size = 16)  # Adjust legend text size if needed
-  ) 
+  ) +
+  guides(fill = guide_legend(nrow = 5, byrow = TRUE))
 
 ### I could combine more categories to make it easier to see
 plot(barplot)
 
 
 # Save the plot using ggsave
-ggsave(filename = "figures/Figure4_annotations_barplot_color.tif", plot = barplot , width = 6, height = 8, dpi = 400) 
+ggsave(filename = "figures/Figure4_annotations_barplot_teal.tif", plot = barplot , width = 3, height = 8, dpi = 400) 
