@@ -204,10 +204,6 @@ rm(gene_summary_check) # I don't want to save this
 # But maybe its helpful so I left it in.
 # Import the GFF
 gff_gr <- import("data/raw/genomic.gff") ## GFF file 
-View(gff_gr$ID)
-
-head(gene_summary$Gene_ID)
-
 
 
 # If they don't match change one to fix it.
@@ -256,13 +252,12 @@ genes_lengths <- genes_lengths %>%
 gene_summary <- gene_summary %>%
   left_join(genes_lengths, by = c("Gene_ID" = "ID"))
 
-View(gene_summary)
+
 # get rid of intermediate
 rm(genes_lengths)
 # sanity check, should be 0 NAs
 sum(is.na(gene_summary$gene_length))
 
-View(gene_summary)
 # Duplicate column in units of kb
 gene_summary$gene_length_kb <- gene_summary$gene_length / 1000
 # Make column with number of snps per kb of gene length
@@ -298,7 +293,7 @@ sigs <- read.csv("data/clean/rnaseq_results_batch_sigs0.1_edited.csv", header = 
 names(sigs)[1] <- "Gene_ID" # Rename first column
 head(sigs)
 gene_summary$In_sigs <- gene_summary$Gene_ID %in% sigs$Gene_ID
-View(gene_summary)
+
 #gene_summary <- gene_summary[, c("Gene_ID", "In_sigs", "n_SNPs", "CHROM", "max_upstream_dist", 
 #                                 "min_upstream_dist", "n_in_exons", "n_introns", 
 #                                "n_upstream", "n_modifer","n_low_impact", 
@@ -341,11 +336,6 @@ ridge_long <- gene_summary %>%
   ) %>%
   filter(!is.infinite(value) & !is.na(value))
 
-View(ridge_long)
-View(gene_summary)
-
-head(ridge_long)
-
 
 # Generate summary
 ridge_summary <- ridge_long %>%
@@ -359,7 +349,7 @@ ridge_summary <- ridge_long %>%
     ci_high = mean_val + qt(0.975, df = n - 1) * se,
     .groups = "drop"
   )
-View(ridge_summary) ## n is just counting number of total genes
+ ## n is just counting number of total genes
 ## mean value gives the proportion that fall into that category...
 
 # Define function to auto call the correct elements when plotting
@@ -387,14 +377,14 @@ ridge_upstream <- ggplot(gene_summary, aes(x = n_upstream, y = In_sigs, fill = I
     jittered_points = TRUE, position = position_points_jitter(width = 0.1, height = 0),
     point_shape = "|", point_size = 4, point_color = "grey40"
   ) +
-  geom_errorbar(
-    data = get_ridge_ci("n_upstream"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
-    orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
-  ) +
-  geom_point(
-    data = get_ridge_ci("n_upstream"), aes(x = mean_val, y = In_sigs),
-    inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
-  ) +
+  # geom_errorbar(
+  #   data = get_ridge_ci("n_upstream"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
+  #   orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
+  # ) +
+  # geom_point(
+  #   data = get_ridge_ci("n_upstream"), aes(x = mean_val, y = In_sigs),
+  #   inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
+  # ) +
   labs(x = "Number of SNPs <1000 bp upstream", y = "") +
   scale_fill_manual(values = my_pal_ts) +
   scale_y_discrete(labels = c("FALSE" = "Not DE", "TRUE" = "DE")) +
@@ -420,14 +410,14 @@ ridge_downstream <- ggplot(gene_summary, aes(x = n_downstream, y = In_sigs, fill
     jittered_points = TRUE, position = position_points_jitter(width = 0.1, height = 0),
     point_shape = "|", point_size = 4, point_color = "grey40"
   ) +
-  geom_errorbar(
-    data = get_ridge_ci("n_downstream"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
-    orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
-  ) +
-  geom_point(
-    data = get_ridge_ci("n_downstream"), aes(x = mean_val, y = In_sigs),
-    inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
-  ) +
+  # geom_errorbar(
+  #   data = get_ridge_ci("n_downstream"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
+  #   orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
+  # ) +
+  # geom_point(
+  #   data = get_ridge_ci("n_downstream"), aes(x = mean_val, y = In_sigs),
+  #   inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
+  # ) +
   labs(x = "Number of SNPs <1000 bp downstream", y = "") +
   scale_fill_manual(values = my_pal_ts) +
   scale_y_discrete(labels = c("FALSE" = "Not DE", "TRUE" = "DE")) +
@@ -447,14 +437,14 @@ ridge_synonymous <- ggplot(gene_summary, aes(x = n_synonymous, y = In_sigs, fill
     jittered_points = TRUE, position = position_points_jitter(width = 0.1, height = 0),
     point_shape = "|", point_size = 4, point_color = "grey40"
   ) +
-  geom_errorbar(
-    data = get_ridge_ci("n_synonymous"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
-    orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
-  ) +
-  geom_point(
-    data = get_ridge_ci("n_synonymous"), aes(x = mean_val, y = In_sigs),
-    inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
-  ) +
+  # geom_errorbar(
+  #   data = get_ridge_ci("n_synonymous"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
+  #   orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
+  # ) +
+  # geom_point(
+  #   data = get_ridge_ci("n_synonymous"), aes(x = mean_val, y = In_sigs),
+  #   inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
+  # ) +
   labs(x = "Number of synonymous SNPs", y = "") +
   scale_fill_manual(values = my_pal_ts) +
   scale_y_discrete(labels = c("FALSE" = "Not DE", "TRUE" = "DE")) +
@@ -473,14 +463,14 @@ ridge_nonsynonymous <- ggplot(gene_summary, aes(x = n_nonsynonymous, y = In_sigs
     jittered_points = TRUE, position = position_points_jitter(width = 0.1, height = 0),
     point_shape = "|", point_size = 4, point_color = "grey40"
   ) +
-  geom_errorbar(
-    data = get_ridge_ci("n_nonsynonymous"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
-    orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
-  ) +
-  geom_point(
-    data = get_ridge_ci("n_nonsynonymous"), aes(x = mean_val, y = In_sigs),
-    inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
-  ) +
+  # geom_errorbar(
+  #   data = get_ridge_ci("n_nonsynonymous"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
+  #   orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
+  # ) +
+  # geom_point(
+  #   data = get_ridge_ci("n_nonsynonymous"), aes(x = mean_val, y = In_sigs),
+  #   inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
+  # ) +
   labs(x = "Number of nonsynonymous SNPs", y = "") +
   scale_fill_manual(values = my_pal_ts) +
   scale_y_discrete(labels = c("FALSE" = "Not DE", "TRUE" = "DE")) +
@@ -493,118 +483,15 @@ ridge_nonsynonymous <- ggplot(gene_summary, aes(x = n_nonsynonymous, y = In_sigs
   theme(legend.position = "none")
 ridge_nonsynonymous
 
-
-# In gene
-# Run glm with poisson distribution
-ingene.mod <- glm(n_in_gene ~ In_sigs + offset(log(gene_length_kb)), family = quasipoisson, data = gene_summary)
-summary(ingene.mod)
-exp(coef(ingene.mod)["In_sigsTRUE"])
-
-# Make plot
-ridge_in_gene <- ggplot(gene_summary, aes(x = n_in_gene, y = In_sigs, fill = In_sigs)) +
-  geom_density_ridges(
-    alpha = 0.6, scale = 2, color = "white", bandwidth = 5, rel_min_height = 0.01,
-    jittered_points = TRUE, position = position_points_jitter(width = 0.1, height = 0),
-    point_shape = "|", point_size = 4, point_color = "grey40"
-  ) +
-  geom_errorbar(
-    data = get_ridge_ci("n_in_gene"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
-    orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
-  ) +
-  geom_point(
-    data = get_ridge_ci("n_in_gene"), aes(x = mean_val, y = In_sigs),
-    inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
-  ) +
-  labs(x = "Number of SNPs in Genes", y = "") +
-  scale_fill_manual(values = my_pal_ts) +
-  scale_y_discrete(labels = c("FALSE" = "Not DE", "TRUE" = "DE")) +
-  coord_cartesian(xlim = c(0, max(gene_summary$n_in_gene))) +
-  # annotate("text",
-  #          x = 250, y = 2.5, size = 5,
-  #          label = "OR== ~ ';' ~ italic(p)<",
-  #          parse = TRUE
-  # ) +
-
-  theme(legend.position = "none")
-ridge_in_gene
-
-# In gene per kb
-ingeneperkb.mod <- lm(n_in_gene_per_kb_tf ~ In_sigs, data = gene_summary)
-summary(ingeneperkb.mod)
-plot(ingeneperkb.mod)
-# Make plot
-ridge_in_gene_per_kb <- ggplot(gene_summary, aes(x = n_in_gene_per_kb_tf, y = In_sigs, fill = In_sigs)) +
-  geom_density_ridges(
-    alpha = 0.6, scale = 2, color = "white", bandwidth = 0.2, rel_min_height = 0.01,
-    jittered_points = TRUE, position = position_points_jitter(width = 0.1, height = 0),
-    point_shape = "|", point_size = 4, point_color = "grey40"
-  ) +
-  geom_errorbar(
-    data = get_ridge_ci("n_in_gene_per_kb_tf"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
-    orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
-  ) +
-  geom_point(
-    data = get_ridge_ci("n_in_gene_per_kb_tf"), aes(x = mean_val, y = In_sigs),
-    inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
-  ) +
-  labs(x = "Number of SNPs in genes per kb", y = "") +
-  scale_fill_manual(values = my_pal_ts) +
-  scale_y_discrete(labels = c("FALSE" = "Not DE", "TRUE" = "DE")) +
-  coord_cartesian(xlim = c(0, max(gene_summary$n_in_gene_per_kb_tf))) +
-  theme(legend.position = "none")
-ridge_in_gene_per_kb
-
-# #Warning message:
-# Removed 556 rows containing non-finite outside the scale range
-# (`stat_density_ridges()`). 
-
-# Gene length
-# Run glm with poisson distribution
-length.mod <- glm(gene_length_kb ~ In_sigs, family = Gamma(link = "log"), data = gene_summary)
-summary(length.mod)
-exp(coef(length.mod)["In_sigsTRUE"])
-# Make plot
-ridge_gene_length <- ggplot(gene_summary, aes(x = gene_length_kb, y = In_sigs, fill = In_sigs)) +
-  geom_density_ridges(
-    alpha = 0.6, scale = 2, color = "white", bandwidth = 5, rel_min_height = 0.01,
-    jittered_points = TRUE, position = position_points_jitter(width = 0.1, height = 0),
-    point_shape = "|", point_size = 4, point_color = "grey40"
-  ) +
-  geom_errorbar(
-    data = get_ridge_ci("gene_length_kb"), aes(y = In_sigs, xmin = ci_low, xmax = ci_high),
-    orientation = "y", inherit.aes = FALSE, height = 0.15, linewidth = 1.1, color = "black"
-  ) +
-  geom_point(
-    data = get_ridge_ci("gene_length_kb"), aes(x = mean_val, y = In_sigs),
-    inherit.aes = FALSE, size = 3, shape = 21, fill = "red", color = "black"
-  ) +
-  labs(x = "Gene Length in kb", y = "") +
-  scale_fill_manual(values = my_pal_ts) +
-  scale_y_discrete(labels = c("FALSE" = "Not DE", "TRUE" = "DE")) +
-  coord_cartesian(xlim = c(0, max(gene_summary$gene_length_kb))) +
-  # annotate("text",
-  #          x = 75, y = 2.5, size = 5,
-  #          label = "OR== xx ~ ';' ~ italic(p)== xx",
-  #          parse = TRUE
-  # ) +
-  theme(legend.position = "none")
-ridge_gene_length ## Warning is from non-gene entries
-View(gene_summary[!is.finite(gene_summary$gene_length_kb), ])
-
-
-ridges_patch <- (ridge_in_gene_per_kb / ridge_upstream / ridge_in_gene / ridge_nonsynonymous/ ridge_synonymous / ridge_downstream / ridge_gene_length)
-ridges_patch
-
-
 ridges_patch2 <- (ridge_upstream / ridge_nonsynonymous / ridge_synonymous / ridge_downstream) +
-  plot_annotation(tag_levels = list(c("B", "C", "D", "E"))) &
+  plot_annotation(tag_levels = list(c("C", "D", "E", "F"))) &
   theme(plot.tag.position = c(0, 1),
         plot.tag = element_text(size = 18, face = "bold", hjust = 0, vjust = 1))
 
 ridges_patch2
 
 
-ggsave(filename = "figures/ridgeline_fig4.png", plot = ridges_patch, width = 7, height = 12, dpi = 300)
+#ggsave(filename = "figures/ridgeline_fig4.png", plot = ridges_patch, width = 7, height = 12, dpi = 300)
 ggsave(filename = "figures/ridgeline_fig4_panels.png", plot = ridges_patch2, width = 7, height = 12, dpi = 300)
 
 
