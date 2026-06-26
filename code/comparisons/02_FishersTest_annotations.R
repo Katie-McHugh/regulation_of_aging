@@ -133,6 +133,8 @@ View(contingency_table2)
 
 fisher_result2 <- fisher.test(contingency_table2, simulate.p.value = TRUE)
 print(fisher_result2)
+?fisher.test
+fisher_result2$estimate
 ##p <<0.01
 ## doesn't really change anything
 
@@ -140,3 +142,10 @@ fisher.test(contingency_table2, workspace = 2e8)  # Increase workspace size
 fisher.test(contingency_table, workspace = 2e8)  # Increase workspace size
 ## any way I look at it, p-value is small...
 
+## Cramer's V for effect size? 
+install.packages("effectsize")
+library(effectsize)
+
+head(contingency_table2)
+# ?cramers_v
+cramers_v(contingency_table, adjust = TRUE, alternative = "two.sided")
