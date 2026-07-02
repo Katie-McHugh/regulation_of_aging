@@ -18,7 +18,7 @@
 
 1) 00_SNPs_filter_maf&cov.R contains the script used to filter the preliminary SNP table for minor allele frequencies and coverage. Output sent to "clean" folder as GWAS_SNPS_cov20_maf05.csv.
 2) 00_indels_filter_maf&cov.R contains the script used to filter the preliminary indel table for minor allele frequencies and coverage. Output sent to "clean" folder as indels_cov20_maf05.csv.
-3) 00_founder_info.R contains code to generate a table of information for the founder haplotypes using founder_states.txt file (generated from an earlier experiment).
+3) 00_founder_info.R contains code to generate a table of information for the founder haplotypes using founder_states.txt file (generated from an earlier experiment). 
 4) 01_CMHtest_SNPdata.R contains the script used to run the CMH test on GWAS_SNPS_cov20_maf05.csv for the SNP data.  Output is sent to results folder.
 5) 01_indels_cmhtest.R contains the script used to run the CMH test for the indel data, output to results folder.
 6) 01_Haplotype_estimation_eNotebook_version.R is the script that was used to estimate the haploype frequencies for each replicate. This script was transferred over to repository after use. It was used iteratively to run for each chromosome and then they were all bound together into a single file for each founder (founderXX_10kb_cov20_maf5.txt) and deposited in the "temp" folder.

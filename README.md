@@ -20,7 +20,7 @@ This folder contains three subdirectories: [raw](/data/raw) , [clean](/data/clea
 4) annotated_indels.txt contains the SNPeff annotations for the generated indel table
 5) founder_states.txt contains the haplotype frequencies for the data
 6) gene_count_matrix.txt contains the gene count matrix from the transcriptomic sequencing (notes for generation are contained in the README.md file in the [transcriptomics code folder](/code/transcriptome).
-7) all_founders.txt contains whole genome haplotype data for all founders (including some not used in this study)
+7) all_founders.txt contains whole genome haplotype data for all founders (including some not used in this study). This file has not been uploaded to GitHub due to it's large size, but is available at the Dryad repository.
 8) genomic.gff is the reference GFF file
 
 ##### [Clean](/data/clean)
