@@ -4,7 +4,7 @@
 dds<-read.table(file="temp/transcriptome/dds_object_uncorrected.txt")
 dds_adj<-read.table(file="temp/transcriptome/dds_object_adjusted.txt")
 
-
+library(DESeq2)
 
 # VISUALIZATION ONLY-- transform  data to make it homoskedastic (variance of the residual is constant)  #this is JUST for visualization
 rlog_dds<-rlog(dds) #rlog seems to do better, I think
