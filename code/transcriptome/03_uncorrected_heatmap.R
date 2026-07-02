@@ -10,7 +10,7 @@
 #if (!require("BiocManager", quietly = TRUE))
   #install.packages("BiocManager")
 
-#BiocManager::install("sva")
+# BiocManager::install("sva")
 library(sva)
 library(DESeq2)
 #-------------------------------------------------------------------------------
@@ -287,7 +287,6 @@ attr(pcaData_dds, "percentVar")
 
 percentVar <- round(100 * attr(pcaData_dds, "percentVar"), 2)
 
-View(pcaData_dds)
 pca_dds1 <- ggplot(pcaData_dds, aes(PC1, PC2, color = batch)) +
   geom_point(size = 3) +
   scale_color_manual(values = c("Batch 1" = "steelblue", "Batch 2" = "tomato")) +
@@ -316,7 +315,13 @@ pca_dds2
 
 library(patchwork)
 
-pca_dds_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('A', 'B'))))
+pca_dds_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('A', 'C'))))
 pca_dds_combined
-ggsave("temp/transcriptome/pca_dds_uncorrected.pdf", pca_dds_combined, width = 4.085, height = 8.06)
+ggsave("temp/transcriptome/pca_dds_uncorrected.pdf",
+       plot     = pca_dds_combined,
+       width    = 6.085,
+       height   = 8.06,
+       units    = "in",     # be explicit — ggsave defaults to "in" but stating it avoids surprises
+       dpi      = 300      # matters for raster elements; irrelevant for pure vector PDF but harmless # better font/vector rendering than the base "pdf" device
+)
 

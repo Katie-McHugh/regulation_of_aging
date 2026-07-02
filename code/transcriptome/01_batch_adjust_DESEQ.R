@@ -129,7 +129,7 @@ pcaData_dds <- plotPCA(rlog_dds,
 attr(pcaData_dds, "percentVar")
 
 percentVar <- round(100 * attr(pcaData_dds, "percentVar"), 2)
-
+dev.off()
 
 pca_dds1 <- ggplot(pcaData_dds, aes(PC1, PC2, color = batch)) +
   geom_point(size = 3) +
@@ -158,10 +158,18 @@ pca_dds2
 
 library(patchwork)
 
-pca_dds_adj_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('C', 'D'))))
+pca_dds_adj_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('B', 'D'))))
 pca_dds_adj_combined
 ggsave("temp/transcriptome/pca_dds_adjusted.pdf", pca_dds_adj_combined, width = 4.085, height = 8.06)
 
+ggsave(
+  filename = "temp/transcriptome/pca_dds_adjusted.pdf",
+  plot     = pca_dds_adj_combined,
+  width    = 6.085,
+  height   = 8.06,
+  units    = "in",     # be explicit — ggsave defaults to "in" but stating it avoids surprises
+  dpi      = 300      # matters for raster elements; irrelevant for pure vector PDF but harmless # better font/vector rendering than the base "pdf" device
+)
 # pcaData <- plotPCA(rlog_dds,
 #                    intgroup = c("batch","condition"),
 #                    returnData = TRUE)
