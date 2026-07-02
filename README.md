@@ -21,6 +21,7 @@ This folder contains three subdirectories: [raw](/data/raw) , [clean](/data/clea
 5) founder_states.txt contains the haplotype frequencies for the data
 6) gene_count_matrix.txt contains the gene count matrix from the transcriptomic sequencing (notes for generation are contained in the README.md file in the [transcriptomics code folder](/code/transcriptome).
 7) all_founders.txt contains whole genome haplotype data for all founders (including some not used in this study)
+8) genomic.gff is the reference GFF file
 
 ##### [Clean](/data/clean)
 1) scarsdata.txt contains the compiled bud scar count data 
@@ -30,6 +31,7 @@ This folder contains three subdirectories: [raw](/data/raw) , [clean](/data/clea
 5) CMHtest_cov_freq_matrix.csv
 6) rnaseq_GO_terms.csv 
 7) founder_states.txt gives the allele frequencies for each of the four isogenic founders and the 4S ancestor, and was used for haplotype analysis (generated from all_founders.txt using 00_founder_info.R script)
+8) gene_count_matrix.txt is the gene count matrix generated in DeSEQ2.
 
 
 ##### [Design Files](/data/design_files)
@@ -37,13 +39,15 @@ This folder contains three subdirectories: [raw](/data/raw) , [clean](/data/clea
 
 
 #### [Code Folder](/code)
- This folder is broken up into three subfolders: 
+ This folder is broken up into four subfolders: 
  
 1) [**genome**](/code/genome): Code for genomic variant analysis, haplotype analysis
  
 2)  [**transcriptome**](/code/transcriptome): Code for differential gene expression analyses
  
 3) [**comparisons**](/code/comparisons): Code to compare genomic and transcriptomic data and look into potential regulatory interactions
+
+4)  [**budscars**](/code/budscars): Code for bud scar phenotyping analysis
  
 More information on the code within each folder is contained within the [code folder README](/code/README.md)
 

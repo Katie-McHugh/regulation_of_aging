@@ -10,6 +10,7 @@
 1) [genome](/code/genome) contains all scripts needed for whole-genome sequencing analysis
 2) [transcriptome](/code/transcriptome) folder contains all scripts needed for transcriptome analysis
 3) [comparisons](/comparisons) folder contains scripts for regulatory analysis and other combined analyses
+4)  [**budscars**](/code/budscars) folder contains script for bud scar phenotyping analysis
 
 ### [genome](/code/genome) folder: 
 
@@ -21,11 +22,13 @@
 4) 01_CMHtest_SNPdata.R contains the script used to run the CMH test on GWAS_SNPS_cov20_maf05.csv for the SNP data.  Output is sent to results folder.
 5) 01_indels_cmhtest.R contains the script used to run the CMH test for the indel data, output to results folder.
 6) 01_Haplotype_estimation_eNotebook_version.R is the script that was used to estimate the haploype frequencies for each replicate. This script was transferred over to repository after use. It was used iteratively to run for each chromosome and then they were all bound together into a single file for each founder (founderXX_10kb_cov20_maf5.txt) and deposited in the "temp" folder.
-7) 01_freq&cov_matrix.R contains code to generate a table of frequency and coverage values at each SNP position used to create plots in the 02_freq&cov_plots.R script. It also creates supplementary Table 3 of GWAS coverage averages. 
-8) 02_Delta_plots.R contains the script used to generate supplementary figure 4 (measures of haplotype differentiation)
+7) 01_freq&cov_matrix.R contains code to generate a table of frequency and coverage values at each SNP position used to create plots in the 02_freq&cov_plots.R script. It also creates supplementary Table 2 of GWAS coverage averages. 
+8) 02_Delta_plots.R contains the script used to generate supplementary figure 8 (measures of haplotype differentiation)
 9) 02_SuppFig3_indels&snps_mito_manhattan.R is the script used to generate supplementary figure 3, a manhattan plot that overlays the indels on top of the SNP manhattan plot for the mitochondria
 10) 02_supp_table_sig_variant_list.R is the script used to create the supplementary table 2 containing all significant variants from the genome data (a small edit was later done to fill in annotations for the 2 indels that are not annotated in SNPeff)
-11) 02_Figure1.R is the script used to generate figure 1, containing the nuclear SNP and indel manhattan plot and founder haplotype frequencies across the genome.
+11) 02_Figure1.R is the script used to generate figure 2, containing the nuclear SNP and indel manhattan plot and founder haplotype frequencies across the genome.
+12) SFS.R is a script to generate site frequency spectra for Supplementary Figure 5
+13) Coverage_figures.R is a script to generate plots to visualize coverage, including Supplementary Figure 6. 
 
 #### [Extras](/code/genome/Extras) folder: 
 
@@ -45,10 +48,12 @@
 1) batch_adjust_DESEQ.R is the script that takes the gene count matrix generated in the description below and performs a batch correction based on the sorting date, performs some additional filtering to remove genes with low mapping, and creates a DESEQ object for later analysis
 2) DGE_gene_lists.R is the script used to create the significant gene lists for GO-term analysis, and to be used to compare against the genome data
 3) heatmap.R is the script used to create the heatmap figures for the transcriptome data
-4) rna_supp_table.R is the script used to create the supplementary data of significant transcripts and their distances from implicated genome variants
+4) 03_uncorrected_heatmap.R is a script visualizing the same heatmap, but without ComBatseq batch correction (used in supplementary figure)
  5) 03_Volcano_plot.R creates a volcano plot to show p-values and log2FC between DEGs using adjusted counts matrix from  01_batch_adjust_DESEQ.R and and gene list and key from 02_DGE_gene_lists.R.
 6) README.md file that contains notes on data filtering/cleaning prior to analysis
-7) Unused folder contains test scripts that were unfinished/scrapped (breaking up heatmap into panels)
+
+Extras: 
+Unused folder contains test scripts that were unfinished/scrapped (breaking up heatmap into panels)
 
 ### [comparisons](/comparisons) folder: 
 1) 00_common_gene_lists.R - this script should be run before running any other scripts in this folder. It takes the significant gene lists from the genomic data and extracts the appropriate annotations for use in later analysis.
