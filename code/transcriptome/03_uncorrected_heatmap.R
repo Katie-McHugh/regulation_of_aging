@@ -234,10 +234,9 @@ View(logfc_info)
 ### p < 0.1
 
 #pdf("figures/SuppFig3_heatmap.pdf", width = 8, height = 12)
-tiff(file = "figures/Supp_FIG_heatmap_UNCORRECTED.tiff", height = 12, width = 12,
+tiff(file = "figures/G3_submission/Supp_FIG4A.tiff", height = 12, width = 12,
      units = "in",
-     res = 400,
-     compression = "lzw")
+     res = 600)
 
 pheatmap(
   norm_mat, # Scale the data by rows (genes)
@@ -289,7 +288,7 @@ percentVar <- round(100 * attr(pcaData_dds, "percentVar"), 2)
 
 pca_dds1 <- ggplot(pcaData_dds, aes(PC1, PC2, color = batch)) +
   geom_point(size = 3) +
-  scale_color_manual(values = c("Batch 1" = "steelblue", "Batch 2" = "tomato")) +
+  scale_color_manual(values = c("Batch 1" = "goldenrod", "Batch 2" = "purple")) +
   scale_x_continuous(expand = expansion(mult = 0.15)) +
   scale_y_continuous(expand = expansion(mult = 0.15)) +
   labs(x = paste0('PC1: ', percentVar[1], '%'),
@@ -302,7 +301,7 @@ pca_dds1
 
 pca_dds2 <- ggplot(pcaData_dds, aes(PC1, PC2, color = condition)) +
   geom_point(size = 3) +
-  scale_color_manual(values = c("old" = "orange", "young" = "purple"),
+  scale_color_manual(values = c("old" = "tomato", "young" = "steelblue"),
                      breaks = c("old", "young"))+
   scale_x_continuous(expand = expansion(mult = 0.15)) +
   scale_y_continuous(expand = expansion(mult = 0.15)) +
@@ -317,11 +316,11 @@ library(patchwork)
 
 pca_dds_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('A', 'C'))))
 pca_dds_combined
-ggsave("temp/transcriptome/pca_dds_uncorrected.pdf",
+ggsave("figures/G3_submission/Figure3AC.pdf",
        plot     = pca_dds_combined,
        width    = 6.085,
        height   = 8.06,
        units    = "in",     # be explicit — ggsave defaults to "in" but stating it avoids surprises
-       dpi      = 300      # matters for raster elements; irrelevant for pure vector PDF but harmless # better font/vector rendering than the base "pdf" device
+       dpi      = 600      # matters for raster elements; irrelevant for pure vector PDF but harmless # better font/vector rendering than the base "pdf" device
 )
 

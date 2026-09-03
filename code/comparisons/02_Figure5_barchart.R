@@ -1,4 +1,4 @@
-########## Annotations pie chart ####################################
+########## Figure 5 ####################################
 
 #------------------------------------------------------------------------------
 ## Load libraries
@@ -92,15 +92,15 @@ barplot<-ggplot(combined_data, aes(x = Dataset, y = Proportion, fill = Annotatio
     axis.text.y = element_text(size = 16),  # Increase font size of y-axis tick labels
     axis.title.y = element_text(size = 16),  # Increase font size of y-axis label
     axis.title.x = element_blank(),
-    legend.position = "bottom",
+    legend.position = "right",
     legend.title = element_blank(),
     legend.text = element_text(size = 16)  # Adjust legend text size if needed
   ) +
   guides(fill = guide_legend(nrow = 5, byrow = TRUE))
-
+?legend.position
 ### I could combine more categories to make it easier to see
 plot(barplot)
 
 
 # Save the plot using ggsave
-ggsave(filename = "figures/Figure4_annotations_barplot_teal.tif", plot = barplot , width = 3, height = 8, dpi = 400) 
+ggsave(filename = "figures/G3_submission/Figure4_annotations_barplot_teal.tif", plot = barplot , width = 6, height = 5, dpi = 600) 

@@ -9,13 +9,13 @@
 # if (!require("BiocManager", quietly = TRUE))
 #   install.packages("BiocManager")
 # 
-# BiocManager::install("pathview")
-# BiocManager::install("enrichplot")
+BiocManager::install("pathview")
+BiocManager::install("enrichplot")
 #library(enrichplot)
 
 
-# Install biomaRt package (if not already installed)
-#iocManager::install("biomaRt")
+#Install biomaRt package (if not already installed)
+BiocManager::install("biomaRt")
 
 # Load the biomaRt library
 library(biomaRt)
@@ -81,6 +81,7 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
   labs(x = "GO Terms", y = "Corrected P-value") +
   theme_minimal() +
   coord_flip() +  # Flip coordinates to make the plot horizontal
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 15)) +  
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_size_continuous(name = "Number of \nAnnotated Genes", 
                         range = c(3, 8))  +
@@ -90,18 +91,18 @@ plot2<-ggplot(go_dna, aes(x = reorder(TERM, -CORRECTED_PVALUE),
   ) +
   facet_wrap(~ ann, scales = "free_y", dir = "v")  +                             #dir v stacks vertically instead of horizontally
   theme_light() +
-  theme(strip.text = element_text(size = 14, face = "bold"), 
-        axis.text.y = element_text(size = 12), 
-        axis.text.x = element_text(size = 12), 
-        axis.title.x = element_text(size = 16, margin = margin(t = 10)), 
-        axis.title.y = element_text(size = 16),
-        legend.title = element_text(size = 14),  # Legend title size
-        legend.text = element_text(size = 12))
+  theme(strip.text = element_text(size = 12, face = "bold"), 
+        axis.text.y = element_text(size = 10), 
+        axis.text.x = element_text(size = 10), 
+        axis.title.x = element_text(size = 14, margin = margin(t = 10)), 
+        axis.title.y = element_text(size = 14),
+        legend.title = element_text(size = 12),  # Legend title size
+        legend.text = element_text(size = 10))
 
 plot(plot2)
 
-ggsave(filename = "figures/Figure2_GO.tif", plot = plot2 ,
-       width = 8, height = 7, dpi = 400) 
+ggsave(filename = "figures/G3_submission/Figure3_GO.tif", plot = plot2 ,
+       width = 8, height = 5, dpi = 600) 
 
 
 #plot3 <- plot2 + scale_color_manual( name = "Gene List", values = brewer.pal(3, "Dark2"))
@@ -111,6 +112,7 @@ n <- 5
 my_colors <- viridis(n + 1, option = "D")[-c(1, 3, 5)] # skip colors too light for background
 
 plot3 <- plot2 +  scale_color_manual(values = my_colors)
+plot2
 
 #ggsave(filename = "figures/Figure2_GO_v2.jpeg", plot = plot3 , width = 8, height = 7)
 

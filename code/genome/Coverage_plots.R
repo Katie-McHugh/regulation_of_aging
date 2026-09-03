@@ -7,7 +7,7 @@
 install.packages("tidyverse")
 install.packages("dplyr")
 library(tidyverse)
-
+library(dplyr)
 
 #------------------------------------------------------------------------------
 ## read in data
@@ -80,7 +80,7 @@ plot_coverage_all_chroms <- function(snps) {
 
 # Call it
 plot_coverage_all_chroms(snps)
-
+dev.off
 #------------------------------------------------------------------------------
 ## Average coverage young vs old
 
@@ -262,8 +262,7 @@ plot_coverage_all <- function(snps) {
       xaxt = "n",
       ylim = y_range,
       xlab = "Chromosome",
-      ylab = "Average Coverage",
-      main = title
+      ylab = "Average Coverage"
     )
     axis(1, at = chrom_mids, labels = chrom_labels, cex.axis = 0.7)
     abline(v = offsets[-1], col = "gray80", lty = 2)
@@ -279,4 +278,12 @@ plot_coverage_all <- function(snps) {
   par(mfrow = c(1, 1))
 }
 
+
+
+tiff(file = "figures/G3_submission/Supp_Fig6.tiff", height = 7, width = 7,
+     units = "in",
+     res = 600)
+
 plot_coverage_all(snps)
+
+dev.off()

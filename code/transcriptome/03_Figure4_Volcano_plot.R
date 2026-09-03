@@ -7,7 +7,7 @@
 # if (!requireNamespace('BiocManager', quietly = TRUE))
 #   install.packages('BiocManager')
 # 
-# BiocManager::install('EnhancedVolcano')
+BiocManager::install('EnhancedVolcano')
 
 library(EnhancedVolcano)
 library(ggplot2)
@@ -104,10 +104,10 @@ p2<-p +
                   size = 4.1, 
                   fontface = "bold",
                   box.padding = 1, 
-                  point.padding = 1,
+                  point.padding = 0.3,
                   segment.color = "black", 
                   segment.size = 0.2,
-                  min.segment.length = 0.1, 
+                  min.segment.length = 0.2, 
                   max.overlaps = Inf,
                   force = 2,
                   nudge_x = -0.1, 
@@ -117,10 +117,10 @@ p2<-p +
                   size = 4.1, 
                   fontface = "bold",
                   box.padding = 1, 
-                  point.padding = 1,
+                  point.padding = 0.3,
                   segment.color = "black", 
                   segment.size = 0.2,
-                  min.segment.length = 0.1, 
+                  min.segment.length = 0.2, 
                   max.overlaps = Inf,
                   force = 4,
                   nudge_x = 0.15, 
@@ -131,7 +131,7 @@ p2<-p +
   theme(legend.position = "none")         
 
 
-#plot(p2)
+plot(p2)
 
 #pdf("temp_figs/Volcano_DESEQadj_p<0.1.pdf", width = 8, height = 6)
 # pdf("figures/Figure3_Volcano_test.pdf", width = 8, height = 6)
@@ -139,10 +139,9 @@ p2<-p +
 # dev.off()
 
 #pdf("figures/Figure3_Volcano.pdf", width = 8, height = 6)
-tiff(file = "figures/Figure3_Volcano_BN.tiff", height = 6, width = 7,
+tiff(file = "figures/G3_submission/Figure4_Volcano_BN.tiff", height = 6, width = 7,
      units = "in",
-     res = 400,
-     compression = "lzw")
+     res = 600)
 p2
 dev.off()
 

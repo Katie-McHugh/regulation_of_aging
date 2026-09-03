@@ -133,9 +133,9 @@ View(logfc_info)
 ### p < 0.1
 
 #pdf("figures/SuppFig3_heatmap.pdf", width = 8, height = 12)
-tiff(file = "figures/SuppFig3_heatmap.tiff", height = 12, width = 12,
+tiff(file = "figures/G3_submission/SuppFig4B.tiff", height =12, width =12,
 units = "in",
-res = 400,
+res = 600,
 compression = "lzw")
 
 pheatmap(

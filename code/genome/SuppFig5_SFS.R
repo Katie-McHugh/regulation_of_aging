@@ -10,9 +10,17 @@ head(snps)
 
 ## SFS Plot
 #------------------------------------------------------------------------------
-pdf("figures/SFS.pdf", width = 12, height = 10)
-par(mfrow = c(6,4), mar = c(2,2,2,1))  # Adjust margins if needed
 
+
+# pdf("figures/SFS.pdf", width = 12, height = 10)
+# par(mfrow = c(6,4), mar = c(2,2,2,1))  # Adjust margins if needed
+
+
+tiff(file = "figures/G3_submission/SuppFig5A.tiff", height = 6, width = 7,
+     units = "in",
+     res = 600)
+
+par(mfrow = c(6,4), mar = c(2,2,2,1))
 # Old replicates
 hist(snps$alt_old_01/snps$N_old_01, main = "Old_01")
 hist(snps$alt_old_02/snps$N_old_02, main = "Old_02")
@@ -150,5 +158,6 @@ box_segregating<-ggplot(seg_totals, aes(x = group, y = segregating_sites, fill =
   theme_classic() +
   theme(legend.position = "none")
 
-ggsave("figures/Supp_fig_boxplot_segregating_sites_by_rep.pdf", plot = box_segregating, dpi=300)
+ggsave("figures/G3_submission/SuppFig5B.pdf", plot = box_segregating, 
+       width = 4, height = 5,dpi=600)
        

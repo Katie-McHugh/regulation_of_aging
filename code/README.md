@@ -25,7 +25,7 @@
 8) 02_Delta_plots.R contains the script used to generate supplementary figure 4 (measures of haplotype differentiation)
 9) 02_SuppFig3_indels&snps_mito_manhattan.R is the script used to generate supplementary figure 3, a manhattan plot that overlays the indels on top of the SNP manhattan plot for the mitochondria
 10) 02_supp_table_sig_variant_list.R is the script used to create the supplementary table 2 containing all significant variants from the genome data (a small edit was later done to fill in annotations for the 2 indels that are not annotated in SNPeff)
-11) 02_Figure1.R is the script used to generate figure 1, containing the nuclear SNP and indel manhattan plot and founder haplotype frequencies across the genome.
+11) 02_Figure2.R is the script used to generate figure 2, containing the nuclear SNP and indel manhattan plot and founder haplotype frequencies across the genome.
 
 #### [Extras](/code/genome/Extras) folder: 
 

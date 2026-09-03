@@ -1,4 +1,4 @@
-### Code to Generate Figure 1 (2 panel Manhattan and Haplotype plot)
+### Code to Generate Figure 2 (2 panel Manhattan and Haplotype plot)
 #------------------------------------------------------------------------------
 
 ## load in snp and indel data
@@ -106,9 +106,9 @@ total_sum+925347/1e6 #double check that everything aligns #12048607/1e6 is the v
 # Open the PDF device with the specified file path
 #pdf(file = "figures/Fig1_Manhattan&Haps.pdf", height = 12, width = 18)
 
-tiff(file = "figures/Fig1_Manhattan&Haps.tif", height = 12, width = 18,
+tiff(file = "figures/G3_submission/Fig2_Manhattan&Haps.tif", height = 12, width = 18,
      units = "in",
-     res = 400,
+     res = 600,
      compression = "lzw")
 
 #par(mfrow = c(2, 1), oma = c(1, 0, 4, 0), mar = c(5, 4, 4, 2), cex = 1.25) 

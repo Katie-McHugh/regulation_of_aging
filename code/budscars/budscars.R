@@ -144,14 +144,13 @@ My_Theme = theme(
 
 # Use the Okabe-Ito colorblind-friendly palette
 okabe_ito <- palette.colors(8, palette = "Okabe-Ito")
-custom_colors <- c("young" = okabe_ito[7], "aged" = okabe_ito[6])
+custom_colors <- c("young" = okabe_ito[6], aged = "tomato") #"aged" = okabe_ito[7])
 
 #bud scars plot as PDF
 #pdf("figures/SuppFig2_BUDSCARS.pdf",height=4, width=8)
-tiff(file = "figures/SuppFig5_BUDSCARS.tiff", height = 4, width = 8,
+tiff(file = "figures/G3_submission/SuppFig2.tiff", height = 4, width = 8,
      units = "in",
-     res = 400,
-     compression = "lzw")
+     res = 600)
 
 scars$strain<-factor(scars$strain, c("4S", "YPS128" ,"Y12", "DBVPG6044", "DBVPG6765"))
 scarsplot<-ggplot(scars, aes(x = age, y = avg_scars_all, group = replicate))+

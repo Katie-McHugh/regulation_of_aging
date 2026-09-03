@@ -48,7 +48,7 @@ adj_counts <- ComBat_seq(CountData, batch=batch, group=age) #ignore the covariat
 View(adj_counts)
 #-------------------------------------------------------------------------------
 #write
-write.table(adj_counts, file="temp/transcriptome/gcm_combatseq.txt")
+#write.table(adj_counts, file="temp/transcriptome/gcm_combatseq.txt")
 #-------------------------------------------------------------------------------
 
 ### Create DESEQ object
@@ -73,7 +73,7 @@ normalized_counts_adj <- counts(dds_adj, normalized = TRUE) # Get normalized cou
 
 any(is.na(dds_adj)) # check for NAs, there are none so we can skip the next line
 res_adj<-results(dds_adj, cooksCutoff = FALSE) #save results table #prevents cooks cuttoff from assigning NA values (can also test independentFiltering to false if still having issues).
-write.table(res_adj, file="temp/transcriptome/dds_object_adjusted.txt")
+#write.table(res_adj, file="temp/transcriptome/dds_object_adjusted.txt")
 dds_adj1<-as.data.frame(res_adj)
 ### mean basemean of p-values below 0.05
 # Filter for rows with p-value > 0.05
@@ -133,7 +133,7 @@ dev.off()
 
 pca_dds1 <- ggplot(pcaData_dds, aes(PC1, PC2, color = batch)) +
   geom_point(size = 3) +
-  scale_color_manual(values = c("Batch 1" = "steelblue", "Batch 2" = "tomato")) +
+  scale_color_manual(values = c("Batch 1" = "goldenrod", "Batch 2" = "purple")) +
   scale_x_continuous(expand = expansion(mult = 0.15)) +
   scale_y_continuous(expand = expansion(mult = 0.15)) +
   labs(x = paste0('PC1: ', percentVar[1], '%'),
@@ -145,7 +145,7 @@ pca_dds1
 
 pca_dds2 <- ggplot(pcaData_dds, aes(PC1, PC2, color = condition)) +
   geom_point(size = 3) +
-  scale_color_manual(values = c("old" = "orange", "young" = "purple"), 
+  scale_color_manual(values = c("old" = "tomato", "young" = "steelblue"), 
                      breaks = c("old", "young")) +
   scale_x_continuous(expand = expansion(mult = 0.15)) +
   scale_y_continuous(expand = expansion(mult = 0.15)) +
@@ -160,15 +160,15 @@ library(patchwork)
 
 pca_dds_adj_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('B', 'D'))))
 pca_dds_adj_combined
-ggsave("temp/transcriptome/pca_dds_adjusted.pdf", pca_dds_adj_combined, width = 4.085, height = 8.06)
+#ggsave(, pca_dds_adj_combined, width = 4.085, height = 8.06)
 
 ggsave(
-  filename = "temp/transcriptome/pca_dds_adjusted.pdf",
+  filename = "figures/G3_submission/SuppFig3BD.pdf",
   plot     = pca_dds_adj_combined,
   width    = 6.085,
   height   = 8.06,
   units    = "in",     # be explicit — ggsave defaults to "in" but stating it avoids surprises
-  dpi      = 300      # matters for raster elements; irrelevant for pure vector PDF but harmless # better font/vector rendering than the base "pdf" device
+  dpi      = 600      # matters for raster elements; irrelevant for pure vector PDF but harmless # better font/vector rendering than the base "pdf" device
 )
 # pcaData <- plotPCA(rlog_dds,
 #                    intgroup = c("batch","condition"),
@@ -207,7 +207,6 @@ ggsave(
 # head(loadings)
 # loadingplot(loadings$PC1, threshold = 0.1)
 # plot_load<-loadingplot(loadings$PC1,threshold= 0.1)
-# row.names(dds)[plot_load$var.names] ###BUT...the PCA doesn't look awesome, so I'm not sure how useful this really is
-
+# row.names(dds)[plot_load$var.names] 
 
 

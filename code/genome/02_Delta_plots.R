@@ -82,7 +82,12 @@ MB_h<-MB_h/1e6 ### convert to correct units
 y6 <- cbind(avg_sq_diff_f, MB_h)
 y6<-as.data.frame(y6)
 
-pdf("figures/Supp_Fig4_Delta.pdf",height=6,width=12)
+
+tiff(file = "figures/G3_submission/SuppFig8.tiff", height = 4, width = 7,
+     units = "in",
+     res = 600)
+
+# pdf("figures/Supp_Fig4_Delta.pdf",height=6,width=12)
 NT<-plot(y6$MB_h,y6$avg_sq_diff_f,
      type="l",
      ylim=c(0,.1),

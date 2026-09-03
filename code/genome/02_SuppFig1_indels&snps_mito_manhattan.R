@@ -9,7 +9,12 @@ snps_m=subset(snps3,CHROM=="chrmito")
 
 # Open the PDF device with the specified file path
 
-pdf(file = "figures/supp_fig_3_indels&SNPs_mito_manhattan.pdf", height = 5, width = 10)
+
+# pdf(file = "figures/supp_fig_3_indels&SNPs_mito_manhattan.pdf", height = 5, width = 10)
+
+tiff(file = "figures/G3_submission/SuppFig7.tiff", height = 4, width = 8,
+     units = "in",
+     res = 600)
 
 x1<-indels_m$POS/1000
 y1<-indels_m$logp
