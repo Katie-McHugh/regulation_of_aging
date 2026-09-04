@@ -18,25 +18,24 @@ This folder contains three subdirectories: [raw](/data/raw) , [clean](/data/clea
 2) filtered_indels.txt contains the "raw" indel table that was generated using the Burke Lab pipeline
 3) annotated_snps.txt contains the SNPeff annotations for the generated SNP table
 4) annotated_indels.txt contains the SNPeff annotations for the generated indel table
-5) founder_states.txt contains the haplotype frequencies for the data
+5) founder_states.txt gives the allele frequencies for each of the four isogenic founders and the 4S ancestor, and was used for haplotype analysis (generated from all_founders.txt using 00_founder_info.R script)
 6) gene_count_matrix.txt contains the gene count matrix from the transcriptomic sequencing (notes for generation are contained in the README.md file in the [transcriptomics code folder](/code/transcriptome).
-7) all_founders.txt contains whole genome haplotype data for all founders (including some not used in this study). This file has not been uploaded to GitHub due to it's large size, but is available at the Dryad repository.
-8) genomic.gff is the reference GFF file
+
+   Other relevant files (accessible in Dryad Repository): 
+     7) all_founders.txt contains whole genome haplotype data for all founders (including some        not used in this study). This file has not been uploaded to GitHub due to it's large size.
+     8) genomic.gff refers to the reference GFF file (S. cerevisiae S288C reference genome (R64-      2-1), which has not been uploaded to GitHub, but can be downloaded from NCBI.
 
 ##### [Clean](/data/clean)
 1) scarsdata.txt contains the compiled bud scar count data 
-2) rnaseq_results_batch_sigs01_edited.csv contains the results of the transcriptomic analysis (adjusted for the batch effect) and filtered for adjusted p<0.1.
+2) rnaseq_results_batch_sigs01_edited.csv contains the results of the transcriptomic analysis (adjusted for the batch effect) and filtered for adjusted p<0.1 (treats young as reference condition).
 3) GWAS_SNPS_cov20_maf05.csv contains the SNP table after filtering for a coverage of 20 and a minor allele frequency of 0.05
 4) indels_cov20_maf05.csv contains the indel table after filtering for a coverage of 20 and a minor allele frequency of 0.05
-5) CMHtest_cov_freq_matrix.csv
-6) rnaseq_GO_terms.csv 
-7) founder_states.txt gives the allele frequencies for each of the four isogenic founders and the 4S ancestor, and was used for haplotype analysis (generated from all_founders.txt using 00_founder_info.R script)
-8) gene_count_matrix.txt is the gene count matrix generated in DeSEQ2.
-
+5) gene_count_matrix.txt contains the gene count matrix from the transcriptomic sequencing (notes for generation are contained in the README.md file in the [transcriptomics code folder](/code/transcriptome).
+6) rna_seq_results_batch_adjusted_young_ref.csv is the complete version of rnaseq_results_batch_sigs01_edited.csv, without filtering for p-values (a previous version was named rna_seq_results_batch_adjusted.csv)
+7) normalized_counts_deseq.csv contains the normalized count data from DESEQ for transcriptomic analyisis
 
 ##### [Design Files](/data/design_files)
 1) design.txt contains replicate identifying information for the transcriptomic analysis
-
 
 #### [Code Folder](/code)
  This folder is broken up into four subfolders: 
