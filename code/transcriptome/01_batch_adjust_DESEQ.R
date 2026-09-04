@@ -104,9 +104,8 @@ write.csv(normalized_counts_adj, file="data/clean/normalized_counts_deseq.csv")
 
 ### additional options for plotting and visualization in Analysis_eNotebook_Part2_DGE.rmd file
 
-
 #--------------- PCAs for dds object -------------------#
-
+library(ggplot2)
 # VISUALIZATION ONLY-- transform  data to make it homoskedastic (variance of the residual is constant)  #this is JUST for visualization
 rlog_dds<-rlog(dds_adj)
 class(rlog_dds)
@@ -129,7 +128,7 @@ pcaData_dds <- plotPCA(rlog_dds,
 attr(pcaData_dds, "percentVar")
 
 percentVar <- round(100 * attr(pcaData_dds, "percentVar"), 2)
-dev.off()
+#dev.off()
 
 pca_dds1 <- ggplot(pcaData_dds, aes(PC1, PC2, color = batch)) +
   geom_point(size = 3) +
@@ -160,10 +159,10 @@ library(patchwork)
 
 pca_dds_adj_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('B', 'D'))))
 pca_dds_adj_combined
-ggsave("temp/transcriptome/pca_dds_adjusted.pdf", pca_dds_adj_combined, width = 4.085, height = 8.06)
+ggsave("figures/pca_dds_adjusted.pdf", pca_dds_adj_combined, width = 4.085, height = 8.06)
 
 ggsave(
-  filename = "temp/transcriptome/pca_dds_adjusted.pdf",
+  filename = "figures/pca_dds_adjusted.pdf",
   plot     = pca_dds_adj_combined,
   width    = 6.085,
   height   = 8.06,

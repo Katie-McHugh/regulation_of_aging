@@ -267,7 +267,7 @@ rlog_dds<-rlog(dds)
 ## test transformation #better than vst
 df <-as.data.frame(assay(rlog_dds)[,12:13])
 test<-ggplot(df, aes(x= RNAseq_OLD_rep12.bam, y=RNAseq_YOUNG_rep01.bam)) +geom_hex(bins=100, colour="orange", fill="black")+coord_fixed()+theme_classic()
-ggsave("figures/test_adjusted.pdf", test)
+#ggsave("figures/test_adjusted.pdf", test)
 
 #PCA
 
@@ -317,7 +317,7 @@ library(patchwork)
 
 pca_dds_combined<-(pca_dds1 / pca_dds2 + plot_annotation(tag_levels = list(c('A', 'C'))))
 pca_dds_combined
-ggsave("temp/transcriptome/pca_dds_uncorrected.pdf",
+ggsave("figures/SuppFig3AC.pdf",
        plot     = pca_dds_combined,
        width    = 6.085,
        height   = 8.06,
