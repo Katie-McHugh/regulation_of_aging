@@ -53,15 +53,22 @@ More information on the code within each folder is contained within the [code fo
 #### [Figures Folder](/figures)
 
 This folder contains figures used in the manuscript. These include: 
-1) _Fig1_Manhattan&Haps.pdf_: Figure 1: A manhattan plot of the nuclear genome showing differences in SNPs and indels between young and aged replicates
-2) _Figure2_GO.jpeg_: Figure 2, a visualization of significant GO-terms
-3) _Figure3_Volcano.pdf_ Figure 3: A Volcano plot of gene expression data, with significant gene variants labelled
-4) _Figure4_annotations_barchart_color.pdf_ : Figure 4, which visualizes annotations from significant gene variants
-**supplementary figure 1 is an image file of the sort**
-5) _SuppFig2_BUDSCARS.odf_: Supplementary Figure 2, showing bud scar counts for each founder and the ancestor before and after sorting
-6) _supp_fig_3_indels&SNPs_manhattan.pdf_ : Supplementary Figure 3, manhattan plot of mitochondrial indels and SNPs
-7) _Supp_Fig4_Delta.pdf_ : Supplementary Figure 4, plot visualizing differences in haplotype frequencies across the genome
-8) _SuppFig_heatmap_v2.pdf_: Supplementary Figure 5, heatmap visualizing DEGs
+1) _Fig2_Manhattan&Haps.tiff_: Figure 2: A manhattan plot of the nuclear genome showing differences in SNPs and indels between young and aged replicates
+2) _Figure3_GO.tif_: Figure 3, a visualization of significant GO-terms
+3) _Figure4_Volcano.tiff_ Figure 4: A Volcano plot of gene expression data, with significant gene variants labelled
+4) _Figure5_annotations_barchart_color.pdf_ : Figure 5, which visualizes annotations from significant gene variants
+   
+**supplementary figure 1 is an image file of the sort, and Figure 1 is a methods diagram**
+5) _SuppFig2.tiff_: Supplementary Figure 2, showing bud scar counts for each founder and the ancestor before and after sorting
+6)
+7) _SuppFIG4A.tiff_: Supplementary Figure 4A, heatmap visualizing DEGs, no batch correction
+8) _SuppFIG4B.tiff_: Supplementary Figure 4A, heatmap visualizing DEGs, with batch correction
+9) _SuppFIG5A.tiff_: SFS for each replicate
+10) _SuppFig5B.tiff_: Segregating sites by replicate
+11) _Supp_Fig6.tiff_: Coverage plots
+12) _SuppFig7.tiff_: Supplementary Figure 7, manhattan plot of mitochondrial indels and SNPsmanhattan plot for mitochondria
+13)_Supp_Fig8_Delta.pdf_ : Supplementary Figure 4, plot visualizing differences in haplotype frequencies across the genome
+
 
 
 #### [Tables Folder](/tables)
