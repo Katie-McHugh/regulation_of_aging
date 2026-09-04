@@ -15,14 +15,15 @@
 # be possible using pheatmap
 #-------------------------------------------------------------------------------
 library(pheatmap)
-
-okabe_ito_palette <- c("#D55E00",
-                       "#F0E442",
-                       "#56B4E9",
-                       "#0072B2", 
-                       "#E69F00")
-"#009E73",
-"#CC79A7"
+library(tidyverse)
+# 
+# okabe_ito_palette <- c("#D55E00",
+#                        "#F0E442",
+#                        "#56B4E9",
+#                        "#0072B2", 
+#                        "#E69F00")
+# "#009E73",
+# "#CC79A7"
 
 ## Load and Organize data
 
@@ -30,8 +31,8 @@ okabe_ito_palette <- c("#D55E00",
 norm_dds<-read.csv("temp/transcriptome/normalized_counts_deseq.csv")
 
 ### Load list of genes for headmap
-selected_genes_adj<-read.csv("temp/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
-selected_genes_adj2<-read.csv("temp/transcriptome/RNA_genes_p<0.05.csv", row.names= "X")
+selected_genes_adj<-read.csv("results/transcriptome/RNA_genes_p<0.1.csv", row.names= "X")
+selected_genes_adj2<-read.csv("results/transcriptome/RNA_genes_p<0.05.csv", row.names= "X")
 
 ### load in design file
 colData<-read.table("data/design_files/design.txt", header=TRUE, row.names = "sample")
@@ -131,7 +132,11 @@ View(logfc_info)
 ## Plot heatmap
 ### p < 0.1
 
-pdf("figures/SuppFig_heatmap_v2.pdf", width = 20, height = 16)
+#pdf("figures/SuppFig3_heatmap.pdf", width = 8, height = 12)
+tiff(file = "figures/SuppFig3_heatmap.tiff", height = 12, width = 12,
+units = "in",
+res = 400,
+compression = "lzw")
 
 pheatmap(
   norm_adj_mat, # Scale the data by rows (genes)
@@ -142,10 +147,15 @@ pheatmap(
   annotation_row = annotation_row,
   annotation_col = annotation_col,
   annotation_colors = annotation_colors,
+  treeheight_row = 20,  
   annotation_legend = TRUE, 
-  fontsize_row = 16, # Adjust the font size of row names
-  fontsize_col = 16, # Adjust the font size of column names
-  fontsize = 21,        # 🔼 Increase overall font size,,
-  cellheight = 16)
+  fontsize = 10,           # Increase overall font size
+  fontsize_row = 10,       # Row name font size
+  fontsize_col = 10,       # Column name font size
+  cellheight = 10,         # Increase cell height
+  cellwidth = 20        # Increase cell width if needed
+)
 
 dev.off()
+
+

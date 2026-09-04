@@ -1,18 +1,16 @@
 ###############################################################################
-## Table of potential local cis-regulatory variants
+## Create table of potential local cis-regulatory variants
 ##############################################################################
 
-## load local cis-reg data 
+#------------------------------------------------------------------------------
+## load local cis-reg data
+# created using SNP table, DGE data, and referencing SGD and UCSC Genome Database
 rna<-read.csv("results/variant_dist_table.csv")
 
-
-## load annotations for significant snps
+## load annotations for significant SNPs
 ann<-read.table("data/raw/annotated_snps.txt", header= TRUE)
 ann_i<-read.table("data/raw/annotated_indels.txt", header=TRUE)
-
-dna<-read.csv("data/clean/GWAS_SNPS_cov20_maf05.csv")
-
-
+dna<-read.csv("data/clean/GWAS_SNPS_cov20_maf05.csv")            ### SNP data
 
 ## convert roman numerals to chromosomes
 roman_to_chr <- setNames(
@@ -21,26 +19,24 @@ roman_to_chr <- setNames(
     "VII", "VIII", "IX", "X", "XI", "XII", 
     "XIII", "XIV", "XV", "XVI", "mitochondrion"))
 
-ann <-ann %>%                                 #fix chr format
+ann <-ann %>%                                     #fix chr format #snps
   mutate(CHROM= roman_to_chr[CHROM])
 
-ann_i <-ann_i %>%                                 #fix chr format
+ann_i <-ann_i %>%                                 #fix chr format #indels
   mutate(CHROM= roman_to_chr[CHROM])
-
-
 #------------------------------------------------------------------------------
 
-## filter for local variants
+## filter for local variants #local < 10kb
 local<-subset(rna, dist_from_UGV<10000 | dist_from_DGV <10000)
 local_data<-local[,c("Gene.ID", "Gene.Name", "Chromosome", "Start.Position", 
                       "End.Position", "variant_positions", 
                      "dist_from_UGV", "dist_from_DGV")]
-View(local_data)
+
 #split variant positions
 library(tidyverse)
 library(dplyr)
 
-# Split rows on comma in `variant_positions`
+# Split rows on comma from variant_positions col
 local_clean <- local_data %>%
   separate_rows(variant_positions, sep = ",\\s*")
 
@@ -60,7 +56,7 @@ ugv_2 <- ugv %>%
     )
   )
 
-#exclude RFA3 and WSC4, those already included in UGV list
+# exclude RFA3 and WSC4 #these are already included in UGV list
 dgv<-subset(local_clean, dist_from_DGV<10000 & dist_from_DGV>1)
 
 # replace NAs with variant positions for variants outside of genes
@@ -73,7 +69,6 @@ dgv_2 <- dgv %>%
       variant_positions
     )
   )
-
 
 ## merge back together
 variants<-rbind(ugv_2, dgv_2)
@@ -103,6 +98,7 @@ rna_list<-read.csv("data/clean/rnaseq_results_batch_sigs0.1_edited.csv")
 #########lowerPOS is literally the smaller POS number...
 #####   so lowerPOS is upstream and upperPOS is downstream!!!!!!!       ######
 ################################################################################
+
 find_it_10kb <- function(data, chrom_value, lowerPOS, upperPOS) {
   # Ensure POS is numeric
   data$POS <- as.numeric(data$POS)
@@ -155,11 +151,10 @@ find_sigs_3 <- function(data, range_table) {
 
 resultd <- find_sigs_3(sigs_05_f, rna_list)
 View(resultd)
-
 #-------------------------------------------------------------------------------
 ## write table
 
-write.csv(as.data.frame(resultd), file = "temp_tables/local_variants.csv", row.names = FALSE, quote=FALSE)
+write.csv(as.data.frame(resultd), file = "temp/local_variants.csv", row.names = FALSE, quote=FALSE)
 
 #-------------------------------------------------------------------------------
 ## Great, now separate each variant into its own row again...
@@ -174,7 +169,13 @@ local_all <- resultd %>%
   separate_rows(variant_position, sep = "\\|\\s*") %>%
   filter(!is.na(variant_position) & variant_position != "")
 
-local_all<-local_all[, c("Gene_ID", "Gene_Name", "CHROM", "variant_position", "source", "padj", "log2FoldChange")]
+local_all<-local_all[, c("Gene_ID", 
+                         "Gene_Name", 
+                         "CHROM", 
+                         "variant_position", 
+                         "source", 
+                         "padj", 
+                         "log2FoldChange")]
 
 View(local_all)
 
@@ -182,13 +183,22 @@ View(local_all)
 ## Now we can assign annotations...
 View(local_all)
 
-ann_var_all<-merge(local_all, ann, by.x = c("CHROM", "variant_position"), by.y = c("CHROM", "POS"))
-ann_var_all_i<-merge(local_all, ann_i, by.x = c("CHROM", "variant_position"), by.y = c("CHROM", "POS"))
+ann_var_all<-merge(local_all, ann, by.x = c("CHROM", "variant_position"),
+                   by.y = c("CHROM", "POS"))
+
+ann_var_all_i<-merge(local_all, ann_i, by.x = c("CHROM", "variant_position"), 
+                     by.y = c("CHROM", "POS"))
 
 ann_local_var<-rbind(ann_var_all, ann_var_all_i)
 
-ann_local_var<-ann_local_var[,c("Gene_ID", "Gene_Name", "CHROM", "variant_position", "source", "padj", "log2FoldChange", "ANN")]
-View(ann_local_var)
+ann_local_var<-ann_local_var[,c("Gene_ID", 
+                                "Gene_Name", 
+                                "CHROM", 
+                                "variant_position", 
+                                "source", 
+                                "padj", 
+                                "log2FoldChange", 
+                                "ANN")]
 
 #-------------------------------------------------------------------------------
 ## Format *another* table that describes each gene and the number of gene variants upstream, in_range, and downstream
@@ -200,7 +210,7 @@ variant_counts <- ann_local_var %>%
 
 View(variant_counts)
 
-# Step 1: Extract the second field from the ANN column
+#  Extract the second field from the ANN column
 ann_counts <- ann_local_var %>%
   mutate(ann_type = str_split(ANN, "\\|") %>% map_chr(~ .x[2])) %>%
   group_by(Gene_Name, ann_type) %>%
@@ -223,9 +233,9 @@ View(variant_types)
 #-------------------------------------------------------------------------------
 ## write table
 
-write.csv(as.data.frame(variant_types), file = "temp_tables/local_variant_types.csv", row.names = FALSE, quote=FALSE)
-write.csv(as.data.frame(full_summary), file = "temp_tables/local_variant_full_summary.csv", row.names = FALSE, quote=FALSE)
-write.csv(as.data.frame(ann_local_var), file = "temp_tables/local_variants_ann.csv", row.names = FALSE, quote=FALSE)
+write.csv(as.data.frame(variant_types), file = "temp/local_variant_types.csv", row.names = FALSE, quote=FALSE)
+write.csv(as.data.frame(full_summary), file = "temp/local_variant_full_summary.csv", row.names = FALSE, quote=FALSE)
+write.csv(as.data.frame(ann_local_var), file = "temp/local_variants_ann.csv", row.names = FALSE, quote=FALSE)
 
 #-------------------------------------------------------------------------------
 ## summarize variant types
@@ -257,5 +267,5 @@ categorized_summary <- variant_types %>%
          -downstream_gene_variant,
          -frameshift_variant)
 
-write.csv(as.data.frame(categorized_summary), file = "temp_tables/local_variants_table.csv", row.names = FALSE, quote=FALSE)
+write.csv(as.data.frame(categorized_summary), file = "tables/Table1_local_variants.csv", row.names = FALSE, quote=FALSE)
 

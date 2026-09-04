@@ -1,5 +1,10 @@
 ######### Packages needed for aging project ###############
 
+## Libraries and packages have been moved into the appropriate scripts.  This
+### file is antiquated, and may not include all packages
+### that are used in analysis for this project. It should not be needed for analysis
+## but I left it just in case. 
+
 #--------------------------------------------------------------
 ## Install packages and load library for analysis of GWAS data
 #---------------------------------------------------------------

@@ -1,11 +1,12 @@
 ### Create Supplementary Table
 
 library(dplyr)
+library(tidyr)
 #------------------------------------------------------------------------------
 #------------------------------------------------------------------------------
 ## read in data
-snps3<-read.csv("temp/genome/WG_CMHtest_results.csv")
-indels3<-read.csv("temp/genome/indels_CMHtest_results.csv")
+snps3<-read.csv("results/genome/WG_CMHtest_results.csv")
+indels3<-read.csv("results/genome/indels_CMHtest_results.csv")
 ann_snps<-read.table("data/raw/annotated_snps.txt", header=TRUE)
 ann_indels<-read.table("data/raw/annotated_indels.txt", header= TRUE)
 
@@ -66,7 +67,7 @@ nrow(combined_sigs) #801 combined SNPs/indels #includes mito
 #------------------------------------------------------------------------------
 
 # Save the file to the new directory
-write.csv(combined_sigs, file = "temp/genome/sigs_SNPs&indels_padj<0.05.csv", row.names = FALSE)
+write.csv(combined_sigs, file = "results/genome/sigs_SNPs&indels_padj<0.05.csv", row.names = FALSE)
 
 #------------------------------------------------------------------------------
 
@@ -94,7 +95,7 @@ ann_sigs_all<-combined_ann_sigs2[,c(1:8, 56:63)]
 ann_sigs_all<-rbind(ann_sigs_all)
 
 # Save the file to the new directory
-write.csv(ann_sigs_all, file = "temp_tables/supp_table_complete_sig_list_p<0.05.csv", row.names = FALSE)
+write.csv(ann_sigs_all, file = "results/genome/supp_table_complete_sig_list_p<0.05.csv", row.names = FALSE)
 
 nrow(ann_sigs_all) #799 total sigs # missing 2 indels from chr3
 
@@ -159,8 +160,26 @@ sorted_table <- complete_table %>%
 
 dim(sorted_table)
 View(sorted_table)
+
+sorted_table1 <- sorted_table %>%
+  mutate(First_ANN = sapply(strsplit(ANN, ","), `[`, 1))
+
+### Step 2: Separate the First_ANN column by pipe character into multiple columns
+sorted_table2 <- sorted_table1 %>%
+  separate(First_ANN, 
+           into = c("Allele", "Annotation", "Annotation_Impact", "Gene_Name",
+                    "Gene_ID", "Feature_Type", "Feature_ID",
+                    "Transcript_BioType", "Rank", "HGVS.c", "HGVS.p", 
+                    "cDNA.pos / cDNA.length", "CDS.pos / CDS.length",
+                    "AA.pos / AA.length", "Distance", "INFO"), 
+           sep = "\\|", fill = "right")
+
+View(sorted_table2)
+supplementary_table_3<-sorted_table2[, c("CHROM", "POS", "TYPE", "pval", "logp",
+                                         "Gene_Name", "Annotation")]
+View(supplementary_table_3)
 #------------------------------------------------------------------------------
 ## save table: 
 
-write.csv(sorted_table, file="tables/GenomicVariantAnnotationsTable.csv", row.names=FALSE)
+write.csv(supplementary_table_3, file="tables/SuppTable3_GenomicVariantAnn_GBE.csv", row.names=FALSE)
 #------------------------------------------------------------------------------

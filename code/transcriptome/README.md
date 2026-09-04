@@ -10,7 +10,7 @@
 3) heatmap.R
 4) rna_supp_table
 5) Volcano_plot.R
-6) notes of generation of gene count matrix via CQLS server
+6) notes of generation of gene count matrix via CQLS server (at the end of this README)
 
 #---------------------------------------------------------------------------------------------------------------------------------------
 ### 1) 01_batch_adjust_DESEQ.R
@@ -48,7 +48,7 @@
 
 #---------------------------------------------------------------------------------------------------------------------------------------
 
-#### Generation of gene count matrix
+#### 6)  Generation of gene count matrix
 
 #### Notes from CQLS server generation of gene_count_matrix
 
@@ -75,7 +75,7 @@ Used alignment.sh file for alignment in the filtered_samples folder:
     done
 done)
 
-##### output saved to STAR_output folder within filtered_sampes folder
+##### output saved to STAR_output folder within filtered_samples folder
 the feature_counts.sh file was used on the alignments, along with the yeast.2023.mRNA.sgd.gff reference file:
 
 for sample_type in "OLD" "YOUNG"; do
