@@ -30,6 +30,6 @@ loadings<-as.data.frame(pca$rotation)
 head(loadings)
 loadingplot(loadings$PC1, threshold = 0.1)
 plot_load<-loadingplot(loadings$PC1,threshold= 0.1)
-row.names(dds)[plot_load$var.names] ###BUT...the PCA doesn't look awesome, so I'm not sure how useful this really is
+row.names(dds)[plot_load$var.names] 
 
 ```
