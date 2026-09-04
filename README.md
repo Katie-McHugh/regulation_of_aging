@@ -76,14 +76,15 @@ This folder contains figures used in the manuscript. These include:
 This folder contains tables used in the manuscript generated in R. These include: 
 
 1) _Table1_local_variants.csv_ : Table 1 in manuscript
-2) _SuppTable2_GenomicVariantAnn.csv_ : Supplementary Table 2 in Manuscript, shows significant genetic variants from GWAS/CMH test
-3) _ST3_GWAS_cov.txt_ : Supplementary Table 3, shows average coverage values for each replicate across the genome for SNPs and indels3) _ST6_variant_dist_table.csv_ : Supplementary Table 6, shows DEGs with additional info on their distance from significant gene variants (taken from SGD, SNPeff, and the UCSC genome database)
+2) _SuppTable3_GenomicVariantAnn.csv_ : Supplementary Table 2 in Manuscript, shows significant genetic variants from GWAS/CMH test
+3) _ST2_GWAS_cov.txt_ : Supplementary Table 3, shows average coverage values for each replicate across the genome for SNPs and indels3) _ST6_variant_dist_table.csv_ : Supplementary Table 6, shows DEGs with additional info on their distance from significant gene variants (taken from SGD, SNPeff, and the UCSC genome database)
 
 ** Other supplementary tables were created directly in excel, using data from:  
 - Supplementary Table 1:  budscars.R script in the [code folder](/code/budscars)
 -  Supplementary Table 4 : GO-analysis results in the [results folder](/results/GO_analysis)
-- Supplementary Table 5 : haplotype analysis 
-- Supplementary Table 6 : transcriptomic analysis (see transcriptomics README)**
+- Supplementary Table 5 : haplotype analysis
+- Supplementart Table 6: Transcriptomic read count info
+- Supplementary Table 7 : transcriptomic analysis (see transcriptomics README)**
 
 #### [Results Folder](/results)
 
