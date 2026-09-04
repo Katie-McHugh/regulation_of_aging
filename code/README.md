@@ -45,9 +45,9 @@
 
 ### [transcriptome](/code/transcriptome) folder:
 
-1) batch_adjust_DESEQ.R is the script that takes the gene count matrix generated in the description below and performs a batch correction based on the sorting date, performs some additional filtering to remove genes with low mapping, and creates a DESEQ object for later analysis
-2) DGE_gene_lists.R is the script used to create the significant gene lists for GO-term analysis, and to be used to compare against the genome data
-3) heatmap.R is the script used to create the heatmap figures for the transcriptome data
+1) 01_batch_adjust_DESEQ.R is the script that takes the gene count matrix generated in the description below and performs a batch correction based on the sorting date, performs some additional filtering to remove genes with low mapping, and creates a DESEQ object for later analysis. Also creates supplementary figure 3B&D (PCA).
+2) 02_DGE_gene_lists.R is the script used to create the significant gene lists for GO-term analysis, and to be used to compare against the genome data
+3) 03_heatmap.R is the script used to create the heatmap figures for the transcriptome data
 4) 03_uncorrected_heatmap.R is a script visualizing the same heatmap, but without ComBatseq batch correction (used in supplementary figure)
  5) 03_Volcano_plot.R creates a volcano plot to show p-values and log2FC between DEGs using adjusted counts matrix from  01_batch_adjust_DESEQ.R and and gene list and key from 02_DGE_gene_lists.R.
 6) README.md file that contains notes on data filtering/cleaning prior to analysis
